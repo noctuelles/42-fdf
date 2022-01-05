@@ -6,7 +6,7 @@
 #    By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/25 19:17:39 by plouvel           #+#    #+#              #
-#    Updated: 2021/12/25 20:27:21 by plouvel          ###   ########.fr        #
+#    Updated: 2021/12/25 20:34:14 by plouvel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,6 @@ fclean:
 					$(RM) libft.a libmlx.a
 
 re:					fclean all
-
-rm_objs:
 
 makelibs:
 					@if [ ! -f libft.a ]; then \

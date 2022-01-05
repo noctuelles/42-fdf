@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 18:06:24 by plouvel           #+#    #+#             */
-/*   Updated: 2021/12/24 01:26:48 by plouvel          ###   ########.fr       */
+/*   Updated: 2021/12/26 00:38:16 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
+#  define BUFFER_SIZE 10024
 # endif
 
 # include <stddef.h>

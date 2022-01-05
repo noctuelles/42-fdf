@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   coord3d.c                                          :+:      :+:    :+:   */
+/*   vec2d.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/25 22:55:02 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/01 13:20:49 by plouvel          ###   ########.fr       */
+/*   Created: 2021/12/31 19:24:31 by plouvel           #+#    #+#             */
+/*   Updated: 2021/12/31 19:45:11 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdlib.h>
 
-t_vec3d	*new_coord3d(int x, int y, int z)
+void	rotate_vec2d(t_vec2d *vec, double angle)
 {
-	t_vec3d	*coord;
-
-	coord = (t_vec3d *) malloc(sizeof(t_vec3d));
-	if (!coord)
-		return (NULL);
-	coord->x = x;
-	coord->y = y;
-	coord->z = z;
-	return (coord);
 }
 
-void	del_coord3d(t_vec3d *coord)
+void	draw_vec2d(t_mlx *mlx, t_vec2d org, t_vec2d vec, uint32_t color)
 {
-	free(coord);
+	vec.x += org.x;
+	vec.y += org.y;
+	draw_line(mlx, org, vec, color);
 }
