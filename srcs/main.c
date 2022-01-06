@@ -6,80 +6,52 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/05 15:15:41 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/06 15:10:47 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "ft_printf.h"
 #include "mlx.h"
 #include <unistd.h>
 #include <stdlib.h>
 #include <math.h>
 
-int	ft_abs(int i)
-{
-	if (i)
-		return (i);
-	return (-i);
-}
-void	iso(t_vec2d *vec)
-{
-	int	old_x;
-	int	old_y;
-
-	old_x = vec->x;
-	old_y = vec->y;
-	vec->x = old_x - old_y;
-	vec->y = (old_x + old_y) / 2;
-}
-/*
-size_t	get_file_infos(int fd, t_mlx_data *data)
-{
-	ssize_t	rded;
-	char	*nw_addr;
-	char	buffer[1024];
-
-	rded = read(fd, buffer, 1024);
-	while (rded)
-	{
-		nw_addr = ft_strchr(buffer, '\n');
-		if (nw_addr)
-		{
-			data->nbr_line++;
-			buffer = nw_addr + 1;
-		}
-		else
-			rded = read(fd, buffer, 1024);
-	}
-}
-*/
-
-void	draw_triangle(t_mlx *mlx, t_vec2d pos, t_vec2d v, uint32_t color)
+void	draw_rect(t_mlx *mlx, t_vec2d pos, t_vec2d v, uint32_t color)
 {
 	t_vec2d	org;
 
 	org = pos;
 	pos.y += v.y;
 	draw_line(mlx, org, pos, color); 
+	pos.x++;
+	pos.y--;
 	org = pos;
-	org.y--;
-	org.x++;
-
+	if (v.x - 2 > 0)
+	{
+		ft_printf("not too short");
+		pos.x += v.x - 2;
+		draw_line(mlx, org, pos, color); 
+		pos.x--;
+		org = pos;
+	}
+	pos.y -= v.y - 1;
 	draw_line(mlx, org, pos, color); 
-	draw_line(mlx, org, pos, color); 
-	draw_line(mlx, org, pos, color); 
+	/*
+	org = pos;
+	if (v.x - 2 > 0)
+	{
+		pos.x -= v.x - 2;
+		draw_line(mlx, org, pos, color); 
+	}*/
 }
 
 int	main(int argc, char **argv)
 {
 	t_mlx	*fdf;
-	t_list	*lst;
 
 	fdf = new_mlx(WIDTH, HEIGHT, "fdf");
 	if (!fdf)
-		return (1);
-	lst = parse_map("maps/42.fdf");
-	if (!lst)
 		return (1);
 	/*while (lst)
 	{
@@ -98,7 +70,7 @@ int	main(int argc, char **argv)
 	}*/
 	t_vec2d org = {.x = 200, .y = 200};
 	t_vec2d v = {.x = 2, .y = 2};
-	draw_triangle(fdf, org, v, WHITE);
+	draw_rect(fdf, org, v, 0xffcccccc);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	mlx_loop(fdf->inst);
 	delete_mlx(fdf);

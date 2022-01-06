@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/05 14:35:59 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/06 15:12:56 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,9 @@ typedef struct s_mlx
 	t_mlx_data	data;
 }				t_mlx;
 
-/* coord3d.c  */
-
-t_vec3d		*new_coord3d(int x, int y, int z);
-void		del_coord3d(t_vec3d *coord);
-
 /* parsing.c */
 
-t_list		*parse_map(const char *path);
+int			**parse_map(const char *path);
 
 /* mlx.c */
 
@@ -79,11 +74,21 @@ void		delete_mlx(t_mlx *mlx);
 
 /* line.c  */
 
-void	draw_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2, uint32_t color);
+void		draw_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2, uint32_t color);
 
-/* vec2d.c */
+/* vertices.c */
 
-void	draw_vec2d(t_mlx *mlx, t_vec2d org, t_vec2d vec, uint32_t color);
+int			**alloc_vertices(t_mlx_data *data);
+int			**fill_vertices(int fd, int **vertices);
+void		free_vertices(int **vertices, size_t index);
 
-int	ft_abs(int i);
+/* files.c */
+
+char		*read_line(int fd, char **line);
+void		get_file_infos(int fd, t_mlx_data *data);
+
+/* math_utils.c */
+
+int			ft_abs(int i);
+
 #endif
