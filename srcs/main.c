@@ -6,13 +6,14 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/06 15:10:47 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/07 15:57:30 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "ft_printf.h"
 #include "mlx.h"
+#include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <math.h>
@@ -68,9 +69,9 @@ int	main(int argc, char **argv)
 		put_pixel(fdf, vec.x + 400, vec.y + 400, 0xffff0000);
 		lst = lst->next;
 	}*/
-	t_vec2d org = {.x = 200, .y = 200};
-	t_vec2d v = {.x = 2, .y = 2};
-	draw_rect(fdf, org, v, 0xffcccccc);
+	fdf->data.vertices = parse_map("mars.fdf", &fdf->data);
+	print_vertices(fdf->data.vertices);
+	puts("bonjour");
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	mlx_loop(fdf->inst);
 	delete_mlx(fdf);

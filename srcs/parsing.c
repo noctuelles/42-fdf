@@ -6,32 +6,34 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:14:14 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/06 15:04:21 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/07 15:57:31 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "get_next_line.h"
 #include <stdlib.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 /*
  *	Verification of the file could be implemented.
  */
 
-int	**parse_map(const char *path, t_mlx_data *data)
+char	*read_line(int fd, char **line)
+{
+	*line = get_next_line(fd);
+	return (*line);
+}
+
+t_list	*parse_map(const char *path, t_mlx_data *data)
 {
 	int	fd;
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
-	get_file_infos(fd, data);
-	data->vertices = alloc_vertices(data);
-	if (!data->vertices)
-		return (NULL);
-	data->vertices = fill_vertices(data);
-	if (!data->vertices)
-		return (NULL);
+	data->vertices = fill_vertices(fd, data);
 	close(fd);
-	return (vertices);
+	return (data->vertices);
 }

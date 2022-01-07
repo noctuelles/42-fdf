@@ -6,84 +6,101 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 14:49:33 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/06 15:08:58 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/07 15:57:30 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdint.h>
+#include <stdlib.h>
 
-static void	free_values(char **values)
+static t_vec3d	*alloc_vec3d(int x, int y, int z)
 {
-	size_t	i;
+	t_vec3d	*vec3d;
 
-	i = 0;
-	while (values[i] != NULL)
-		free(values[i++]);
-	free(values);
-}
-
-static int	fill_from_values(int **vertices, char **values, unsigned int y)
-{
-	int	x;
-
-	x = 0;
-	while (values[x] != NULL)
-	{
-		vertices[y][x] = ft_atoi(values[x]);
-		x++;
-	}
-	return (0);
-}
-
-int	**alloc_vertices(t_mlx_data *data)
-{
-	int		**vertices;
-	size_t	i;
-
-	vertices = (int **) malloc(data->nbr_line * sizeof(int *));
-	if (!vertices)
+	vec3d = (t_vec3d *) malloc(sizeof(t_vec3d));
+	if (!vec3d)
 		return (NULL);
-	i = 0;
-	while (i < nbr_line)
-	{
-		vertices[i] = (int *) malloc(data->line_len * sizeof(int));
-		if (!vertices[i])
-		{
-			free_vertices(vertices, i);
-			return (NULL);
-		}
-		i++;
-	}
-	return (vertices);
+	vec3d->x = x;
+	vec3d->y = y;
+	vec3d->z = z;
+	return (vec3d);
 }
 
-int	**fill_vertices(int fd, int **vertices)
+static void	lst_addback(t_list *elem, t_list **lst, t_list **beg)
 {
-	unsigned int	y;
-	char			*line;
-	char			**values;
+	if (!*lst)
+	{
+		*lst = elem;
+		*beg = elem;
+	}
+	else
+	{
+		(*lst)->next = elem;
+		*lst = elem;
+	}
+}
+
+static t_list	*fill_vertices_from_line(char *line, t_list **beg, int *x, int y)
+{
+	size_t			i;
+	int				z;
+	t_vec3d			*vec3d;
+	t_list			*elem;
+	static t_list	*vertices = NULL;
+
+	i = 0;
+	*x = 0;
+	while (line[i] && line[i] != '\n')
+	{
+		z = ft_atoi(&line[i]);
+		vec3d = alloc_vec3d(*x, y, z);
+		elem = ft_lstnew((void *) vec3d);
+		if (!elem)
+			return (NULL);
+		lst_addback(elem, &vertices, beg);
+		if (z < 0)
+			i++;
+		while (ft_isdigit(line[i]))
+			i++;
+		i++;
+		*x += 1;
+	}
+	return (*beg);
+}
+
+t_list	*fill_vertices(int fd, t_mlx_data *data)
+{
+	char	*line;
+	int		x;
+	int		y;
+	t_list	*vertices;
+	t_list	*beg;
 
 	y = 0;
+	vertices = NULL;
 	while (read_line(fd, &line) != NULL)
 	{
-		values = ft_split(line, ' ');
-		if (!values)
+		vertices = fill_vertices_from_line(line, &vertices, &x, y);
+		if (!vertices)
 			return (NULL);
-		fill_from_values(vertices, values, y);
-		free_values(values);
 		free(line);
 		y++;
 	}
-	return (vertices);
+	data->nbr_line = y;
+	data->elems_line = x;
+	return (beg);
 }
 
-void	free_vertices(int **vertices, size_t index)
-{
-	size_t	i;
+#include <stdio.h>
 
-	i = 0;
-	while (i < index)
-		free(vertices[i++]);
-	free(vertices);
+void	print_vertices(t_list *lst)
+{
+	t_vec3d	vec3d;
+
+	while (lst)
+	{
+		vec3d = *(t_vec3d *) lst->content;
+		printf("x : %d	y : %d	z : %d\n", vec3d.x, vec3d.y, vec3d.z);
+		lst = lst->next;
+	}
 }

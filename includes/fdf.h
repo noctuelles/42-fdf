@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/06 15:12:56 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/07 15:57:35 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ typedef struct	s_vec2d
 
 typedef struct s_mlx_data
 {
-	int			**vertices;
-	size_t		line_len;
+	t_list		*vertices;
+	size_t		elems_line;
 	size_t		nbr_line;
 	size_t		max_z;
 	size_t		tile_width;
@@ -63,7 +63,8 @@ typedef struct s_mlx
 
 /* parsing.c */
 
-int			**parse_map(const char *path);
+char		*read_line(int fd, char **line);
+t_list		*parse_map(const char *path, t_mlx_data *data);
 
 /* mlx.c */
 
@@ -78,14 +79,10 @@ void		draw_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2, uint32_t color);
 
 /* vertices.c */
 
-int			**alloc_vertices(t_mlx_data *data);
-int			**fill_vertices(int fd, int **vertices);
+t_list		*fill_vertices(int fd, t_mlx_data *data);
+
 void		free_vertices(int **vertices, size_t index);
-
-/* files.c */
-
-char		*read_line(int fd, char **line);
-void		get_file_infos(int fd, t_mlx_data *data);
+void		print_vertices(t_list *lst);
 
 /* math_utils.c */
 

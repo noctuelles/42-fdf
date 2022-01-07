@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2021/12/31 19:45:58 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/07 13:35:22 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 	mlx = (t_mlx *) malloc(sizeof(t_mlx));
 	if (!mlx)
 		return (NULL);
+	ft_memset(&mlx->data, 0, sizeof(t_mlx_data));
 	mlx->data.width = width;
 	mlx->data.height = height;
 	mlx->inst = mlx_init();
