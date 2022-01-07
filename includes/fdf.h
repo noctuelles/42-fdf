@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/07 15:57:35 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/07 19:05:29 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,8 @@ void		print_vertices(t_list *lst);
 /* math_utils.c */
 
 int			ft_abs(int i);
+
+void		apply_isometric(t_mlx_data *data);
+void		render_isometric(t_mlx *fdf);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/07 15:57:30 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/07 19:05:31 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,10 @@ int	main(int argc, char **argv)
 		put_pixel(fdf, vec.x + 400, vec.y + 400, 0xffff0000);
 		lst = lst->next;
 	}*/
-	fdf->data.vertices = parse_map("mars.fdf", &fdf->data);
-	print_vertices(fdf->data.vertices);
-	puts("bonjour");
+	fdf->data.vertices = parse_map("42.fdf", &fdf->data);
+	fdf->data.tile_width = 60;
+	apply_isometric(&fdf->data);
+	render_isometric(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	mlx_loop(fdf->inst);
 	delete_mlx(fdf);
