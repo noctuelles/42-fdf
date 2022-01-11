@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:14:14 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/07 15:57:31 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/11 19:07:45 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,27 @@
  *	Verification of the file could be implemented.
  */
 
-char	*read_line(int fd, char **line)
-{
-	*line = get_next_line(fd);
-	return (*line);
-}
 
-t_list	*parse_map(const char *path, t_mlx_data *data)
+
+int	**parse_map(const char *path, t_mlx_data *data)
 {
 	int	fd;
 
+	data->nbr_lines = get_file_nbr_lines(path);
+	if (data->nbr_lines == 0)
+		return (NULL);
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
 		return (NULL);
+	data->vertices = alloc_vertices(data->nbr_lines);
+	if (!data->vertices)
+		return (NULL);
 	data->vertices = fill_vertices(fd, data);
+	if (!data->vertices)
+	{
+		free_vertices(data->vertices);
+		return (NULL);
+	}
 	close(fd);
 	return (data->vertices);
 }

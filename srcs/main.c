@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/07 19:05:31 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/11 19:07:46 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <math.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 void	draw_rect(t_mlx *mlx, t_vec2d pos, t_vec2d v, uint32_t color)
 {
@@ -45,7 +47,12 @@ void	draw_rect(t_mlx *mlx, t_vec2d pos, t_vec2d v, uint32_t color)
 		pos.x -= v.x - 2;
 		draw_line(mlx, org, pos, color); 
 	}*/
+
 }
+
+/* Instead of using get_next_line to count line, i use a dedicated fonction */
+
+
 
 int	main(int argc, char **argv)
 {
@@ -69,10 +76,11 @@ int	main(int argc, char **argv)
 		put_pixel(fdf, vec.x + 400, vec.y + 400, 0xffff0000);
 		lst = lst->next;
 	}*/
-	fdf->data.vertices = parse_map("42.fdf", &fdf->data);
-	fdf->data.tile_width = 60;
+	fdf->data.vertices = parse_map("mars.fdf", &fdf->data);
+	/*fdf->data.vertices = parse_map("42.fdf", &fdf->data);
+	fdf->data.tile_width = 80;
 	apply_isometric(&fdf->data);
-	render_isometric(fdf);
+	render_isometric(fdf);*/
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	mlx_loop(fdf->inst);
 	delete_mlx(fdf);

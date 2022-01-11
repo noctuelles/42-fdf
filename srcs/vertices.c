@@ -6,98 +6,99 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 14:49:33 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/07 19:05:28 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/11 19:07:02 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "libft.h"
 #include <stdlib.h>
 
-static t_vec3d	*alloc_vec3d(int x, int y, int z)
+int	**alloc_vertices(size_t nbr_lines)
 {
-	t_vec3d	*vec3d;
+	int		**vertices;
+	size_t	i;
 
-	vec3d = (t_vec3d *) malloc(sizeof(t_vec3d));
-	if (!vec3d)
+	vertices = (int **) malloc(nbr_lines * sizeof(int *));
+	if (!vertices)
 		return (NULL);
-	vec3d->x = x;
-	vec3d->y = y;
-	vec3d->z = z;
-	return (vec3d);
-}
-
-static void	lst_addback(t_list *elem, t_list **lst, t_list **beg)
-{
-	if (!*lst)
-	{
-		*lst = elem;
-		*beg = elem;
-	}
-	else
-	{
-		(*lst)->next = elem;
-		*lst = elem;
-	}
-}
-
-static t_list	*fill_vertices_from_line(char *line, t_list **lst, int *x, int y)
-{
-	size_t			i;
-	int				z;
-	t_list			*elem;
-	static t_list	*vertices = NULL;
-
 	i = 0;
-	*x = 0;
-	z = 0;
-	while (line[i] && line[i] != '\n')
-	{
-		z = ft_atoi(&line[i]);
-		elem = ft_lstnew((void *) alloc_vec3d(*x, y, z));
-		if (!elem)
-			return (NULL);
-		lst_addback(elem, &vertices, lst);
-		while (ft_isdigit(line[i]))
-			i++;
-		while (line[i] == ' ')
-			i++;
-		*x += 1;
-	}
-	return (*lst);
-}
-
-t_list	*fill_vertices(int fd, t_mlx_data *data)
-{
-	char	*line;
-	int		x;
-	int		y;
-	t_list	*vertices;
-
-	y = 0;
-	vertices = NULL;
-	while (read_line(fd, &line) != NULL)
-	{
-		vertices = fill_vertices_from_line(line, &vertices, &x, y);
-		if (!vertices)
-			return (NULL);
-		free(line);
-		y++;
-	}
-	data->nbr_line = y;
-	data->elems_line = x;
+	while (i < nbr_lines)
+		vertices[i++] = NULL;
 	return (vertices);
 }
 
-#include <stdio.h>
-
-void	print_vertices(t_list *lst)
+static void	free_values(char **values)
 {
-	t_vec3d	vec3d;
+	size_t	i;
 
-	while (lst)
+	i = 0;
+	while (values[i] != NULL)
+		free(values[i++]);
+	free(values);
+}
+
+void	free_vertices(int **vertices)
+{
+	size_t	i;
+
+	i = 0;
+	while (vertices[i] != NULL)
+		free(vertices[i++]);
+	free(vertices);
+}
+
+static size_t	get_elems_per_line(char **values)
+{
+	size_t	i;
+
+	i = 0;
+	while (values[i])
+		i++;
+	return (i);
+}
+
+static int	**fill_vertices_from_values(t_mlx_data *data, char **values, int y)
+{
+	int	x;
+
+	x = 0;
+	data->vertices[y] = (int *) malloc(data->elems_line * sizeof(int));
+	if (!data->vertices[y])
 	{
-		vec3d = *(t_vec3d *) lst->content;
-		printf("x : %d	y : %d	z : %d\n", vec3d.x, vec3d.y, vec3d.z);
-		lst = lst->next;
+		free_values(values);
+		return (NULL);
 	}
+	while (values[x] != NULL)
+	{
+		data->vertices[y][x] = ft_atoi(values[x]);
+		x++;
+	}
+	return (data->vertices);
+}
+
+int	**fill_vertices(int fd, t_mlx_data *data)
+{
+	char	*line;
+	char	**values;
+	int		y;
+
+	y = 0;
+	while(read_line(fd, &line))
+	{
+		values = ft_split(line, ' ');
+		if (!values)
+			return (NULL);
+		if (data->elems_line == 0)
+		{
+			data->elems_line = get_elems_per_line(values);
+		}
+		data->vertices = fill_vertices_from_values(data, values, y);
+		if (!data->vertices)
+			return (NULL);
+		free_values(values);
+		free(line);
+		y++;
+	}
+	return (data->vertices);
 }

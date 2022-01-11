@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/07 19:05:29 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/11 19:07:43 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # define DIM_GREY 0xff696969
 # define WHITE 0xffffffff
 
-# define WIDTH 1700
-# define HEIGHT 900
+# define WIDTH 1800
+# define HEIGHT 1000
 # define X_MID 1500 / 2
 # define Y_MID 900 / 2
 
@@ -39,9 +39,9 @@ typedef struct	s_vec2d
 
 typedef struct s_mlx_data
 {
-	t_list		*vertices;
+	int			**vertices;
 	size_t		elems_line;
-	size_t		nbr_line;
+	size_t		nbr_lines;
 	size_t		max_z;
 	size_t		tile_width;
 	size_t		vertice_size[2];
@@ -63,8 +63,7 @@ typedef struct s_mlx
 
 /* parsing.c */
 
-char		*read_line(int fd, char **line);
-t_list		*parse_map(const char *path, t_mlx_data *data);
+int		**parse_map(const char *path, t_mlx_data *data);
 
 /* mlx.c */
 
@@ -79,16 +78,21 @@ void		draw_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2, uint32_t color);
 
 /* vertices.c */
 
-t_list		*fill_vertices(int fd, t_mlx_data *data);
 
-void		free_vertices(int **vertices, size_t index);
-void		print_vertices(t_list *lst);
+int			**alloc_vertices(size_t nbr_lines);
+void		free_vertices(int **vertices);
+int			**fill_vertices(int fd, t_mlx_data *data);
+void		print_vertices(t_mlx_data data);
 
 /* math_utils.c */
 
 int			ft_abs(int i);
-
 void		apply_isometric(t_mlx_data *data);
 void		render_isometric(t_mlx *fdf);
+
+/* file_utils.c */
+
+char		*read_line(int fd, char **line);
+size_t		get_file_nbr_lines(const char *path);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/07 13:35:22 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/11 16:01:41 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,11 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 void	put_pixel(t_mlx *mlx, int x, int y, uint32_t color)
 {
 	char	*pixel_addr;
+	int		pixel_x;
+	int		pixel_y;
 
+	if ((x < 0 || x > WIDTH) || (y < 0  || y > HEIGHT))
+		return ;
 	pixel_addr = mlx->addr + (x * (mlx->bpp / 8) + y * mlx->line_len);
 	*(uint32_t *)pixel_addr = color;
 }
