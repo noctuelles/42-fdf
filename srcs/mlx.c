@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/11 16:01:41 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/12 19:18:05 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 	if (!mlx)
 		return (NULL);
 	ft_memset(&mlx->data, 0, sizeof(t_mlx_data));
-	mlx->data.width = width;
-	mlx->data.height = height;
 	mlx->inst = mlx_init();
 	if (!mlx->inst)
 		return (NULL);
@@ -37,6 +35,9 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 												&mlx->line_len, &mlx->endian);
 	if (!mlx->addr)
 		return (NULL);
+	mlx->data.org.x = 700;
+	mlx->data.org.y = 250;
+	mlx->data.tile_width = 4;
 	return (mlx);
 }
 

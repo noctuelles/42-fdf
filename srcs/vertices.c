@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 14:49:33 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/11 19:07:02 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/12 19:18:06 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,12 @@ static int	**fill_vertices_from_values(t_mlx_data *data, char **values, int y)
 	while (values[x] != NULL)
 	{
 		data->vertices[y][x] = ft_atoi(values[x]);
+		if (data->vertices[y][x] > data->edges[0].z)
+		{
+			data->edges[0].x = x;
+			data->edges[0].y = y;
+			data->edges[0].z = data->vertices[y][x];
+		}
 		x++;
 	}
 	return (data->vertices);
@@ -100,5 +106,14 @@ int	**fill_vertices(int fd, t_mlx_data *data)
 		free(line);
 		y++;
 	}
+	data->edges[1].x = 0;
+	data->edges[1].y = data->nbr_lines - 1;
+	data->edges[1].z = data->vertices[data->edges[1].y][0];
+	data->edges[2].x = data->elems_line - 1;
+	data->edges[2].y = data->nbr_lines - 1;
+	data->edges[2].z = data->vertices[data->edges[2].y][data->edges[2].x];
+	data->edges[3].x = data->elems_line - 1;
+	data->edges[3].y = 0;
+	data->edges[3].z = data->vertices[0][data->edges[3].x];
 	return (data->vertices);
 }

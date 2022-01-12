@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:14:14 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/11 19:07:45 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/12 15:20:38 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 /*
  *	Verification of the file could be implemented.
  */
-
-
 
 int	**parse_map(const char *path, t_mlx_data *data)
 {
