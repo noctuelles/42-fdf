@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/12 19:18:04 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/12 23:51:06 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ void	apply_isometric(t_mlx *fdf)
 	}
 }
 
-t_vec2d	transform_isometric(t_mlx_data *data, t_vec3d vec3d)
+t_vec2d	transform_isometric(size_t tile_width, t_vec3d vec3d)
 {
 	t_vec2d	proj;
 	size_t	tile_height;
 
-	tile_height = data->tile_width / 2;
-	proj.x = (vec3d.x - vec3d.y) * (data->tile_width / 2);
+	tile_height = tile_width / 2;
+	proj.x = (vec3d.x - vec3d.y) * (tile_width / 2);
 	proj.y = -vec3d.z * (tile_height / 2) + (vec3d.x + vec3d.y) * (tile_height / 2);
 	proj.x += data->org.x;
 	proj.y += data->org.y;
@@ -113,15 +113,12 @@ size_t	compute_tile_width(t_mlx_data *data)
 	tile_width = 4;
 	while (1)
 	{
-		edges[0] = transform_isometric(data, data->edges[0]);
-		edges[1] = transform_isometric(data, data->edges[1]);
-		edges[2] = transform_isometric(data, data->edges[2]);
-		edges[3] = transform_isometric(data, data->edges[3]);
+		edges[0] = transform_isometric(tile_width, data->edges[0]);
+		edges[1] = transform_isometric(tile_width, data->edges[1]);
+		edges[2] = transform_isometric(tile_width, data->edges[2]);
+		edges[3] = transform_isometric(tile_width, data->edges[3]);
 		if (is_edges_outside(edges))
-		{
-			tile_width--;
-			break ;
-		}
+			return (tile_width - 1);
 		tile_width++;
 	}
 	return (tile_width);
