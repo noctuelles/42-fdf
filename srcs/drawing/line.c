@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 18:25:31 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/13 18:46:46 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/13 21:41:30 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	draw_line_low(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 		delta.y = -delta.y;
 	}
 	d = 2 * delta.y - delta.x;
-	while (p1.x <= p2.x)
+	while (p1.x < p2.x)
 	{
 		put_pixel(mlx, p1.x++, p1.y, color);
 		if (d < 0)

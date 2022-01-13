@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/13 19:31:34 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/13 22:35:00 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ size_t	get_text_pixel_size(char *txt)
 	return (strlen(txt) * 6 - 1);
 }
 
-t_key	draw_key(t_mlx *mlx, t_vec2d pos, char *txt_key)
+void	draw_key(t_mlx *mlx, t_vec2d pos, char *txt_key)
 {
 	t_vec2d outside_rect;
 	t_vec2d	inner_rect;
@@ -36,29 +36,62 @@ t_key	draw_key(t_mlx *mlx, t_vec2d pos, char *txt_key)
 
 	outside_rect.x = 40;
 	outside_rect.y = 40;
-	inner_rect.x = 26;
-	inner_rect.y = 26;
-	inner_rect_pos.x = pos.x + 7;
-	inner_rect_pos.y = pos.y + 7;
+	inner_rect.x = 28;
+	inner_rect.y = 28;
+	inner_rect_pos.x = pos.x + 6;
+	inner_rect_pos.y = pos.y + 6;
 	draw_full_rect(mlx, outside_rect, pos, 0xffc0c0c0);
 	draw_full_rect(mlx, inner_rect, inner_rect_pos, 0xff000000);
+
 	txt_size = get_text_pixel_size(txt_key);
-	key.y = inner_rect_pos.y + 13;
-	key.x = (26 - txt_size) + (txt_size / 2); 
-	key.txt_key = txt_key;
+	key.y = inner_rect_pos.y + 18;
+	key.x = ((14 + pos.x + 6) - txt_size) + (txt_size / 2);
+	printf("Key \"%s\" is at x %d and y %d\n", txt_key, key.x, key.y); 
+
+	draw_line(mlx, pos, inner_rect_pos, 0xff303030);
+	set_vec2d(&pos, pos.x + 39, pos.y);
+	set_vec2d(&inner_rect_pos, inner_rect_pos.x + 27, inner_rect_pos.y);
+	draw_line(mlx, pos, inner_rect_pos, 0xff303030);
+	set_vec2d(&pos, pos.x - 39, pos.y + 39);
+	set_vec2d(&inner_rect_pos, inner_rect_pos.x - 27, inner_rect_pos.y + 27);
+	draw_line(mlx, pos, inner_rect_pos, 0xff303030);
+	set_vec2d(&pos, pos.x + 39, pos.y);
+	set_vec2d(&inner_rect_pos, inner_rect_pos.x + 27, inner_rect_pos.y);
+	draw_line(mlx, pos, inner_rect_pos, 0xff303030);
+
 	return (key);
 }
 
-void	draw_key_txt(t_mlx *mlx, t_key keys[13])
+void	draw_keys(t_mlx *mlx)
 {
-	size_t	i;
+	t_vec2d	pos;
 
-	i = 0;
-	while (i < 13)
-	{
-		mlx_string_put(mlx->inst, mlx->wnd, keys[i].x, keys[i].y, 0xffffffff, keys[i].txt_key);
-		i++;
-	}
+	set_vec2d(&pos, 80, 100);
+	draw_key(mlx, pos, "W");
+	set_vec2d(&pos, 30, 150);
+	draw_key(mlx, pos, "A");
+	set_vec2d(&pos, 80, 150);
+	draw_key(mlx, pos, "S");
+	set_vec2d(&pos, 130, 150);
+	draw_key(mlx, pos, "D");
+	set_vec2d(&pos, 30, 250);
+	draw_key(mlx, pos, "+");
+	set_vec2d(&pos, 130, 250);
+	draw_key(mlx, pos, "-");
+	set_vec2d(&pos, 30, 350);
+	draw_key(mlx, pos, "P-UP");
+	set_vec2d(&pos, 130, 350);
+	draw_key(mlx, pos, "P-DW");
+	set_vec2d(&pos, 80, 450);
+	draw_key(mlx, pos, "^");
+	set_vec2d(&pos, 30, 500);
+	draw_key(mlx, pos, "<-");
+	set_vec2d(&pos, 80, 500);
+	draw_key(mlx, pos, "DW");
+	set_vec2d(&pos, 130, 500);
+	draw_key(mlx, pos, "->");
+	set_vec2d(&pos, 30, 630);
+	draw_key(mlx, pos, "ESC");
 }
 
 /* Instead of using get_next_line to count line, i use a dedicated fonction */
@@ -162,7 +195,7 @@ int	main(int argc, char **argv)
 	if (!fdf)
 		return (1);
 	t_vec2d	screen_rg = {.x = 0, .y = 0};
-	fdf->data.vertices = parse_map("../maps/42.fdf", &fdf->data);
+	fdf->data.vertices = parse_map("../maps/mars.fdf", &fdf->data);
 	//draw_line(fdf, vec, vece, 0xffffffff);
 	t_org_data	best = find_best_org(fdf->data.edges, fdf->data.org);
 	fdf->data.tile_width = best.tile_width;
@@ -170,6 +203,7 @@ int	main(int argc, char **argv)
 	fdf->data.org.y = best.org.y;
 	draw_hud_bg(fdf);
 	apply_isometric(fdf);
+	draw_keys(fdf);
 	/*t_vec2d pos;
 	pos.x = 80;
 	pos.y = 100;

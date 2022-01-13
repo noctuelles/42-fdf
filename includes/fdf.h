@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/13 19:20:29 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/13 22:15:34 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define TRANSLATION_TXT "Translate map"
 # define MAP_ZOOM "Zoom (+ / -)"
 # define Z_FACTOR "Z Factor (+ / -)"
+# define ROTATE_MAP "Rotate map"
 # define OTHERS "Others"
 # define MAP_INFO "Map informations"
 # define VERTICES  "Vertices  :" 
@@ -65,6 +66,7 @@ typedef struct s_key
 typedef struct s_mlx_data
 {
 	int			**vertices;
+	t_list		*keys;
 	size_t		elems_line;
 	size_t		nbr_lines;
 	int			tile_width;
@@ -131,5 +133,11 @@ void		draw_full_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos,
 
 void		draw_hud_bg(t_mlx *mlx);
 void		draw_hud_static_text(t_mlx *mlx);
+
+static inline void	set_vec2d(t_vec2d *vec, int x, int y)
+{
+	vec->x = x;
+	vec->y = y;
+}
 
 #endif

@@ -6,18 +6,12 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 18:50:11 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/13 19:20:31 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/13 22:33:22 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
-
-extern inline void	set_vec2d(t_vec2d *vec, int x, int y)
-{
-	vec->x = x;
-	vec->y = y;
-}
 
 void	draw_hud_title(t_mlx *mlx, int y, uint32_t color, char *txt)
 {
@@ -61,6 +55,7 @@ void	draw_hud_static_text(t_mlx *mlx)
 	draw_hud_title(mlx, 85, 0xffffffff, TRANSLATION_TXT);
 	draw_hud_title(mlx, 230, 0xffffffff, MAP_ZOOM);
 	draw_hud_title(mlx, 330, 0xffffffff, Z_FACTOR);
+	draw_hud_title(mlx, 430, 0xffffffff, ROTATE_MAP);
 	draw_hud_title(mlx, 600, 0xffffffff, OTHERS);
 	draw_hud_title(mlx, 720, 0xffffffff, MAP_INFO);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 750, 0xffffffff, FILE_NAME);
@@ -68,4 +63,21 @@ void	draw_hud_static_text(t_mlx *mlx)
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 790, 0xffffffff, TILE_SIZE);
 	draw_hud_title(mlx, 970, 0xffffffff, ABOUT);
 	draw_hud_title(mlx, 990, 0xffffffff, ABOUT_2);
+
+	
+	mlx_string_put(mlx->inst, mlx->wnd, 97, 124, 0xffffffff, "W");
+	mlx_string_put(mlx->inst, mlx->wnd, 47, 174, 0xffffffff, "A");
+	mlx_string_put(mlx->inst, mlx->wnd, 97, 174, 0xffffffff, "S");
+	mlx_string_put(mlx->inst, mlx->wnd, 147, 174, 0xffffffff, "D");
+	mlx_string_put(mlx->inst, mlx->wnd, 47, 274, 0xffffffff, "+");
+	mlx_string_put(mlx->inst, mlx->wnd, 147, 274, 0xffffffff, "-");
+	mlx_string_put(mlx->inst, mlx->wnd, 39, 374, 0xffffffff, "P-UP");
+	mlx_string_put(mlx->inst, mlx->wnd, 139, 374, 0xffffffff, "P-DW");
+	mlx_string_put(mlx->inst, mlx->wnd, 97, 471, 0xffffffff, "^");
+	mlx_string_put(mlx->inst, mlx->wnd, 97, 475, 0xffffffff, "|");
+	mlx_string_put(mlx->inst, mlx->wnd, 44, 524, 0xffffffff, "<-");
+	mlx_string_put(mlx->inst, mlx->wnd, 94, 524, 0xffffffff, "DW");
+	mlx_string_put(mlx->inst, mlx->wnd, 144, 524, 0xffffffff, "->");
+	mlx_string_put(mlx->inst, mlx->wnd, 41, 654, 0xffffffff, "ESC");
+	mlx_string_put(mlx->inst, mlx->wnd, 86, 654, 0xffffffff, "Quit");
 }
