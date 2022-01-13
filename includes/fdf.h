@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/11 19:07:43 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/13 19:20:29 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,22 @@
 # define DIM_GREY 0xff696969
 # define WHITE 0xffffffff
 
-# define WIDTH 1800
+# define WIDTH 1700
 # define HEIGHT 1000
 # define X_MID 1500 / 2
 # define Y_MID 900 / 2
+
+# define HUD_TXT "Wifreframe viewer"
+# define TRANSLATION_TXT "Translate map"
+# define MAP_ZOOM "Zoom (+ / -)"
+# define Z_FACTOR "Z Factor (+ / -)"
+# define OTHERS "Others"
+# define MAP_INFO "Map informations"
+# define VERTICES  "Vertices  :" 
+# define FILE_NAME "File name :"
+# define TILE_SIZE "Tile size :"
+# define ABOUT "42 FdF project"
+# define ABOUT_2 "plouvel (plouvel@student.42.fr)"
 
 typedef struct	s_vec3d
 {
@@ -37,16 +49,27 @@ typedef struct	s_vec2d
 	int	y;
 }				t_vec2d;
 
+typedef struct s_org_data
+{
+	t_vec2d	org;
+	size_t	tile_width;
+}				t_org_data;
+
+typedef struct s_key
+{
+	int		x;
+	int		y;
+	char	*txt_key;
+}				t_key;
+
 typedef struct s_mlx_data
 {
 	int			**vertices;
 	size_t		elems_line;
 	size_t		nbr_lines;
-	size_t		max_z;
-	size_t		tile_width;
-	size_t		vertice_size[2];
-	uint16_t	width;
-	uint16_t	height;
+	int			tile_width;
+	t_vec2d		org;
+	t_vec3d		edges[4];
 }				t_mlx_data;
 
 typedef struct s_mlx
@@ -87,12 +110,26 @@ void		print_vertices(t_mlx_data data);
 /* math_utils.c */
 
 int			ft_abs(int i);
-void		apply_isometric(t_mlx_data *data);
 void		render_isometric(t_mlx *fdf);
 
 /* file_utils.c */
 
 char		*read_line(int fd, char **line);
 size_t		get_file_nbr_lines(const char *path);
+
+/* render.c */
+
+t_vec2d		transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d);
+
+/* primitives.c */
+
+void		draw_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos, uint32_t color);
+void		draw_full_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos,
+																uint32_t color);
+
+/* hud.c */
+
+void		draw_hud_bg(t_mlx *mlx);
+void		draw_hud_static_text(t_mlx *mlx);
 
 #endif

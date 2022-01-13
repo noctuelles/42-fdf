@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/12 23:51:06 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/13 19:20:32 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,34 +21,44 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-void	draw_rect(t_mlx *mlx, t_vec2d pos, t_vec2d v, uint32_t color)
+size_t	get_text_pixel_size(char *txt)
 {
-	t_vec2d	org;
+	return (strlen(txt) * 6 - 1);
+}
 
-	org = pos;
-	pos.y += v.y;
-	draw_line(mlx, org, pos, color); 
-	pos.x++;
-	pos.y--;
-	org = pos;
-	if (v.x - 2 > 0)
+t_key	draw_key(t_mlx *mlx, t_vec2d pos, char *txt_key)
+{
+	t_vec2d outside_rect;
+	t_vec2d	inner_rect;
+	t_vec2d	inner_rect_pos;
+	t_key	key;
+	size_t	txt_size;
+
+	outside_rect.x = 40;
+	outside_rect.y = 40;
+	inner_rect.x = 26;
+	inner_rect.y = 26;
+	inner_rect_pos.x = pos.x + 7;
+	inner_rect_pos.y = pos.y + 7;
+	draw_full_rect(mlx, outside_rect, pos, 0xffc0c0c0);
+	draw_full_rect(mlx, inner_rect, inner_rect_pos, 0xff000000);
+	txt_size = get_text_pixel_size(txt_key);
+	key.y = inner_rect_pos.y + 13;
+	key.x = (26 - txt_size) + (txt_size / 2); 
+	key.txt_key = txt_key;
+	return (key);
+}
+
+void	draw_key_txt(t_mlx *mlx, t_key keys[13])
+{
+	size_t	i;
+
+	i = 0;
+	while (i < 13)
 	{
-		ft_printf("not too short");
-		pos.x += v.x - 2;
-		draw_line(mlx, org, pos, color); 
-		pos.x--;
-		org = pos;
+		mlx_string_put(mlx->inst, mlx->wnd, keys[i].x, keys[i].y, 0xffffffff, keys[i].txt_key);
+		i++;
 	}
-	pos.y -= v.y - 1;
-	draw_line(mlx, org, pos, color); 
-	/*
-	org = pos;
-	if (v.x - 2 > 0)
-	{
-		pos.x -= v.x - 2;
-		draw_line(mlx, org, pos, color); 
-	}*/
-
 }
 
 /* Instead of using get_next_line to count line, i use a dedicated fonction */
@@ -78,24 +88,11 @@ void	apply_isometric(t_mlx *fdf)
 	}
 }
 
-t_vec2d	transform_isometric(size_t tile_width, t_vec3d vec3d)
-{
-	t_vec2d	proj;
-	size_t	tile_height;
-
-	tile_height = tile_width / 2;
-	proj.x = (vec3d.x - vec3d.y) * (tile_width / 2);
-	proj.y = -vec3d.z * (tile_height / 2) + (vec3d.x + vec3d.y) * (tile_height / 2);
-	proj.x += data->org.x;
-	proj.y += data->org.y;
-	return (proj);
-}
-
 int		is_edges_outside(t_vec2d edges[4])
 {
 	if (edges[0].y > HEIGHT || edges[0].y < 0)
 		return (1);
-	else if (edges[1].x <= 300)
+	else if (edges[1].x <= 200)
 		return (1);
 	else if (edges[2].y > HEIGHT)
 		return (1);
@@ -105,7 +102,7 @@ int		is_edges_outside(t_vec2d edges[4])
 		return (0);
 }
 
-size_t	compute_tile_width(t_mlx_data *data)
+size_t	compute_tile_width(t_vec3d map_edges[4], t_vec2d org)
 {
 	t_vec2d	edges[4];
 	size_t	tile_width;
@@ -113,70 +110,88 @@ size_t	compute_tile_width(t_mlx_data *data)
 	tile_width = 4;
 	while (1)
 	{
-		edges[0] = transform_isometric(tile_width, data->edges[0]);
-		edges[1] = transform_isometric(tile_width, data->edges[1]);
-		edges[2] = transform_isometric(tile_width, data->edges[2]);
-		edges[3] = transform_isometric(tile_width, data->edges[3]);
+		edges[0] = transform_isometric(tile_width, org, map_edges[0]);
+		edges[1] = transform_isometric(tile_width, org, map_edges[1]);
+		edges[2] = transform_isometric(tile_width, org, map_edges[2]);
+		edges[3] = transform_isometric(tile_width, org, map_edges[3]);
 		if (is_edges_outside(edges))
 			return (tile_width - 1);
 		tile_width++;
 	}
 	return (tile_width);
 }
-/*
-t_org_data	find_best(t_mlx_data *data)
+
+t_org_data	find_best_org(t_vec3d edges[4], t_vec2d initial_org)
 {
-	t_org_data	org_data[40];
+	t_org_data	org_data[50];
+	t_org_data	best;
 	size_t		i;
 	t_vec2d		org;
 
-	org.x = data->org.x;
-	org.y = data->org.y;
+	org.x = initial_org.x;
+	org.y = initial_org.y;
 	i = 0;
-	while (i < 40)
+	while (i < 50)
 	{
-		org_data[i].tile_width = compute_tile_width(data);
-		org_data[i].org.x = data->org.x;
-		org_data[
+		org_data[i].tile_width = compute_tile_width(edges, org);
+		org_data[i].org.x = org.x;
+		org_data[i].org.y = org.y;
+		org.x += 25;
+		i++;
 	}
-}*/
+	i = 0;
+	best.tile_width = 4;
+	while (i < 50)
+	{
+		if (org_data[i].tile_width > best.tile_width)
+		{
+			best.tile_width = org_data[i].tile_width;
+			best.org.x = org_data[i].org.x;
+			best.org.y = org_data[i].org.y;
+		}
+		i++;
+	}
+	return (best);
+}
 
 int	main(int argc, char **argv)
 {
 	t_mlx	*fdf;
 
-	fdf = new_mlx(WIDTH, HEIGHT, "fdf");
+	fdf = new_mlx(WIDTH, HEIGHT, "Wireframe (FdF) viewer");
 	if (!fdf)
 		return (1);
-	/*while (lst)
-	{
-		t_vec3d vec = *(t_vec3d *)lst->content;
-		int old_x = vec.x;
-		int old_y = vec.y;
-		int old_z = vec.z;
-		const int tile_width = 40;
-		const int tile_height = tile_width / 2;
-		vec.x = (old_x - old_y) * (tile_width / 2);
-		vec.y = -(old_z * (tile_height / 2)) + (old_x + old_y) * (tile_height / 2);
-		//vec.x = vec.x + 400;
-		//vec.y = -vec.y + 400;
-		put_pixel(fdf, vec.x + 400, vec.y + 400, 0xffff0000);
-		lst = lst->next;
-	}*/
-	t_vec2d	vec = {.x = 300, .y = 0};
-	t_vec2d	vece = {.x = WIDTH, .y = HEIGHT};
-	t_vec2d	vec0 = {.x = 300, .y = HEIGHT};
+	t_vec2d	screen_rg = {.x = 0, .y = 0};
 	fdf->data.vertices = parse_map("mars.fdf", &fdf->data);
-	draw_line(fdf, vec, vec0, 0xffffffff);
 	//draw_line(fdf, vec, vece, 0xffffffff);
-	fdf->data.tile_width = compute_tile_width(&fdf->data);
+	t_org_data	best = find_best_org(fdf->data.edges, fdf->data.org);
+	fdf->data.tile_width = best.tile_width;
+	fdf->data.org.x = best.org.x;
+	fdf->data.org.y = best.org.y;
+	draw_hud_bg(fdf);
 	apply_isometric(fdf);
-	// put_pixel(fdf, 350, 50, 0xffff0000);		: ceci est l'origine
-	/*fdf->data.vertices = parse_map("42.fdf", &fdf->data);
-	fdf->data.tile_width = 80;
-	apply_isometric(&fdf->data);
-	render_isometric(fdf);*/
+	/*t_vec2d pos;
+	pos.x = 80;
+	pos.y = 100;
+	draw_key(fdf, pos, "W");
+	pos.y += 50;
+	pos.x -= 50;
+	draw_key(fdf, pos, "A");
+	pos.y += 100;
+	draw_key(fdf, pos, "+");
+	pos.y += 100;
+	draw_key(fdf, pos, "PU");
+	pos.y -= 200;
+	pos.x += 50;
+	draw_key(fdf, pos, "S");
+	pos.x += 50;
+	draw_key(fdf, pos, "D");
+	pos.y += 100;
+	draw_key(fdf, pos, "-");
+	pos.y += 100;
+	draw_key(fdf, pos, "PD");*/
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
+	draw_hud_static_text(fdf);
 	mlx_loop(fdf->inst);
 	delete_mlx(fdf);
 	return (0);
