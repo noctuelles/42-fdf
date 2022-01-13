@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/13 19:20:32 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/13 19:31:34 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int	main(int argc, char **argv)
 	if (!fdf)
 		return (1);
 	t_vec2d	screen_rg = {.x = 0, .y = 0};
-	fdf->data.vertices = parse_map("mars.fdf", &fdf->data);
+	fdf->data.vertices = parse_map("../maps/42.fdf", &fdf->data);
 	//draw_line(fdf, vec, vece, 0xffffffff);
 	t_org_data	best = find_best_org(fdf->data.edges, fdf->data.org);
 	fdf->data.tile_width = best.tile_width;
