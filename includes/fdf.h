@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/13 22:15:34 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/14 17:13:21 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 
 # define WIDTH 1700
 # define HEIGHT 1000
-# define X_MID 1500 / 2
-# define Y_MID 900 / 2
 
 # define HUD_TXT "Wifreframe viewer"
 # define TRANSLATION_TXT "Translate map"
@@ -36,6 +34,10 @@
 # define TILE_SIZE "Tile size :"
 # define ABOUT "42 FdF project"
 # define ABOUT_2 "plouvel (plouvel@student.42.fr)"
+
+# define CLR_WHITE 0xffffffff
+# define CLR_DARK_GREY 0xff303030
+# define CLR_LIGHT_GREY 0xffc0c0c0
 
 typedef struct	s_vec3d
 {
@@ -65,7 +67,9 @@ typedef struct s_key
 
 typedef struct s_mlx_data
 {
+	const char	*file_name;
 	int			**vertices;
+	size_t		nbr_vertices;
 	t_list		*keys;
 	size_t		elems_line;
 	size_t		nbr_lines;
@@ -133,6 +137,10 @@ void		draw_full_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos,
 
 void		draw_hud_bg(t_mlx *mlx);
 void		draw_hud_static_text(t_mlx *mlx);
+
+/* keys.c */
+
+void		draw_keys(t_mlx *mlx);
 
 static inline void	set_vec2d(t_vec2d *vec, int x, int y)
 {

@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/13 22:35:00 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/14 18:13:13 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,79 +26,14 @@ size_t	get_text_pixel_size(char *txt)
 	return (strlen(txt) * 6 - 1);
 }
 
-void	draw_key(t_mlx *mlx, t_vec2d pos, char *txt_key)
-{
-	t_vec2d outside_rect;
-	t_vec2d	inner_rect;
-	t_vec2d	inner_rect_pos;
-	t_key	key;
-	size_t	txt_size;
 
-	outside_rect.x = 40;
-	outside_rect.y = 40;
-	inner_rect.x = 28;
-	inner_rect.y = 28;
-	inner_rect_pos.x = pos.x + 6;
-	inner_rect_pos.y = pos.y + 6;
-	draw_full_rect(mlx, outside_rect, pos, 0xffc0c0c0);
-	draw_full_rect(mlx, inner_rect, inner_rect_pos, 0xff000000);
-
-	txt_size = get_text_pixel_size(txt_key);
-	key.y = inner_rect_pos.y + 18;
-	key.x = ((14 + pos.x + 6) - txt_size) + (txt_size / 2);
-	printf("Key \"%s\" is at x %d and y %d\n", txt_key, key.x, key.y); 
-
-	draw_line(mlx, pos, inner_rect_pos, 0xff303030);
-	set_vec2d(&pos, pos.x + 39, pos.y);
-	set_vec2d(&inner_rect_pos, inner_rect_pos.x + 27, inner_rect_pos.y);
-	draw_line(mlx, pos, inner_rect_pos, 0xff303030);
-	set_vec2d(&pos, pos.x - 39, pos.y + 39);
-	set_vec2d(&inner_rect_pos, inner_rect_pos.x - 27, inner_rect_pos.y + 27);
-	draw_line(mlx, pos, inner_rect_pos, 0xff303030);
-	set_vec2d(&pos, pos.x + 39, pos.y);
-	set_vec2d(&inner_rect_pos, inner_rect_pos.x + 27, inner_rect_pos.y);
-	draw_line(mlx, pos, inner_rect_pos, 0xff303030);
-
-	return (key);
-}
-
-void	draw_keys(t_mlx *mlx)
-{
-	t_vec2d	pos;
-
-	set_vec2d(&pos, 80, 100);
-	draw_key(mlx, pos, "W");
-	set_vec2d(&pos, 30, 150);
-	draw_key(mlx, pos, "A");
-	set_vec2d(&pos, 80, 150);
-	draw_key(mlx, pos, "S");
-	set_vec2d(&pos, 130, 150);
-	draw_key(mlx, pos, "D");
-	set_vec2d(&pos, 30, 250);
-	draw_key(mlx, pos, "+");
-	set_vec2d(&pos, 130, 250);
-	draw_key(mlx, pos, "-");
-	set_vec2d(&pos, 30, 350);
-	draw_key(mlx, pos, "P-UP");
-	set_vec2d(&pos, 130, 350);
-	draw_key(mlx, pos, "P-DW");
-	set_vec2d(&pos, 80, 450);
-	draw_key(mlx, pos, "^");
-	set_vec2d(&pos, 30, 500);
-	draw_key(mlx, pos, "<-");
-	set_vec2d(&pos, 80, 500);
-	draw_key(mlx, pos, "DW");
-	set_vec2d(&pos, 130, 500);
-	draw_key(mlx, pos, "->");
-	set_vec2d(&pos, 30, 630);
-	draw_key(mlx, pos, "ESC");
-}
 
 /* Instead of using get_next_line to count line, i use a dedicated fonction */
 
 void	apply_isometric(t_mlx *fdf)
 {
-	t_vec3d	*vec3d;
+	t_vec3d	vec3d;
+	t_vec2d	vec2d[3];
 	size_t	tile_height;
 	int		x;
 	int		y;
@@ -111,10 +46,28 @@ void	apply_isometric(t_mlx *fdf)
 		x = 0;
 		while (x < fdf->data.elems_line)
 		{
-			proj.x = (x - y) * (fdf->data.tile_width / 2);
-			proj.y = (-fdf->data.vertices[y][x] * (tile_height / 2)) +
-											(x + y) * (tile_height / 2);
-			put_pixel(fdf, fdf->data.org.x + proj.x, fdf->data.org.y + proj.y, 0xffff0000);
+			vec3d.x = x;
+			vec3d.y = y;
+			vec3d.z = fdf->data.vertices[y][x];
+			vec2d[0] = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d);
+			//put_pixel(fdf, vec2d[0].x, vec2d[0].y, 0xffffffff);
+			if (x < fdf->data.elems_line - 1)
+			{
+				vec3d.x = x + 1;
+				vec3d.y = y;
+				vec3d.z = fdf->data.vertices[y][x + 1];
+				vec2d[1] = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d);
+				//put_pixel(fdf, vec2d[1].x, vec2d[1].y, 0xffff0000);
+				draw_line(fdf, vec2d[0], vec2d[1], 0xffffffff);
+			}
+			if (y > 0)
+			{
+				vec3d.x = x;
+				vec3d.y = y - 1;
+				vec3d.z = fdf->data.vertices[y - 1][x];
+				vec2d[2] = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d);
+				draw_line(fdf, vec2d[0], vec2d[2], 0xffffffff);
+			}
 			x++;
 		}
 		y++;
@@ -135,56 +88,52 @@ int		is_edges_outside(t_vec2d edges[4])
 		return (0);
 }
 
-size_t	compute_tile_width(t_vec3d map_edges[4], t_vec2d org)
+/*
+ *	get_center_iso() return the center of the isometric map, according to the
+ *	render origin (so called org_hud)
+ *
+ */
+
+t_vec2d	get_center_iso(t_mlx_data *data, size_t tile_width, t_vec2d org_hud)
+{
+	t_vec2d	center;
+	t_vec3d	vec;
+
+	vec.x = roundf(data->elems_line / 2);
+	vec.y = roundf(data->nbr_lines / 2);
+	vec.z = 0;
+	center = transform_isometric(tile_width, org_hud, vec);
+	return (center);
+}
+
+size_t	compute_tile_width(t_mlx_data *data, t_vec3d map_edges[4], t_vec2d org_hud)
 {
 	t_vec2d	edges[4];
+	t_vec2d	old_org;
+	t_vec2d	iso_center;
 	size_t	tile_width;
 
 	tile_width = 4;
 	while (1)
 	{
-		edges[0] = transform_isometric(tile_width, org, map_edges[0]);
-		edges[1] = transform_isometric(tile_width, org, map_edges[1]);
-		edges[2] = transform_isometric(tile_width, org, map_edges[2]);
-		edges[3] = transform_isometric(tile_width, org, map_edges[3]);
+		iso_center = get_center_iso(data, tile_width, org_hud); 
+		data->org.x = 200 + (950 - iso_center.x);
+		data->org.y = 500 - iso_center.y;
+		edges[0] = transform_isometric(tile_width, data->org, map_edges[0]);
+		edges[1] = transform_isometric(tile_width, data->org, map_edges[1]);
+		edges[2] = transform_isometric(tile_width, data->org, map_edges[2]);
+		edges[3] = transform_isometric(tile_width, data->org, map_edges[3]);
 		if (is_edges_outside(edges))
+		{
+			data->org.x = old_org.x;
+			data->org.y = old_org.y;
 			return (tile_width - 1);
+		}
+		old_org.x = data->org.x;
+		old_org.y = data->org.y;
 		tile_width++;
 	}
 	return (tile_width);
-}
-
-t_org_data	find_best_org(t_vec3d edges[4], t_vec2d initial_org)
-{
-	t_org_data	org_data[50];
-	t_org_data	best;
-	size_t		i;
-	t_vec2d		org;
-
-	org.x = initial_org.x;
-	org.y = initial_org.y;
-	i = 0;
-	while (i < 50)
-	{
-		org_data[i].tile_width = compute_tile_width(edges, org);
-		org_data[i].org.x = org.x;
-		org_data[i].org.y = org.y;
-		org.x += 25;
-		i++;
-	}
-	i = 0;
-	best.tile_width = 4;
-	while (i < 50)
-	{
-		if (org_data[i].tile_width > best.tile_width)
-		{
-			best.tile_width = org_data[i].tile_width;
-			best.org.x = org_data[i].org.x;
-			best.org.y = org_data[i].org.y;
-		}
-		i++;
-	}
-	return (best);
 }
 
 int	main(int argc, char **argv)
@@ -195,35 +144,19 @@ int	main(int argc, char **argv)
 	if (!fdf)
 		return (1);
 	t_vec2d	screen_rg = {.x = 0, .y = 0};
-	fdf->data.vertices = parse_map("../maps/mars.fdf", &fdf->data);
+	fdf->data.vertices = parse_map("../maps/pyramide.fdf", &fdf->data);
 	//draw_line(fdf, vec, vece, 0xffffffff);
-	t_org_data	best = find_best_org(fdf->data.edges, fdf->data.org);
-	fdf->data.tile_width = best.tile_width;
-	fdf->data.org.x = best.org.x;
-	fdf->data.org.y = best.org.y;
 	draw_hud_bg(fdf);
-	apply_isometric(fdf);
 	draw_keys(fdf);
-	/*t_vec2d pos;
-	pos.x = 80;
-	pos.y = 100;
-	draw_key(fdf, pos, "W");
-	pos.y += 50;
-	pos.x -= 50;
-	draw_key(fdf, pos, "A");
-	pos.y += 100;
-	draw_key(fdf, pos, "+");
-	pos.y += 100;
-	draw_key(fdf, pos, "PU");
-	pos.y -= 200;
-	pos.x += 50;
-	draw_key(fdf, pos, "S");
-	pos.x += 50;
-	draw_key(fdf, pos, "D");
-	pos.y += 100;
-	draw_key(fdf, pos, "-");
-	pos.y += 100;
-	draw_key(fdf, pos, "PD");*/
+	t_vec2d org_hud;
+	org_hud.x = 200;
+	org_hud.y = 0;
+	fdf->data.tile_width = compute_tile_width(&fdf->data, fdf->data.edges, org_hud);
+	printf("%ld\n", fdf->data.tile_width);
+	apply_isometric(fdf);
+	t_vec2d v1 = {.x = 500, .y = 500};
+	t_vec2d v2 = {.x = 503, .y = 501};
+	//draw_line(fdf, v1, v2, 0xffffffff);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	draw_hud_static_text(fdf);
 	mlx_loop(fdf->inst);

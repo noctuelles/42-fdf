@@ -6,12 +6,14 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 18:50:11 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/13 22:33:22 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/14 16:33:07 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
+
+/* draw_hud_title: draw text centered compared to the hud. */
 
 void	draw_hud_title(t_mlx *mlx, int y, uint32_t color, char *txt)
 {
@@ -24,6 +26,7 @@ void	draw_hud_title(t_mlx *mlx, int y, uint32_t color, char *txt)
 	mlx_string_put(mlx->inst, mlx->wnd, x, y, color, txt);
 }
 
+/* draw_hud_bg: draw the static colors, the background. */
 
 void	draw_hud_bg(t_mlx *mlx)
 {
@@ -35,49 +38,58 @@ void	draw_hud_bg(t_mlx *mlx)
 	draw_full_rect(mlx, rect, pos, 0xff303030);
 	set_vec2d(&pos, 2, 0);
 	set_vec2d(&rect, rect.x - 4, 2);
-	draw_full_rect(mlx, rect, pos, 0xffffffff);
+	draw_full_rect(mlx, rect, pos, CLR_WHITE);
+	set_vec2d(&pos, pos.x, 565);
+	draw_full_rect(mlx, rect, pos, CLR_WHITE);
 	set_vec2d(&pos, pos.x, 700);
-	draw_full_rect(mlx, rect, pos, 0xffffffff);
+	draw_full_rect(mlx, rect, pos, CLR_WHITE);
 	set_vec2d(&pos, pos.x, 950);
-	draw_full_rect(mlx, rect, pos, 0xffffffff);
+	draw_full_rect(mlx, rect, pos, CLR_WHITE);
 	set_vec2d(&pos, pos.x, 998);
-	draw_full_rect(mlx, rect, pos, 0xffffffff);
+	draw_full_rect(mlx, rect, pos, CLR_WHITE);
 	set_vec2d(&rect, 2, HEIGHT);
 	set_vec2d(&pos, 0, 0);
-	draw_full_rect(mlx, rect, pos, 0xffffffff);
+	draw_full_rect(mlx, rect, pos, CLR_WHITE);
 	set_vec2d(&pos, 200 - 2, pos.y);
-	draw_full_rect(mlx, rect, pos, 0xffffffff);
+	draw_full_rect(mlx, rect, pos, CLR_WHITE);
+}
+
+/* draw_key_static_text: draw all the static text of the hud. */
+
+static void	draw_key_static_text(t_mlx *mlx)
+{
+	mlx_string_put(mlx->inst, mlx->wnd, 97, 124, CLR_WHITE, "W");
+	mlx_string_put(mlx->inst, mlx->wnd, 47, 174, CLR_WHITE, "A");
+	mlx_string_put(mlx->inst, mlx->wnd, 97, 174, CLR_WHITE, "S");
+	mlx_string_put(mlx->inst, mlx->wnd, 147, 174, CLR_WHITE, "D");
+	mlx_string_put(mlx->inst, mlx->wnd, 47, 274, CLR_WHITE, "+");
+	mlx_string_put(mlx->inst, mlx->wnd, 147, 274, CLR_WHITE, "-");
+	mlx_string_put(mlx->inst, mlx->wnd, 39, 374, CLR_WHITE, "P-UP");
+	mlx_string_put(mlx->inst, mlx->wnd, 139, 374, CLR_WHITE, "P-DW");
+	mlx_string_put(mlx->inst, mlx->wnd, 97, 471, CLR_WHITE, "^");
+	mlx_string_put(mlx->inst, mlx->wnd, 97, 475, CLR_WHITE, "|");
+	mlx_string_put(mlx->inst, mlx->wnd, 44, 524, CLR_WHITE, "<-");
+	mlx_string_put(mlx->inst, mlx->wnd, 94, 524, CLR_WHITE, "DW");
+	mlx_string_put(mlx->inst, mlx->wnd, 144, 524, CLR_WHITE, "->");
+	mlx_string_put(mlx->inst, mlx->wnd, 41, 654, CLR_WHITE, "ESC");
+	mlx_string_put(mlx->inst, mlx->wnd, 86, 654, CLR_WHITE, "Quit");
 }
 
 void	draw_hud_static_text(t_mlx *mlx)
 {
-	draw_hud_title(mlx, 20, 0xffffffff, HUD_TXT);
-	draw_hud_title(mlx, 85, 0xffffffff, TRANSLATION_TXT);
-	draw_hud_title(mlx, 230, 0xffffffff, MAP_ZOOM);
-	draw_hud_title(mlx, 330, 0xffffffff, Z_FACTOR);
-	draw_hud_title(mlx, 430, 0xffffffff, ROTATE_MAP);
-	draw_hud_title(mlx, 600, 0xffffffff, OTHERS);
-	draw_hud_title(mlx, 720, 0xffffffff, MAP_INFO);
-	mlx_string_put(mlx->inst, mlx->wnd, 5, 750, 0xffffffff, FILE_NAME);
-	mlx_string_put(mlx->inst, mlx->wnd, 5, 770, 0xffffffff, VERTICES);
-	mlx_string_put(mlx->inst, mlx->wnd, 5, 790, 0xffffffff, TILE_SIZE);
-	draw_hud_title(mlx, 970, 0xffffffff, ABOUT);
-	draw_hud_title(mlx, 990, 0xffffffff, ABOUT_2);
-
-	
-	mlx_string_put(mlx->inst, mlx->wnd, 97, 124, 0xffffffff, "W");
-	mlx_string_put(mlx->inst, mlx->wnd, 47, 174, 0xffffffff, "A");
-	mlx_string_put(mlx->inst, mlx->wnd, 97, 174, 0xffffffff, "S");
-	mlx_string_put(mlx->inst, mlx->wnd, 147, 174, 0xffffffff, "D");
-	mlx_string_put(mlx->inst, mlx->wnd, 47, 274, 0xffffffff, "+");
-	mlx_string_put(mlx->inst, mlx->wnd, 147, 274, 0xffffffff, "-");
-	mlx_string_put(mlx->inst, mlx->wnd, 39, 374, 0xffffffff, "P-UP");
-	mlx_string_put(mlx->inst, mlx->wnd, 139, 374, 0xffffffff, "P-DW");
-	mlx_string_put(mlx->inst, mlx->wnd, 97, 471, 0xffffffff, "^");
-	mlx_string_put(mlx->inst, mlx->wnd, 97, 475, 0xffffffff, "|");
-	mlx_string_put(mlx->inst, mlx->wnd, 44, 524, 0xffffffff, "<-");
-	mlx_string_put(mlx->inst, mlx->wnd, 94, 524, 0xffffffff, "DW");
-	mlx_string_put(mlx->inst, mlx->wnd, 144, 524, 0xffffffff, "->");
-	mlx_string_put(mlx->inst, mlx->wnd, 41, 654, 0xffffffff, "ESC");
-	mlx_string_put(mlx->inst, mlx->wnd, 86, 654, 0xffffffff, "Quit");
+	char *vertices;
+	draw_hud_title(mlx, 20, CLR_WHITE, HUD_TXT);
+	draw_hud_title(mlx, 85, CLR_WHITE, TRANSLATION_TXT);
+	draw_hud_title(mlx, 230, CLR_WHITE, MAP_ZOOM);
+	draw_hud_title(mlx, 330, CLR_WHITE, Z_FACTOR);
+	draw_hud_title(mlx, 430, CLR_WHITE, ROTATE_MAP);
+	draw_hud_title(mlx, 600, CLR_WHITE, OTHERS);
+	draw_hud_title(mlx, 720, CLR_WHITE, MAP_INFO);
+	mlx_string_put(mlx->inst, mlx->wnd, 5, 750, CLR_WHITE, FILE_NAME);
+	mlx_string_put(mlx->inst, mlx->wnd, 80, 750, CLR_WHITE, mlx->data.file_name);
+	mlx_string_put(mlx->inst, mlx->wnd, 5, 770, CLR_WHITE, VERTICES);
+	mlx_string_put(mlx->inst, mlx->wnd, 5, 790, CLR_WHITE, TILE_SIZE);
+	draw_hud_title(mlx, 970, CLR_WHITE, ABOUT);
+	draw_hud_title(mlx, 990, CLR_WHITE, ABOUT_2);
+	draw_key_static_text(mlx);
 }

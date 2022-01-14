@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:14:14 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/12 15:20:38 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/14 17:13:21 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	**parse_map(const char *path, t_mlx_data *data)
 		free_vertices(data->vertices);
 		return (NULL);
 	}
+	data->file_name = path;
+	data->nbr_vertices = data->elems_line * data->nbr_lines;
 	close(fd);
 	return (data->vertices);
 }
