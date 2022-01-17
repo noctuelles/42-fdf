@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/14 17:13:21 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/17 20:21:01 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@
 # define VERTICES  "Vertices  :" 
 # define FILE_NAME "File name :"
 # define TILE_SIZE "Tile size :"
+# define ORG_X     "Org. (x)  :"
+# define ORG_Y     "Org. (y)  :"
+# define Z_OFFSET  "Z offset  :"
+# define Z_HEIGHT  "Z addon   :"
 # define ABOUT "42 FdF project"
 # define ABOUT_2 "plouvel (plouvel@student.42.fr)"
 
@@ -70,12 +74,13 @@ typedef struct s_mlx_data
 	const char	*file_name;
 	int			**vertices;
 	size_t		nbr_vertices;
-	t_list		*keys;
 	size_t		elems_line;
 	size_t		nbr_lines;
 	int			tile_width;
+	int			z_scaling;
 	t_vec2d		org;
 	t_vec3d		edges[4];
+	int			drawing;
 }				t_mlx_data;
 
 typedef struct s_mlx

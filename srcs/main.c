@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/14 18:13:13 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/17 22:28:02 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	apply_isometric(t_mlx *fdf)
 	t_vec2d	proj;
 
 	tile_height = fdf->data.tile_width / 2;
+	fdf->data.drawing = 1;
 	y = 0;
 	while (y < fdf->data.nbr_lines)
 	{
@@ -49,22 +50,30 @@ void	apply_isometric(t_mlx *fdf)
 			vec3d.x = x;
 			vec3d.y = y;
 			vec3d.z = fdf->data.vertices[y][x];
+			if (vec3d.z != 0)
+				vec3d.z += fdf->data.z_scaling;
 			vec2d[0] = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d);
+			//printf("Point no %d is at X : %d and Y : %d\n", x, vec2d[0].x, vec2d[0].y);
 			//put_pixel(fdf, vec2d[0].x, vec2d[0].y, 0xffffffff);
 			if (x < fdf->data.elems_line - 1)
 			{
 				vec3d.x = x + 1;
 				vec3d.y = y;
 				vec3d.z = fdf->data.vertices[y][x + 1];
+				if (vec3d.z != 0)
+					vec3d.z += fdf->data.z_scaling;
 				vec2d[1] = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d);
 				//put_pixel(fdf, vec2d[1].x, vec2d[1].y, 0xffff0000);
-				draw_line(fdf, vec2d[0], vec2d[1], 0xffffffff);
+				draw_line(fdf, vec2d[1], vec2d[0], 0xffffffff);
 			}
+		
 			if (y > 0)
 			{
 				vec3d.x = x;
 				vec3d.y = y - 1;
 				vec3d.z = fdf->data.vertices[y - 1][x];
+				if (vec3d.z != 0)
+					vec3d.z += fdf->data.z_scaling;
 				vec2d[2] = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d);
 				draw_line(fdf, vec2d[0], vec2d[2], 0xffffffff);
 			}
@@ -106,6 +115,20 @@ t_vec2d	get_center_iso(t_mlx_data *data, size_t tile_width, t_vec2d org_hud)
 	return (center);
 }
 
+int	is_edges_negative(t_vec2d map_edges[4])
+{
+	size_t	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if (map_edges[i].x < 0 || map_edges[i].y < 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 size_t	compute_tile_width(t_mlx_data *data, t_vec3d map_edges[4], t_vec2d org_hud)
 {
 	t_vec2d	edges[4];
@@ -123,6 +146,8 @@ size_t	compute_tile_width(t_mlx_data *data, t_vec3d map_edges[4], t_vec2d org_hu
 		edges[1] = transform_isometric(tile_width, data->org, map_edges[1]);
 		edges[2] = transform_isometric(tile_width, data->org, map_edges[2]);
 		edges[3] = transform_isometric(tile_width, data->org, map_edges[3]);
+		if (is_edges_negative(edges))
+			return (tile_width);
 		if (is_edges_outside(edges))
 		{
 			data->org.x = old_org.x;
@@ -136,6 +161,47 @@ size_t	compute_tile_width(t_mlx_data *data, t_vec3d map_edges[4], t_vec2d org_hu
 	return (tile_width);
 }
 
+void wipe(t_mlx *fdf)
+{
+	int	x = 200;
+	int y = 0;
+
+	while (y < HEIGHT)
+	{
+		x = 200;
+		while (x < WIDTH)
+		{
+			put_pixel(fdf, x, y, 0xff000000);
+			x++;
+		}
+		y++;
+	}
+}
+
+int	zoom(int keycode, t_mlx *fdf)
+{
+	if (keycode == 0x3d)
+		fdf->data.tile_width += 4;
+	else if (keycode == 0x2d)
+		fdf->data.tile_width -= 4;
+	else if (keycode == 0xff52)
+		fdf->data.org.y -= 4;
+	else if (keycode == 0xff54)
+		fdf->data.org.y += 4;
+	else if (keycode == 0xff51)
+		fdf->data.org.x -= 4;
+	else if (keycode == 0xff53)
+		fdf->data.org.x += 4;
+	else if (keycode == 0xff55)
+		fdf->data.z_scaling--;
+	else if (keycode == 0xff56)
+		fdf->data.z_scaling++;
+	wipe(fdf);
+	apply_isometric(fdf);
+	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
+	draw_hud_static_text(fdf);
+}
+
 int	main(int argc, char **argv)
 {
 	t_mlx	*fdf;
@@ -144,7 +210,7 @@ int	main(int argc, char **argv)
 	if (!fdf)
 		return (1);
 	t_vec2d	screen_rg = {.x = 0, .y = 0};
-	fdf->data.vertices = parse_map("../maps/pyramide.fdf", &fdf->data);
+	fdf->data.vertices = parse_map(argv[1], &fdf->data);
 	//draw_line(fdf, vec, vece, 0xffffffff);
 	draw_hud_bg(fdf);
 	draw_keys(fdf);
@@ -152,13 +218,11 @@ int	main(int argc, char **argv)
 	org_hud.x = 200;
 	org_hud.y = 0;
 	fdf->data.tile_width = compute_tile_width(&fdf->data, fdf->data.edges, org_hud);
-	printf("%ld\n", fdf->data.tile_width);
+	//printf("%ld\n", fdf->data.tile_width);
 	apply_isometric(fdf);
-	t_vec2d v1 = {.x = 500, .y = 500};
-	t_vec2d v2 = {.x = 503, .y = 501};
-	//draw_line(fdf, v1, v2, 0xffffffff);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	draw_hud_static_text(fdf);
+	mlx_hook(fdf->wnd, 2, 1L<<0, zoom, fdf);
 	mlx_loop(fdf->inst);
 	delete_mlx(fdf);
 	return (0);
