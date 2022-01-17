@@ -6,12 +6,13 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 18:50:11 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/14 16:33:07 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/17 20:00:24 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
+#include "libft.h"
 
 /* draw_hud_title: draw text centered compared to the hud. */
 
@@ -75,6 +76,17 @@ static void	draw_key_static_text(t_mlx *mlx)
 	mlx_string_put(mlx->inst, mlx->wnd, 86, 654, CLR_WHITE, "Quit");
 }
 
+void	draw_hud_integer(t_mlx *fdf, int x, int y, int i)
+{
+	char	*str;
+
+	str = ft_itoa(i);
+	if (!str)
+		return ;
+	mlx_string_put(fdf->inst, fdf->wnd, x, y, CLR_WHITE, str);
+	free(str);
+}
+
 void	draw_hud_static_text(t_mlx *mlx)
 {
 	char *vertices;
@@ -88,8 +100,16 @@ void	draw_hud_static_text(t_mlx *mlx)
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 750, CLR_WHITE, FILE_NAME);
 	mlx_string_put(mlx->inst, mlx->wnd, 80, 750, CLR_WHITE, mlx->data.file_name);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 770, CLR_WHITE, VERTICES);
+	draw_hud_integer(mlx, 80, 770, mlx->data.nbr_vertices);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 790, CLR_WHITE, TILE_SIZE);
+	draw_hud_integer(mlx, 80, 790, mlx->data.tile_width);
+	mlx_string_put(mlx->inst, mlx->wnd, 5, 810, CLR_WHITE, ORG_X);
+	draw_hud_integer(mlx, 80, 810, mlx->data.org.x);
+	mlx_string_put(mlx->inst, mlx->wnd, 5, 830, CLR_WHITE, ORG_Y);
+	draw_hud_integer(mlx, 80, 830, mlx->data.org.y);
+	mlx_string_put(mlx->inst, mlx->wnd, 5, 850, CLR_WHITE, Z_OFFSET);
+	draw_hud_integer(mlx, 80, 850, mlx->data.z_scaling);
 	draw_hud_title(mlx, 970, CLR_WHITE, ABOUT);
-	draw_hud_title(mlx, 990, CLR_WHITE, ABOUT_2);
+	draw_hud_title(mlx, 990, 0xffffff00, ABOUT_2);
 	draw_key_static_text(mlx);
 }

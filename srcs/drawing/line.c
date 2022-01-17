@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 18:25:31 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/14 17:53:48 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/17 12:50:55 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	draw_line_low(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 		put_pixel(mlx, p1.x++, p1.y, color);
 		if (d < 0)
 			d = d + 2 * delta.y;
-		else if (d > 0)
+		else
 		{
 			p1.y += sign;
 			d = d + 2 * (delta.y - delta.x);
@@ -98,7 +98,7 @@ static void	draw_line_high(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 		put_pixel(mlx, p1.x, p1.y++, color);
 		if (d < 0)
 			d = d + 2 * delta.x;
-		else if (d > 0)
+		else
 		{
 			p1.x += sign;
 			d = d + (2 * (delta.x - delta.y));
