@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/19 14:10:57 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/19 23:05:46 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,44 +15,46 @@
 static void	key_handler_do(int keycode, t_mlx *fdf)
 {
 	if (keycode == K_PLUS)
-		fdf->data.tile_width += 4;
+		fdf->data.tile_width += 1;
 	else if (keycode == K_MINUS)
-		fdf->data.tile_width -= 4;
+		fdf->data.tile_width -= 1;
 	else if (keycode == K_W)
-		fdf->data.org.y -= 4;
+		fdf->data.org.y -= 8;
 	else if (keycode == K_S)
-		fdf->data.org.y += 4;
+		fdf->data.org.y += 8;
 	else if (keycode == K_A)
-		fdf->data.org.x -= 4;
+		fdf->data.org.x -= 8;
 	else if (keycode == K_D)
-		fdf->data.org.x += 4;
+		fdf->data.org.x += 8;
 	else if (keycode == K_PGUP)
 	{
-		fdf->data.z_scaling--;
+		fdf->data.z_scaling -= 0.5;
 	}
 	else if (keycode == K_PGDW)
-		fdf->data.z_scaling++;
+		fdf->data.z_scaling += 0.5;
 	else if (keycode == K_ESC)
 	{
 		delete_mlx(fdf);
 		exit(0);
 	}
 	else if (keycode == K_RIGHT)
-		fdf->data.angle += 0.05;
+		fdf->data.alpha += 0.05;
 	else if (keycode == K_LEFT)
-		fdf->data.angle -= 0.05;
+		fdf->data.alpha -= 0.05;
 	else if (keycode == K_UP)
-		fdf->data.angle2 += 0.01;
+		fdf->data.beta += 0.05;
 	else if (keycode == K_DOWN)
-		fdf->data.angle2 -= 0.01;
+		fdf->data.beta -= 0.05;
+	else if (keycode == K_ALTGR)
+		fdf->data.gamma += 0.05;
+	else if (keycode == K_CRTL)
+		fdf->data.gamma -= 0.05;
 }
 
 int	key_handler(int keycode, t_mlx *fdf)
 {
 	key_handler_do(keycode, fdf);
 	wipe_render_scene(fdf);
-	if (fdf->data.tile_width < 4)
-		fdf->data.tile_width = 4;
 	apply_isometric(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	draw_hud_static_text(fdf);

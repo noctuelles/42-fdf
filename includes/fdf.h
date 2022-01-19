@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/19 12:35:26 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/19 22:56:26 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@
 # define K_PGUP 0xff55
 # define K_PGDW 0xff56
 
+# define K_ALTGR 0xfe03
+# define K_CRTL 0xffe4
+
 # define FATAL "{1;31}[FATAL]{0} : "
 # define WARNING "{1;93}[WARNING]{0} : "
 # define ERR_MALLOC 1
@@ -112,12 +115,14 @@ typedef struct s_mlx_data
 	size_t		elems_line;
 	size_t		nbr_lines;
 	int			tile_width;
-	int			z_scaling;
+	float		z_scaling;
 	t_vec2d		org;
 	t_vec3d		edges[4];
-	double		angle;
-	double		angle2;
-	double		angle3;
+	double		alpha;
+	double		beta;
+	double		gamma;
+	double		cos_theta;
+	double		sin_theta;
 }				t_mlx_data;
 
 typedef struct s_mlx

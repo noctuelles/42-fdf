@@ -6,52 +6,39 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:05:35 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/19 14:15:51 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/19 23:17:42 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
 
-void	rotate_z(t_vec3d *point, double angle)
+void	rotate(t_vec3d *vec, double alpha, double beta, double gamma)
 {
-	int	x;
-	int	y;
+	double	cos_cptd;
+	double	sin_cptd;
+	t_vec3d	old;
 
-	x = point->x;
-	y = point->y;
-	point->x = x * cos(angle) - y * sin(angle);
-	point->y = y * cos(angle) + x * sin(angle);
-}
-
-void	rotate_y(t_vec3d *point, double angle)
-{
-	int	x;
-	int	z;
-
-	z = point->z;
-	x = point->x;
-	point->x = x * cos(angle) - z * sin(angle);
-	point->z = z * cos(angle) + x * sin(angle);
-}
-
-void	rotate_x(t_vec3d *point, double angle)
-{
-	int	y;
-	int	z;
-	z = point->z;
-	y = point->y;
-	point->y = y * cos(angle) - z * sin(angle);
-	point->z = z * cos(angle) + y * sin(angle);
+	old = *vec;
+	vec->y = old.y * cos(alpha) + old.z * sin(alpha);
+	vec->z = -old.y * sin(alpha) + old.z * cos(alpha);
+	vec->x = old.x * cos(beta) + vec->z * sin(beta);
+	vec->z = -old.x * sin(beta) + vec->z * cos(beta);
+	old = *vec;
+	vec->x = vec->x * cos(gamma) - vec->y * sin(gamma);
+	vec->y = vec->x * sin(gamma) + vec->y * cos(gamma);
 }
 
 t_vec2d	transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d, t_mlx_data *data)
 {
 	t_vec2d	proj;
 
-	rotate_z(&vec3d, data->angle2);
-	proj.x = (vec3d.x - vec3d.y) * (tile_width / 2);
-	proj.y = (-vec3d.z * data->z_scaling) + (vec3d.x + vec3d.y) * (tile_width / 4);
+	vec3d.x *= tile_width;
+	vec3d.y *= tile_width;
+	vec3d.z *= tile_width / data->z_scaling;
+	rotate(&vec3d, data->alpha, data->beta, data->gamma);
+	proj.x = (vec3d.x - vec3d.y) * data->cos_theta; 
+	proj.y = -vec3d.z + (vec3d.x + vec3d.y) * data->sin_theta;
 	proj.x += org.x;
 	proj.y += org.y;
 	return (proj);

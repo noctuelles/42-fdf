@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/19 14:05:27 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/19 19:50:13 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,10 @@ int	main(int argc, char **argv)
 	t_vec2d org_hud;
 	org_hud.x = 200;
 	org_hud.y = 0;
-	fdf->data.tile_width = compute_tile_width(&fdf->data, fdf->data.edges, org_hud);
+	//fdf->data.tile_width = compute_tile_width(&fdf->data, fdf->data.edges, org_hud);
+	fdf->data.tile_width = 1;
+	fdf->data.org.x = 500;
+	fdf->data.org.y = 500;
 	//printf("%ld\n", fdf->data.tile_width);
 	apply_isometric(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
