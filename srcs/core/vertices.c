@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 14:49:33 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/12 19:18:06 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/18 15:35:20 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	**alloc_vertices(size_t nbr_lines)
 	int		**vertices;
 	size_t	i;
 
-	vertices = (int **) malloc(nbr_lines * sizeof(int *));
+	vertices = (int **) malloc((nbr_lines + 1) * sizeof(int *));
 	if (!vertices)
 		return (NULL);
 	i = 0;
-	while (i < nbr_lines)
+	while (i < (nbr_lines + 1))
 		vertices[i++] = NULL;
 	return (vertices);
 }
@@ -96,9 +96,7 @@ int	**fill_vertices(int fd, t_mlx_data *data)
 		if (!values)
 			return (NULL);
 		if (data->elems_line == 0)
-		{
 			data->elems_line = get_elems_per_line(values);
-		}
 		data->vertices = fill_vertices_from_values(data, values, y);
 		if (!data->vertices)
 			return (NULL);

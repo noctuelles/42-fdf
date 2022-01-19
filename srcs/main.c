@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/17 22:28:02 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/19 10:53:25 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,66 +21,13 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-size_t	get_text_pixel_size(char *txt)
+void	rotate_x(int *y, int *z, double alpha)
 {
-	return (strlen(txt) * 6 - 1);
-}
+	int	previous_y;
 
-
-
-/* Instead of using get_next_line to count line, i use a dedicated fonction */
-
-void	apply_isometric(t_mlx *fdf)
-{
-	t_vec3d	vec3d;
-	t_vec2d	vec2d[3];
-	size_t	tile_height;
-	int		x;
-	int		y;
-	t_vec2d	proj;
-
-	tile_height = fdf->data.tile_width / 2;
-	fdf->data.drawing = 1;
-	y = 0;
-	while (y < fdf->data.nbr_lines)
-	{
-		x = 0;
-		while (x < fdf->data.elems_line)
-		{
-			vec3d.x = x;
-			vec3d.y = y;
-			vec3d.z = fdf->data.vertices[y][x];
-			if (vec3d.z != 0)
-				vec3d.z += fdf->data.z_scaling;
-			vec2d[0] = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d);
-			//printf("Point no %d is at X : %d and Y : %d\n", x, vec2d[0].x, vec2d[0].y);
-			//put_pixel(fdf, vec2d[0].x, vec2d[0].y, 0xffffffff);
-			if (x < fdf->data.elems_line - 1)
-			{
-				vec3d.x = x + 1;
-				vec3d.y = y;
-				vec3d.z = fdf->data.vertices[y][x + 1];
-				if (vec3d.z != 0)
-					vec3d.z += fdf->data.z_scaling;
-				vec2d[1] = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d);
-				//put_pixel(fdf, vec2d[1].x, vec2d[1].y, 0xffff0000);
-				draw_line(fdf, vec2d[1], vec2d[0], 0xffffffff);
-			}
-		
-			if (y > 0)
-			{
-				vec3d.x = x;
-				vec3d.y = y - 1;
-				vec3d.z = fdf->data.vertices[y - 1][x];
-				if (vec3d.z != 0)
-					vec3d.z += fdf->data.z_scaling;
-				vec2d[2] = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d);
-				draw_line(fdf, vec2d[0], vec2d[2], 0xffffffff);
-			}
-			x++;
-		}
-		y++;
-	}
+	previous_y = *y;
+	*y = previous_y * cos(alpha) + *z * sin(alpha);
+	*z = -previous_y * sin(alpha) + *z * cos(alpha);
 }
 
 int		is_edges_outside(t_vec2d edges[4])
@@ -119,7 +66,7 @@ int	is_edges_negative(t_vec2d map_edges[4])
 {
 	size_t	i;
 
-	i = 0;
+	i = 1;
 	while (i < 4)
 	{
 		if (map_edges[i].x < 0 || map_edges[i].y < 0)
@@ -161,56 +108,35 @@ size_t	compute_tile_width(t_mlx_data *data, t_vec3d map_edges[4], t_vec2d org_hu
 	return (tile_width);
 }
 
-void wipe(t_mlx *fdf)
+void write_bit(int c)
 {
-	int	x = 200;
-	int y = 0;
+	int i;
 
-	while (y < HEIGHT)
+	i = 31;
+	while (i >= 0)
 	{
-		x = 200;
-		while (x < WIDTH)
-		{
-			put_pixel(fdf, x, y, 0xff000000);
-			x++;
-		}
-		y++;
+		if (c & (1UL << i))
+			write(1, "1", 1);
+		else
+			write(1, "0", 1);
+		i--;
 	}
+	write(1, "\n", 1);
 }
-
-int	zoom(int keycode, t_mlx *fdf)
-{
-	if (keycode == 0x3d)
-		fdf->data.tile_width += 4;
-	else if (keycode == 0x2d)
-		fdf->data.tile_width -= 4;
-	else if (keycode == 0xff52)
-		fdf->data.org.y -= 4;
-	else if (keycode == 0xff54)
-		fdf->data.org.y += 4;
-	else if (keycode == 0xff51)
-		fdf->data.org.x -= 4;
-	else if (keycode == 0xff53)
-		fdf->data.org.x += 4;
-	else if (keycode == 0xff55)
-		fdf->data.z_scaling--;
-	else if (keycode == 0xff56)
-		fdf->data.z_scaling++;
-	wipe(fdf);
-	apply_isometric(fdf);
-	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
-	draw_hud_static_text(fdf);
-}
-
 int	main(int argc, char **argv)
 {
 	t_mlx	*fdf;
 
+	fdf = NULL;
+	if (argc != 2)
+		return (raise_errors(fdf, ERR_ARGC));
 	fdf = new_mlx(WIDTH, HEIGHT, "Wireframe (FdF) viewer");
 	if (!fdf)
-		return (1);
-	t_vec2d	screen_rg = {.x = 0, .y = 0};
+		return (raise_errors(fdf, ERR_MALLOC));
 	fdf->data.vertices = parse_map(argv[1], &fdf->data);
+	if (!fdf->data.vertices)
+		return (raise_errors(fdf, ERR_MAP));
+	t_vec2d	screen_rg = {.x = 0, .y = 0};
 	//draw_line(fdf, vec, vece, 0xffffffff);
 	draw_hud_bg(fdf);
 	draw_keys(fdf);
@@ -222,7 +148,7 @@ int	main(int argc, char **argv)
 	apply_isometric(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	draw_hud_static_text(fdf);
-	mlx_hook(fdf->wnd, 2, 1L<<0, zoom, fdf);
+	mlx_hook(fdf->wnd, 2, 1L<<0, &key_handler, fdf);
 	mlx_loop(fdf->inst);
 	delete_mlx(fdf);
 	return (0);

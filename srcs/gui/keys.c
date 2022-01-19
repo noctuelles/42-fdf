@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 21:18:54 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/14 16:01:18 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/18 15:19:22 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ static void	draw_key(t_mlx *mlx, t_vec2d pos, char *txt_key)
 	set_vec2d(&pos, pos.x + 39, pos.y);
 	set_vec2d(&inner_rect_pos, inner_rect_pos.x + 27, inner_rect_pos.y);
 	draw_line(mlx, pos, inner_rect_pos, 0xff303030);
-
-	return (key);
 }
 
 static void	draw_keys_quad(t_mlx *mlx)

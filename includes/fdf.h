@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/17 20:21:01 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/18 21:16:38 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,14 @@
 #include "libft.h"
 #include <stdint.h>
 
-# define DIM_GREY 0xff696969
+# define R(x) (x >> 16) & 0xff
+# define G(x) (x >> 8) & 0xff
+# define B(x) x & 0xff
+# define SET_RED(x,r) (x & ~(0xff << 16)) | (r << 16) 
+# define SET_GREEN(x,g) (x & ~(0xff << 8)) | (g << 8) 
+# define SET_BLUE(x,b) (x & ~0xff) | b
+# define NEW_COLOR(r,g,b) 0xff << 24 | r << 16 | g << 8 | b
+
 # define WHITE 0xffffffff
 
 # define WIDTH 1700
@@ -40,8 +47,36 @@
 # define ABOUT_2 "plouvel (plouvel@student.42.fr)"
 
 # define CLR_WHITE 0xffffffff
+# define CLR_YELLOW 0xffffff00
 # define CLR_DARK_GREY 0xff303030
 # define CLR_LIGHT_GREY 0xffc0c0c0
+
+# define K_ESC 0xff1b
+
+# define K_PLUS 0x3d
+# define K_MINUS 0x2d
+
+# define K_W 0x7a
+# define K_A 0x71
+# define K_S 0x73
+# define K_D 0x64
+
+# define K_UP 0xff52
+# define K_DOWN 0xff54
+# define K_LEFT 0xff51
+# define K_RIGHT 0xff53
+
+# define K_PGUP 0xff55
+# define K_PGDW 0xff56
+
+# define FATAL "{1;31}[FATAL]{0} : "
+# define WARNING "{1;93}[WARNING]{0} : "
+# define ERR_MALLOC 1
+# define STR_ERR_MALLOC "Cannot allocate memory."
+# define ERR_ARGC 2
+# define STR_ERR_ARGC "Invalid numbers of argument.\nUsage : ./fdf <map_path>\n"
+# define ERR_MAP 3
+# define STR_ERR_MAP "Error occur parsing your map. Maybe check file path ?\n"
 
 typedef struct	s_vec3d
 {
@@ -71,7 +106,7 @@ typedef struct s_key
 
 typedef struct s_mlx_data
 {
-	const char	*file_name;
+	char		*file_name;
 	int			**vertices;
 	size_t		nbr_vertices;
 	size_t		elems_line;
@@ -97,13 +132,14 @@ typedef struct s_mlx
 
 /* parsing.c */
 
-int		**parse_map(const char *path, t_mlx_data *data);
+int		**parse_map(char *path, t_mlx_data *data);
 
 /* mlx.c */
 
 t_mlx		*new_mlx(uint16_t width, uint16_t height, const char *title);
-void		put_pixel(t_mlx *mlx, int x, int y, uint32_t color);
+//void		put_pixel(t_mlx *mlx, int x, int y, uint32_t color);
 uint32_t	get_trgb(uint8_t t, uint8_t r, uint8_t g, uint8_t b);
+void		wipe_render_scene(t_mlx *fdf);
 void		delete_mlx(t_mlx *mlx);
 
 /* line.c  */
@@ -131,6 +167,7 @@ size_t		get_file_nbr_lines(const char *path);
 /* render.c */
 
 t_vec2d		transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d);
+void		apply_isometric(t_mlx *fdf);
 
 /* primitives.c */
 
@@ -145,7 +182,13 @@ void		draw_hud_static_text(t_mlx *mlx);
 
 /* keys.c */
 
+void	rotate_x(int *y, int *z, double alpha);
 void		draw_keys(t_mlx *mlx);
+
+/* main_utils.c */
+
+int			key_handler(int keycode, t_mlx *fdf);
+int			raise_errors(t_mlx *fdf, int errcode);
 
 static inline void	set_vec2d(t_vec2d *vec, int x, int y)
 {
@@ -153,4 +196,19 @@ static inline void	set_vec2d(t_vec2d *vec, int x, int y)
 	vec->y = y;
 }
 
+static inline void	set_vec3d(t_vec3d *vec, int x, int y, int z)
+{
+	vec->x = x;
+	vec->y = y;
+	vec->z = z;
+}
+static inline void	put_pixel(t_mlx *mlx, int x, int y, uint32_t color)
+{
+	char	*pixel_addr;
+	int		pixel_x;
+	int		pixel_y;
+
+	pixel_addr = mlx->addr + (x * (mlx->bpp / 8) + y * mlx->line_len);
+	*(uint32_t *)pixel_addr = color;
+}
 #endif

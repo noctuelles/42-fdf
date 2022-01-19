@@ -6,13 +6,13 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 18:50:11 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/17 20:00:24 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/18 15:18:51 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
-#include "libft.h"
+#include <stdlib.h>
 
 /* draw_hud_title: draw text centered compared to the hud. */
 
@@ -21,7 +21,7 @@ void	draw_hud_title(t_mlx *mlx, int y, uint32_t color, char *txt)
 	size_t	len;
 	int		x;
 
-	len = strlen(txt);
+	len = ft_strlen(txt);
 	len = len * 6 - 1;
 	x = (100 - len) + (len / 2);
 	mlx_string_put(mlx->inst, mlx->wnd, x, y, color, txt);
@@ -89,7 +89,6 @@ void	draw_hud_integer(t_mlx *fdf, int x, int y, int i)
 
 void	draw_hud_static_text(t_mlx *mlx)
 {
-	char *vertices;
 	draw_hud_title(mlx, 20, CLR_WHITE, HUD_TXT);
 	draw_hud_title(mlx, 85, CLR_WHITE, TRANSLATION_TXT);
 	draw_hud_title(mlx, 230, CLR_WHITE, MAP_ZOOM);
@@ -110,6 +109,6 @@ void	draw_hud_static_text(t_mlx *mlx)
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 850, CLR_WHITE, Z_OFFSET);
 	draw_hud_integer(mlx, 80, 850, mlx->data.z_scaling);
 	draw_hud_title(mlx, 970, CLR_WHITE, ABOUT);
-	draw_hud_title(mlx, 990, 0xffffff00, ABOUT_2);
+	draw_hud_title(mlx, 990, CLR_YELLOW, ABOUT_2);
 	draw_key_static_text(mlx);
 }

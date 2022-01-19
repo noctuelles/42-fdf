@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:14:14 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/14 17:13:21 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/18 15:23:08 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  *	Verification of the file could be implemented.
  */
 
-int	**parse_map(const char *path, t_mlx_data *data)
+int	**parse_map(char *path, t_mlx_data *data)
 {
 	int	fd;
 
@@ -41,6 +41,8 @@ int	**parse_map(const char *path, t_mlx_data *data)
 	}
 	data->file_name = path;
 	data->nbr_vertices = data->elems_line * data->nbr_lines;
+	if (ft_strlen(data->file_name) > 19)
+		data->file_name[19] = '\0';
 	close(fd);
 	return (data->vertices);
 }
