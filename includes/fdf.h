@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/18 21:16:38 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/19 12:35:26 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,9 @@ typedef struct s_mlx_data
 	int			z_scaling;
 	t_vec2d		org;
 	t_vec3d		edges[4];
-	int			drawing;
+	double		angle;
+	double		angle2;
+	double		angle3;
 }				t_mlx_data;
 
 typedef struct s_mlx
@@ -166,7 +168,7 @@ size_t		get_file_nbr_lines(const char *path);
 
 /* render.c */
 
-t_vec2d		transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d);
+t_vec2d		transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d, t_mlx_data *data);
 void		apply_isometric(t_mlx *fdf);
 
 /* primitives.c */
@@ -182,7 +184,6 @@ void		draw_hud_static_text(t_mlx *mlx);
 
 /* keys.c */
 
-void	rotate_x(int *y, int *z, double alpha);
 void		draw_keys(t_mlx *mlx);
 
 /* main_utils.c */

@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/18 15:50:23 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/19 13:42:45 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 		return (NULL);
 	mlx->data.org.x = 700;
 	mlx->data.org.y = 250;
+	mlx->data.z_scaling = 1;
 	mlx->data.tile_width = 4;
 	return (mlx);
 }

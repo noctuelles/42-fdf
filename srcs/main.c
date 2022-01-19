@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/19 10:53:25 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/19 14:05:27 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,6 @@
 #include <math.h>
 #include <fcntl.h>
 #include <unistd.h>
-
-void	rotate_x(int *y, int *z, double alpha)
-{
-	int	previous_y;
-
-	previous_y = *y;
-	*y = previous_y * cos(alpha) + *z * sin(alpha);
-	*z = -previous_y * sin(alpha) + *z * cos(alpha);
-}
 
 int		is_edges_outside(t_vec2d edges[4])
 {
@@ -58,7 +49,7 @@ t_vec2d	get_center_iso(t_mlx_data *data, size_t tile_width, t_vec2d org_hud)
 	vec.x = roundf(data->elems_line / 2);
 	vec.y = roundf(data->nbr_lines / 2);
 	vec.z = 0;
-	center = transform_isometric(tile_width, org_hud, vec);
+	center = transform_isometric(tile_width, org_hud, vec, data);
 	return (center);
 }
 
@@ -89,10 +80,10 @@ size_t	compute_tile_width(t_mlx_data *data, t_vec3d map_edges[4], t_vec2d org_hu
 		iso_center = get_center_iso(data, tile_width, org_hud); 
 		data->org.x = 200 + (950 - iso_center.x);
 		data->org.y = 500 - iso_center.y;
-		edges[0] = transform_isometric(tile_width, data->org, map_edges[0]);
-		edges[1] = transform_isometric(tile_width, data->org, map_edges[1]);
-		edges[2] = transform_isometric(tile_width, data->org, map_edges[2]);
-		edges[3] = transform_isometric(tile_width, data->org, map_edges[3]);
+		edges[0] = transform_isometric(tile_width, data->org, map_edges[0], data);
+		edges[1] = transform_isometric(tile_width, data->org, map_edges[1], data);
+		edges[2] = transform_isometric(tile_width, data->org, map_edges[2], data);
+		edges[3] = transform_isometric(tile_width, data->org, map_edges[3], data);
 		if (is_edges_negative(edges))
 			return (tile_width);
 		if (is_edges_outside(edges))

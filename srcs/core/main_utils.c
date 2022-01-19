@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/18 16:52:34 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/19 14:10:57 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,14 @@ static void	key_handler_do(int keycode, t_mlx *fdf)
 		delete_mlx(fdf);
 		exit(0);
 	}
+	else if (keycode == K_RIGHT)
+		fdf->data.angle += 0.05;
+	else if (keycode == K_LEFT)
+		fdf->data.angle -= 0.05;
+	else if (keycode == K_UP)
+		fdf->data.angle2 += 0.01;
+	else if (keycode == K_DOWN)
+		fdf->data.angle2 -= 0.01;
 }
 
 int	key_handler(int keycode, t_mlx *fdf)
