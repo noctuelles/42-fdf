@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/19 22:56:26 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/20 19:50:05 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@
 #include "libft.h"
 #include <stdint.h>
 
-# define R(x) (x >> 16) & 0xff
-# define G(x) (x >> 8) & 0xff
-# define B(x) x & 0xff
+# define ABS(x) ((x < 0) ? -x : x)
+# define MAX(a,b) ((a > b) ? a : b)
+# define R(x) ((x >> 16) & 0xff)
+# define G(x) ((x >> 8) & 0xff)
+# define B(x) (x & 0xff)
 # define SET_RED(x,r) (x & ~(0xff << 16)) | (r << 16) 
 # define SET_GREEN(x,g) (x & ~(0xff << 8)) | (g << 8) 
 # define SET_BLUE(x,b) (x & ~0xff) | b
@@ -28,6 +30,8 @@
 
 # define WIDTH 1700
 # define HEIGHT 1000
+
+# define ANGLE_ISO 0.463646716
 
 # define HUD_TXT "Wifreframe viewer"
 # define TRANSLATION_TXT "Translate map"
@@ -56,8 +60,8 @@
 # define K_PLUS 0x3d
 # define K_MINUS 0x2d
 
-# define K_W 0x7a
-# define K_A 0x71
+# define K_W 0x77
+# define K_A 0x61
 # define K_S 0x73
 # define K_D 0x64
 
@@ -173,8 +177,13 @@ size_t		get_file_nbr_lines(const char *path);
 
 /* render.c */
 
-t_vec2d		transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d, t_mlx_data *data);
+t_vec2d		transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d,
+															t_mlx_data *data);
 void		apply_isometric(t_mlx *fdf);
+
+/* render_utils.c */
+
+size_t		setup_map(t_mlx_data *data, t_vec3d medges[4], t_vec2d org_hud);
 
 /* primitives.c */
 
@@ -200,6 +209,15 @@ static inline void	set_vec2d(t_vec2d *vec, int x, int y)
 {
 	vec->x = x;
 	vec->y = y;
+}
+
+static inline t_vec2d new_vec2d(int x, int y)
+{
+	t_vec2d	vec;
+
+	vec.x = x;
+	vec.y = y;
+	return (vec);
 }
 
 static inline void	set_vec3d(t_vec3d *vec, int x, int y, int z)

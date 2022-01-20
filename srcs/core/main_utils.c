@@ -6,11 +6,13 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/19 23:05:46 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/20 19:35:26 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "mlx.h"
+#include <stdlib.h>
 
 static void	key_handler_do(int keycode, t_mlx *fdf)
 {
@@ -54,6 +56,9 @@ static void	key_handler_do(int keycode, t_mlx *fdf)
 int	key_handler(int keycode, t_mlx *fdf)
 {
 	key_handler_do(keycode, fdf);
+	if (fdf->data.tile_width < 1)
+		fdf->data.tile_width = 1;
+	mlx_clear_window(fdf->inst, fdf->wnd);
 	wipe_render_scene(fdf);
 	apply_isometric(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);

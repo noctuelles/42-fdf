@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 18:25:31 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/17 12:50:55 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/20 19:50:04 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ static void	draw_line_high(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 
 void	draw_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2, uint32_t color)
 {
+	uint32_t	*gradient;
 	/*if (p1.x == p2.x)
 		return (draw_ver_line(mlx, p1, p2, color));
 	else if (p1.y == p2.y)

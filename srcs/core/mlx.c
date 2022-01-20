@@ -6,12 +6,13 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/19 22:15:30 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/20 19:26:31 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
+#include <math.h>
 #include <stdlib.h>
 
 t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
@@ -36,20 +37,10 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 	if (!mlx->addr)
 		return (NULL);
 	mlx->data.z_scaling = 7;
-	mlx->data.cos_theta = cos(0.463646716);
-	mlx->data.sin_theta = sin(0.463646716);
+	mlx->data.cos_theta = cos(ANGLE_ISO);
+	mlx->data.sin_theta = sin(ANGLE_ISO);
 	return (mlx);
 }
-
-/*static inline void	put_pixel(t_mlx *mlx, int x, int y, uint32_t color)
-{
-	char	*pixel_addr;
-	int		pixel_x;
-	int		pixel_y;
-
-	pixel_addr = mlx->addr + (x * (mlx->bpp / 8) + y * mlx->line_len);
-	*(uint32_t *)pixel_addr = color;
-}*/
 
 uint32_t	get_trgb(uint8_t t, uint8_t r, uint8_t g, uint8_t b)
 {
@@ -58,15 +49,17 @@ uint32_t	get_trgb(uint8_t t, uint8_t r, uint8_t g, uint8_t b)
 
 void	wipe_render_scene(t_mlx *fdf)
 {
-	int	x = 200;
+	int x = 0;
 	int y = 0;
+	char	*pixel_addr;
 
 	while (y < HEIGHT)
 	{
 		x = 200;
 		while (x < WIDTH)
 		{
-			put_pixel(fdf, x, y, 0xff000000);
+			pixel_addr = fdf->addr + (x * (fdf->bpp / 8) + y * fdf->line_len);
+			*(uint32_t *)pixel_addr = 0xff000000;
 			x++;
 		}
 		y++;
