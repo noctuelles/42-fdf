@@ -6,27 +6,17 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/20 19:50:05 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/21 15:21:23 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
-#include "libft.h"
-#include <stdint.h>
+# include "libft.h"
+# include <stdint.h>
 
-# define ABS(x) ((x < 0) ? -x : x)
-# define MAX(a,b) ((a > b) ? a : b)
-# define R(x) ((x >> 16) & 0xff)
-# define G(x) ((x >> 8) & 0xff)
-# define B(x) (x & 0xff)
-# define SET_RED(x,r) (x & ~(0xff << 16)) | (r << 16) 
-# define SET_GREEN(x,g) (x & ~(0xff << 8)) | (g << 8) 
-# define SET_BLUE(x,b) (x & ~0xff) | b
-# define NEW_COLOR(r,g,b) 0xff << 24 | r << 16 | g << 8 | b
-
-# define WHITE 0xffffffff
+# define LINE_COLOR 0xffffffff
 
 # define WIDTH 1700
 # define HEIGHT 1000
@@ -37,8 +27,8 @@
 # define TRANSLATION_TXT "Translate map"
 # define MAP_ZOOM "Zoom (+ / -)"
 # define Z_FACTOR "Z Factor (+ / -)"
-# define ROTATE_MAP "Rotate map"
-# define OTHERS "Others"
+# define ROTATE_MAP "Rotate map (X, Y)"
+# define OTHERS "Rotate map (Z)"
 # define MAP_INFO "Map informations"
 # define VERTICES  "Vertices  :" 
 # define FILE_NAME "File name :"
@@ -85,14 +75,14 @@
 # define ERR_MAP 3
 # define STR_ERR_MAP "Error occur parsing your map. Maybe check file path ?\n"
 
-typedef struct	s_vec3d
+typedef struct s_vec3d
 {
 	int	x;
 	int	y;
 	int	z;
 }				t_vec3d;
 
-typedef struct	s_vec2d
+typedef struct s_vec2d
 {
 	int	x;
 	int	y;
@@ -121,7 +111,7 @@ typedef struct s_mlx_data
 	int			tile_width;
 	float		z_scaling;
 	t_vec2d		org;
-	t_vec3d		edges[4];
+	t_vec3d		edges[3];
 	double		alpha;
 	double		beta;
 	double		gamma;
@@ -143,67 +133,64 @@ typedef struct s_mlx
 
 /* parsing.c */
 
-int		**parse_map(char *path, t_mlx_data *data);
+int						**parse_map(char *path, t_mlx_data *data);
 
 /* mlx.c */
 
-t_mlx		*new_mlx(uint16_t width, uint16_t height, const char *title);
-//void		put_pixel(t_mlx *mlx, int x, int y, uint32_t color);
-uint32_t	get_trgb(uint8_t t, uint8_t r, uint8_t g, uint8_t b);
-void		wipe_render_scene(t_mlx *fdf);
-void		delete_mlx(t_mlx *mlx);
+t_mlx					*new_mlx(uint16_t width, uint16_t height,
+							const char *title);
+uint32_t				get_trgb(uint8_t t, uint8_t r, uint8_t g, uint8_t b);
+void					wipe_render_scene(t_mlx *fdf);
+void					delete_mlx(t_mlx *mlx);
 
 /* line.c  */
 
-void		draw_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2, uint32_t color);
+void					draw_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
+							uint32_t color);
+void					draw_line_gradient(t_mlx *mlx, t_vec2d p1, t_vec2d p2);
 
 /* vertices.c */
 
-
-int			**alloc_vertices(size_t nbr_lines);
-void		free_vertices(int **vertices);
-int			**fill_vertices(int fd, t_mlx_data *data);
-void		print_vertices(t_mlx_data data);
-
-/* math_utils.c */
-
-int			ft_abs(int i);
-void		render_isometric(t_mlx *fdf);
+int						**alloc_vertices(size_t nbr_lines);
+void					free_vertices(int **vertices);
+int						**fill_vertices(int fd, t_mlx_data *data);
 
 /* file_utils.c */
 
-char		*read_line(int fd, char **line);
-size_t		get_file_nbr_lines(const char *path);
+char					*read_line(int fd, char **line);
+size_t					get_file_nbr_lines(const char *path);
 
 /* render.c */
 
-t_vec2d		transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d,
-															t_mlx_data *data);
-void		apply_isometric(t_mlx *fdf);
+t_vec2d					transform_isometric(size_t tile_width, t_vec2d org,
+							t_vec3d vec3d, t_mlx_data *data);
+void					apply_isometric(t_mlx *fdf);
 
 /* render_utils.c */
 
-size_t		setup_map(t_mlx_data *data, t_vec3d medges[4], t_vec2d org_hud);
+size_t					setup_map(t_mlx_data *data, t_vec3d medges[4],
+							t_vec2d org_hud);
 
 /* primitives.c */
 
-void		draw_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos, uint32_t color);
-void		draw_full_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos,
-																uint32_t color);
+void					draw_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos,
+							uint32_t color);
+void					draw_full_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos,
+							uint32_t color);
 
 /* hud.c */
 
-void		draw_hud_bg(t_mlx *mlx);
-void		draw_hud_static_text(t_mlx *mlx);
+void					draw_hud_bg(t_mlx *mlx);
+void					draw_hud_static_text(t_mlx *mlx);
 
 /* keys.c */
 
-void		draw_keys(t_mlx *mlx);
+void					draw_keys(t_mlx *mlx);
 
 /* main_utils.c */
 
-int			key_handler(int keycode, t_mlx *fdf);
-int			raise_errors(t_mlx *fdf, int errcode);
+int						key_handler(int keycode, t_mlx *fdf);
+int						raise_errors(t_mlx *fdf, int errcode);
 
 static inline void	set_vec2d(t_vec2d *vec, int x, int y)
 {
@@ -211,7 +198,7 @@ static inline void	set_vec2d(t_vec2d *vec, int x, int y)
 	vec->y = y;
 }
 
-static inline t_vec2d new_vec2d(int x, int y)
+static inline t_vec2d	new_vec2d(int x, int y)
 {
 	t_vec2d	vec;
 
@@ -226,13 +213,21 @@ static inline void	set_vec3d(t_vec3d *vec, int x, int y, int z)
 	vec->y = y;
 	vec->z = z;
 }
+
 static inline void	put_pixel(t_mlx *mlx, int x, int y, uint32_t color)
 {
 	char	*pixel_addr;
-	int		pixel_x;
-	int		pixel_y;
 
 	pixel_addr = mlx->addr + (x * (mlx->bpp / 8) + y * mlx->line_len);
 	*(uint32_t *)pixel_addr = color;
 }
+
+static inline int	ft_abs(int i)
+{
+	if (i >= 0)
+		return (i);
+	else
+		return (-i);
+}
+
 #endif

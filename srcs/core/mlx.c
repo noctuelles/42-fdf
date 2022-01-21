@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/20 19:26:31 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/21 14:38:10 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 	if (!mlx->img)
 		return (NULL);
 	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bpp,
-												&mlx->line_len, &mlx->endian);
+			&mlx->line_len, &mlx->endian);
 	if (!mlx->addr)
 		return (NULL);
 	mlx->data.z_scaling = 7;
@@ -49,10 +49,11 @@ uint32_t	get_trgb(uint8_t t, uint8_t r, uint8_t g, uint8_t b)
 
 void	wipe_render_scene(t_mlx *fdf)
 {
-	int x = 0;
-	int y = 0;
+	int		x;
+	int		y;
 	char	*pixel_addr;
 
+	y = 0;
 	while (y < HEIGHT)
 	{
 		x = 200;
@@ -68,6 +69,7 @@ void	wipe_render_scene(t_mlx *fdf)
 
 void	delete_mlx(t_mlx *mlx)
 {
+	mlx_loop_end(mlx);
 	if (mlx->wnd)
 		mlx_destroy_window(mlx->inst, mlx->wnd);
 	if (mlx->img)

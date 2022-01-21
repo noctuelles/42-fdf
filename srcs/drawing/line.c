@@ -6,13 +6,13 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 18:25:31 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/20 19:50:04 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/21 14:39:07 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	draw_hor_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
+static void	draw_hor_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 																uint32_t color)
 {
 	int	tmp;
@@ -30,7 +30,7 @@ void	draw_hor_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 	}
 }
 
-void	draw_ver_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
+static void	draw_ver_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 																uint32_t color)
 {
 	int	tmp;
@@ -51,7 +51,7 @@ void	draw_ver_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 static void	draw_line_low(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 																uint32_t color)
 {
-	t_vec2d	delta;
+	t_vec2d		delta;
 	int			d;
 	int			sign;
 
@@ -106,16 +106,13 @@ static void	draw_line_high(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 	}
 }
 
-#include <stdlib.h>
-
 void	draw_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2, uint32_t color)
 {
-	uint32_t	*gradient;
-	/*if (p1.x == p2.x)
+	if (p1.x == p2.x)
 		return (draw_ver_line(mlx, p1, p2, color));
 	else if (p1.y == p2.y)
-		return (draw_hor_line(mlx, p1, p2, color));*/
-	if (abs(p2.y - p1.y) < abs(p2.x - p1.x))
+		return (draw_hor_line(mlx, p1, p2, color));
+	if (ft_abs(p2.y - p1.y) < ft_abs(p2.x - p1.x))
 	{
 		if (p1.x > p2.x)
 			draw_line_low(mlx, p2, p1, color);

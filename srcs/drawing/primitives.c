@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 18:47:15 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/13 18:49:29 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/21 15:34:47 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	draw_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos, uint32_t color)
 
 void	draw_full_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos, uint32_t color)
 {
-	t_vec2d			draw_vec;
-	unsigned int	end_y;
+	t_vec2d	draw_vec;
+	int		end_y;
 
 	end_y = pos.y + rect.y;
 	draw_vec.x = pos.x + rect.x;

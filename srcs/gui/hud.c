@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 18:50:11 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/20 14:25:34 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/21 14:41:43 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 /* draw_hud_title: draw text centered compared to the hud. */
 
-void	draw_hud_title(t_mlx *mlx, int y, uint32_t color, char *txt)
+static void	draw_hud_title(t_mlx *mlx, int y, uint32_t color, char *txt)
 {
 	size_t	len;
 	int		x;
@@ -39,8 +39,6 @@ void	draw_hud_bg(t_mlx *mlx)
 	draw_full_rect(mlx, rect, pos, 0xff303030);
 	set_vec2d(&pos, 2, 0);
 	set_vec2d(&rect, rect.x - 4, 2);
-	draw_full_rect(mlx, rect, pos, CLR_WHITE);
-	set_vec2d(&pos, pos.x, 565);
 	draw_full_rect(mlx, rect, pos, CLR_WHITE);
 	set_vec2d(&pos, pos.x, 700);
 	draw_full_rect(mlx, rect, pos, CLR_WHITE);
@@ -72,11 +70,13 @@ static void	draw_key_static_text(t_mlx *mlx)
 	mlx_string_put(mlx->inst, mlx->wnd, 44, 524, CLR_WHITE, "<-");
 	mlx_string_put(mlx->inst, mlx->wnd, 94, 524, CLR_WHITE, "DW");
 	mlx_string_put(mlx->inst, mlx->wnd, 144, 524, CLR_WHITE, "->");
-	mlx_string_put(mlx->inst, mlx->wnd, 41, 654, CLR_WHITE, "ESC");
-	mlx_string_put(mlx->inst, mlx->wnd, 86, 654, CLR_WHITE, "Quit");
+	mlx_string_put(mlx->inst, mlx->wnd, 42, 634, CLR_WHITE, "ALT");
+	mlx_string_put(mlx->inst, mlx->wnd, 139, 634, CLR_WHITE, "CRTL");
+	mlx_string_put(mlx->inst, mlx->wnd, 41, 904, CLR_WHITE, "ESC");
+	mlx_string_put(mlx->inst, mlx->wnd, 86, 904, CLR_WHITE, "Quit");
 }
 
-void	draw_hud_integer(t_mlx *fdf, int x, int y, int i)
+static void	draw_hud_integer(t_mlx *fdf, int x, int y, int i)
 {
 	char	*str;
 
@@ -94,10 +94,11 @@ void	draw_hud_static_text(t_mlx *mlx)
 	draw_hud_title(mlx, 230, CLR_WHITE, MAP_ZOOM);
 	draw_hud_title(mlx, 330, CLR_WHITE, Z_FACTOR);
 	draw_hud_title(mlx, 430, CLR_WHITE, ROTATE_MAP);
-	draw_hud_title(mlx, 600, CLR_WHITE, OTHERS);
+	draw_hud_title(mlx, 580, CLR_WHITE, OTHERS);
 	draw_hud_title(mlx, 720, CLR_WHITE, MAP_INFO);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 750, CLR_WHITE, FILE_NAME);
-	mlx_string_put(mlx->inst, mlx->wnd, 80, 750, CLR_WHITE, mlx->data.file_name);
+	mlx_string_put(mlx->inst, mlx->wnd, 80, 750, CLR_WHITE,
+		mlx->data.file_name);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 770, CLR_WHITE, VERTICES);
 	draw_hud_integer(mlx, 80, 770, mlx->data.nbr_vertices);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 790, CLR_WHITE, TILE_SIZE);

@@ -6,18 +6,21 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 17:17:09 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/11 18:29:00 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/21 15:26:52 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+#include "get_next_line.h"
 #include <fcntl.h>
 #include <unistd.h>
-#include <get_next_line.h>
 
 static ssize_t	read_fd(int fd, char *buffer, ssize_t *rdead, size_t index)
 {
 	if (index == 0)
 		*rdead = read(fd, buffer, 4096);
+	if (*rdead < 0)
+		return (0);
 	return (*rdead);
 }
 
@@ -42,9 +45,10 @@ size_t	get_file_nbr_lines(const char *path)
 		return (0);
 	i = 0;
 	nbr_lines = 0;
+	ft_memset(&buffer, 0, 4096);
 	while (read_fd(fd, buffer, &rdead, i))
 	{
-		while (i < (rdead - 1) && buffer[i] != '\n')
+		while (i < (size_t)(rdead - 1) && buffer[i] != '\n')
 			i++;
 		if (buffer[i++] == '\n')
 			nbr_lines++;
