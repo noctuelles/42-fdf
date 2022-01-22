@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/21 15:21:23 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/23 00:45:49 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 
 # include "libft.h"
 # include <stdint.h>
+
+# define R(x) ((x >> 16) & 0xff)
+# define G(x) ((x >> 8) & 0xff)
+# define B(x) (x & 0xff)
+# define SET_RED(x,r) (x & ~(0xff << 16)) | (r << 16)
+# define SET_GREEN(x,g) (x & ~(0xff << 8)) | (g << 8)
+# define SET_BLUE(x,b) (x & ~0xff) | b
+# define NEW_COLOR(r,g,b) 0xff << 24 | r << 16 | g << 8 | b
 
 # define LINE_COLOR 0xffffffff
 
@@ -84,8 +92,9 @@ typedef struct s_vec3d
 
 typedef struct s_vec2d
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
+	t_vec3d	from;
 }				t_vec2d;
 
 typedef struct s_org_data
@@ -105,6 +114,7 @@ typedef struct s_mlx_data
 {
 	char		*file_name;
 	int			**vertices;
+	uint32_t	*gradient;
 	size_t		nbr_vertices;
 	size_t		elems_line;
 	size_t		nbr_lines;
