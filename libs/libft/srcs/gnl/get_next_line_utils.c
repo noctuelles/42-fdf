@@ -6,22 +6,12 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 17:16:49 by plouvel           #+#    #+#             */
-/*   Updated: 2021/12/24 01:23:52 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/18 15:16:26 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdlib.h>
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
 
 int	get_cpy_len(const char *str, t_gnl_info *gnl_info)
 {

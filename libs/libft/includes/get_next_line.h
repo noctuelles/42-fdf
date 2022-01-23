@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/29 18:06:24 by plouvel           #+#    #+#             */
-/*   Updated: 2021/12/26 00:38:16 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/18 15:16:50 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # endif
 
 # include <stddef.h>
+# include "libft.h"
 
 /*		gnl_info structure.
  *
@@ -39,7 +40,6 @@ typedef struct s_gnl_info
 }				t_gnl_info;
 
 char	*strralloc(char *str, char *add, size_t add_len);
-size_t	ft_strlen(const char *str);
 int		get_cpy_len(const char *str, t_gnl_info *gnl_info);
 char	*get_next_line(int fd);
 

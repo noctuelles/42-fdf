@@ -6,13 +6,13 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/29 18:25:31 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/23 00:27:53 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/23 12:59:21 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static void	draw_hor_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
+/*static void	draw_hor_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 																uint32_t color)
 {
 	int	tmp;
@@ -46,7 +46,7 @@ static void	draw_ver_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 		put_pixel(mlx, p1.x, p1.y, color);
 		p1.y++;
 	}
-}
+}*/
 
 static void	draw_line_low(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 																uint32_t color)
