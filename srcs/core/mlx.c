@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/21 14:38:10 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/23 11:36:40 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 #include "mlx.h"
 #include <math.h>
 #include <stdlib.h>
+
+static void	setup_angle(t_mlx_data *data)
+{
+	data->cos_theta = cos(ANGLE_ISO);
+	data->sin_theta = sin(ANGLE_ISO);
+	data->sin_alpha = sin(data->alpha);
+	data->cos_alpha = cos(data->alpha);
+	data->sin_beta = sin(data->beta);
+	data->cos_beta = cos(data->beta);
+	data->sin_gamma = sin(data->gamma);
+	data->cos_gamma = cos(data->gamma);
+}
 
 t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 {
@@ -37,8 +49,7 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 	if (!mlx->addr)
 		return (NULL);
 	mlx->data.z_scaling = 7;
-	mlx->data.cos_theta = cos(ANGLE_ISO);
-	mlx->data.sin_theta = sin(ANGLE_ISO);
+	setup_angle(&mlx->data);
 	return (mlx);
 }
 

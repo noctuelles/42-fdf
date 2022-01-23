@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/23 00:45:59 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/23 11:16:09 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ static void	key_handler_do(int keycode, t_mlx *fdf)
 
 int	key_handler(int keycode, t_mlx *fdf)
 {
+	fdf->data.last_alpha = fdf->data.alpha;
+	fdf->data.last_beta = fdf->data.beta;
+	fdf->data.last_gamma = fdf->data.gamma;
 	key_handler_do(keycode, fdf);
 	if (fdf->data.tile_width < 1)
 		fdf->data.tile_width = 1;

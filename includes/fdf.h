@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/23 00:45:49 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/23 11:41:27 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,7 @@
 # include "libft.h"
 # include <stdint.h>
 
-# define R(x) ((x >> 16) & 0xff)
-# define G(x) ((x >> 8) & 0xff)
-# define B(x) (x & 0xff)
-# define SET_RED(x,r) (x & ~(0xff << 16)) | (r << 16)
-# define SET_GREEN(x,g) (x & ~(0xff << 8)) | (g << 8)
-# define SET_BLUE(x,b) (x & ~0xff) | b
-# define NEW_COLOR(r,g,b) 0xff << 24 | r << 16 | g << 8 | b
-
-# define LINE_COLOR 0xffffffff
+# define LINE_COLOR 0xff00cc00
 
 # define WIDTH 1700
 # define HEIGHT 1000
@@ -122,11 +114,21 @@ typedef struct s_mlx_data
 	float		z_scaling;
 	t_vec2d		org;
 	t_vec3d		edges[3];
+	double		last_alpha;
 	double		alpha;
+	double		sin_alpha;
+	double		cos_alpha;
+	double		last_beta;
 	double		beta;
+	double		sin_beta;
+	double		cos_beta;
+	double		last_gamma;
 	double		gamma;
+	double		sin_gamma;
+	double		cos_gamma;
 	double		cos_theta;
 	double		sin_theta;
+	int			starting;
 }				t_mlx_data;
 
 typedef struct s_mlx
