@@ -6,7 +6,7 @@
 #    By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/25 19:17:39 by plouvel           #+#    #+#              #
-#    Updated: 2022/01/24 16:35:32 by plouvel          ###   ########.fr        #
+#    Updated: 2022/01/24 22:09:39 by plouvel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ MLIBX_DIR	=	$(LIBS_DIR)/minilibx-linux
 $(NAME):		libft.a libmlx.a $(OBJS)
 				$(CC) $(OBJS) $(CFLAGS) $(CLIBS) -o $(NAME)
 
-$(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c
+$(OBJS_DIR)/%.o:$(SRCS_DIR)/%.c
 				@mkdir -p $(dir $@)
 				$(CC) $(CFLAGS) -c $< -o $@
 
