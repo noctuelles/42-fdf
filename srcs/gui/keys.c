@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 21:18:54 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/21 15:29:09 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/24 15:53:00 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ void	draw_keys(t_mlx *mlx)
 	draw_key(mlx, pos);
 	set_vec2d(&pos, 130, 350);
 	draw_key(mlx, pos);
-	set_vec2d(&pos, 30, 880);
-	draw_key(mlx, pos);
 	set_vec2d(&pos, 30, 610);
 	draw_key(mlx, pos);
 	set_vec2d(&pos, 130, 610);
+	draw_key(mlx, pos);
+	set_vec2d(&pos, 30, 890);
 	draw_key(mlx, pos);
 }

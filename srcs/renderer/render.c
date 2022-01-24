@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:05:35 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/23 11:29:21 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/24 14:12:14 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,14 @@ t_vec2d	transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d,
 
 	vec3d.x *= tile_width;
 	vec3d.y *= tile_width;
+	proj.z = vec3d.z;
+	if (vec3d.z < 0)
+		proj.color = data->gradient[ft_abs(data->min_z) - ft_abs(vec3d.z)];
+	else if (vec3d.z == 0)
+		proj.color = data->gradient[ft_abs(data->min_z)];
+	else
+		proj.color = data->gradient[ft_abs(data->min_z) + (vec3d.z - 1)];
 	vec3d.z *= tile_width / data->z_scaling;
-	proj.from.z = vec3d.z;
 	compute_angle(data);
 	rotate(&vec3d, data);
 	proj.x = (vec3d.x - vec3d.y) * data->cos_theta;
@@ -76,7 +82,12 @@ static inline void	compute_n_draw(t_mlx *fdf, t_vec2d p1, int x, int y)
 	p2 = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d,
 			&fdf->data);
 	if ((p2.x > 200 && p2.x <= WIDTH) && (p2.y >= 0 && p2.y <= HEIGHT))
-		draw_line(fdf, p1, p2, LINE_COLOR);
+	{
+		if (p2.color == p1.color)
+			draw_line(fdf, p1, p2, p1.color);
+		else
+			draw_line_gradient(fdf, p1, p2);
+	}
 }
 
 void	apply_isometric(t_mlx *fdf)

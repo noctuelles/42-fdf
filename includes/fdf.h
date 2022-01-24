@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/23 11:41:27 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/24 16:37:19 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 # include "libft.h"
 # include <stdint.h>
-
-# define LINE_COLOR 0xff00cc00
+/* toto */
+# define START_COLOR 0xff053c44
+# define END_COLOR 0xff00ff00
 
 # define WIDTH 1700
 # define HEIGHT 1000
@@ -36,7 +37,8 @@
 # define ORG_X     "Org. (x)  :"
 # define ORG_Y     "Org. (y)  :"
 # define Z_OFFSET  "Z offset  :"
-# define Z_HEIGHT  "Z addon   :"
+# define GRADIENT  "Gradient  :"
+# define TO        "to"
 # define ABOUT "42 FdF project"
 # define ABOUT_2 "plouvel (plouvel@student.42.fr)"
 
@@ -82,11 +84,26 @@ typedef struct s_vec3d
 	int	z;
 }				t_vec3d;
 
+typedef struct s_color_f
+{
+	float	red;
+	float	green;
+	float	blue;
+}				t_color_f;
+
+typedef struct s_color
+{
+	int	red;
+	int	green;
+	int	blue;
+}				t_color;
+
 typedef struct s_vec2d
 {
-	int		x;
-	int		y;
-	t_vec3d	from;
+	int			x;
+	int			y;
+	int			z;
+	uint32_t	color;
 }				t_vec2d;
 
 typedef struct s_org_data
@@ -99,7 +116,6 @@ typedef struct s_key
 {
 	int		x;
 	int		y;
-	char	*txt_key;
 }				t_key;
 
 typedef struct s_mlx_data
@@ -128,7 +144,8 @@ typedef struct s_mlx_data
 	double		cos_gamma;
 	double		cos_theta;
 	double		sin_theta;
-	int			starting;
+	int			min_z;
+	int			max_z;
 }				t_mlx_data;
 
 typedef struct s_mlx
@@ -195,6 +212,10 @@ void					draw_full_rect(t_mlx *mlx, t_vec2d rect, t_vec2d pos,
 void					draw_hud_bg(t_mlx *mlx);
 void					draw_hud_static_text(t_mlx *mlx);
 
+/* hud2.c */
+
+void					draw_gradient(t_mlx *mlx);
+
 /* keys.c */
 
 void					draw_keys(t_mlx *mlx);
@@ -242,4 +263,26 @@ static inline int	ft_abs(int i)
 		return (-i);
 }
 
+static inline uint32_t R(uint32_t x)
+{
+	return ((x >> 16) & 0xff);
+}
+
+static inline uint32_t G(uint32_t x)
+{
+	return ((x >> 8) & 0xff);
+}
+
+static inline uint32_t B(uint32_t x)
+{
+	return (x & 0xff);
+}
+
+static inline uint32_t	NEW_COLOR(uint32_t r, uint32_t g, uint32_t b)
+{
+	return (0xff << 24 | r << 16 | g << 8 | b);
+}
+
+uint32_t	*get_color_gradient(uint32_t start_color, uint32_t end_color, size_t size);
+void	draw_line_gradient(t_mlx *mlx, t_vec2d p1, t_vec2d p2);
 #endif

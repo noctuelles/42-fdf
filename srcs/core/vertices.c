@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 14:49:33 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/23 00:28:33 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/24 15:53:32 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ static int	**fill_vertices_from_values(t_mlx_data *data, char **values, int y)
 	while (values[x] != NULL)
 	{
 		data->vertices[y][x] = ft_atoi(values[x]);
+		if(data->vertices[y][x] > data->max_z)
+			data->max_z = data->vertices[y][x];
+		else if(data->vertices[y][x] < data->min_z)
+			data->min_z = data->vertices[y][x];
 		x++;
 	}
 	return (data->vertices);

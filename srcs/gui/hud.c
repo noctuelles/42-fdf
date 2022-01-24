@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 18:50:11 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/21 14:41:43 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/24 15:53:02 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	draw_hud_bg(t_mlx *mlx)
 	draw_full_rect(mlx, rect, pos, CLR_WHITE);
 	set_vec2d(&pos, 200 - 2, pos.y);
 	draw_full_rect(mlx, rect, pos, CLR_WHITE);
+	draw_gradient(mlx);
 }
 
 /* draw_key_static_text: draw all the static text of the hud. */
@@ -72,8 +73,8 @@ static void	draw_key_static_text(t_mlx *mlx)
 	mlx_string_put(mlx->inst, mlx->wnd, 144, 524, CLR_WHITE, "->");
 	mlx_string_put(mlx->inst, mlx->wnd, 42, 634, CLR_WHITE, "ALT");
 	mlx_string_put(mlx->inst, mlx->wnd, 139, 634, CLR_WHITE, "CRTL");
-	mlx_string_put(mlx->inst, mlx->wnd, 41, 904, CLR_WHITE, "ESC");
-	mlx_string_put(mlx->inst, mlx->wnd, 86, 904, CLR_WHITE, "Quit");
+	mlx_string_put(mlx->inst, mlx->wnd, 41, 914, CLR_WHITE, "ESC");
+	mlx_string_put(mlx->inst, mlx->wnd, 86, 914, CLR_WHITE, "Quit");
 }
 
 static void	draw_hud_integer(t_mlx *fdf, int x, int y, int i)
@@ -109,6 +110,8 @@ void	draw_hud_static_text(t_mlx *mlx)
 	draw_hud_integer(mlx, 80, 830, mlx->data.org.y);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 850, CLR_WHITE, Z_OFFSET);
 	draw_hud_integer(mlx, 80, 850, -(mlx->data.z_scaling - 7));
+	mlx_string_put(mlx->inst, mlx->wnd, 5, 870, CLR_WHITE, GRADIENT);
+	mlx_string_put(mlx->inst, mlx->wnd, 103, 870, CLR_WHITE, TO);
 	draw_hud_title(mlx, 970, CLR_WHITE, ABOUT);
 	draw_hud_title(mlx, 990, CLR_YELLOW, ABOUT_2);
 	draw_key_static_text(mlx);

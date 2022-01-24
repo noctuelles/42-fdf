@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/23 11:16:09 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/24 15:29:52 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	key_handler(int keycode, t_mlx *fdf)
 		fdf->data.tile_width = 1;
 	if (fdf->data.z_scaling < 1)
 		fdf->data.z_scaling = 1;
-	mlx_clear_window(fdf->inst, fdf->wnd);
 	wipe_render_scene(fdf);
 	apply_isometric(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);

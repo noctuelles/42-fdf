@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/23 11:36:40 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/24 14:11:53 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,6 @@ void	delete_mlx(t_mlx *mlx)
 	}
 	if (mlx->data.vertices)
 		free_vertices(mlx->data.vertices);
+	free(mlx->data.gradient);
 	free(mlx);
 }
