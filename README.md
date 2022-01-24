@@ -22,7 +22,7 @@ regard, all optimisation provided by the **-O3** flag is enable.
 
 Learn more about optimisation [here](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html).
 ## Future improvements and features
-- [ ] Color gradients based on the altitudes.
+- [x] Color gradients based on the altitudes.
 - [ ] Better rotation and zoom : zooming in the middle of the rendering scene
 instead of the origin. The same applies for the rotation. 
 - [ ] Further optimisation : reducing lag and redundant calculations.
