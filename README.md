@@ -36,12 +36,19 @@ regard, all optimisation provided by the **-O3** flag is enable.
 Learn more about optimisation [here](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html).
 
 	make norm
+
 Will check the norm on the whole project.
+
 	make clean
+
 Clean the objects files.
+
 	make fclean
+
 Clean the executable and the objects files.
+
 	make re
+
 Re-make the executable from scratch.
 ## Future improvements and features
 - [x] Color gradients based on the altitudes.
