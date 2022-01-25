@@ -34,6 +34,11 @@ This project is compiled with the **-Ofast** flag to improve math speed. In this
 regard, all optimisation provided by the **-O3** flag is enable.
 
 Learn more about optimisation [here](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html).
+
+	make norm
+Will check the norm on the whole project.
+
+Others rules are set according to 42's norm.
 ## Future improvements and features
 - [x] Color gradients based on the altitudes.
 - [x] Orthogonal top projection with colors.
