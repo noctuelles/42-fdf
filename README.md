@@ -23,10 +23,11 @@ regard, all optimisation provided by the **-O3** flag is enable.
 Learn more about optimisation [here](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html).
 ## Future improvements and features
 - [x] Color gradients based on the altitudes.
-- [ ] Better rotation and zoom : zooming in the middle of the rendering scene
-instead of the origin. The same applies for the rotation. 
+- [x] Orthogonal top projection with colors.
+- [ ] Better rotation and zoom : zooming in the middle of the rendering scene.
+instead of the origin. The same applies for the rotation.
 - [ ] Further optimisation : reducing lag and redundant calculations.
-- [ ] Hiding H.U.D
+- [ ] Hiding H.U.D.
 - [x] Auto-centering and auto-scaling of the map.
 - [x] Z Scaling of the map.
 - [x] Rotation on all axis.
