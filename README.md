@@ -21,6 +21,8 @@ Old but gold.
 
 If you're not french or find the website shitty (it his in some way), you can
 download their [book](https://archive.org/details/OperaMagistris) for free (5,834 pages, be ready..).
+
+Good luck !
 ## Compiling & running
 	make fdf && ./fdf <your_maps>
 It will compile my [libft](https://github.com/noctuelles/42-libft) and the [MiniLibX](https://github.com/42Paris/minilibx-linux).
