@@ -1,6 +1,7 @@
 # 42-fdf
 Discovering the wonderful world of computer graphics rendering a wireframe map.
-![Wireframe](/assets/images/window.png)
+![Wireframe0](/assets/images/window0.png)
+![Wireframe1](/assets/images/window1.png)
 ## Explanations and documentations.
 *Under Construction*
 
