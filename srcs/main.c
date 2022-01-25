@@ -6,12 +6,13 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/25 14:34:52 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 16:11:44 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "mlx.h"
+#include <stdlib.h>
 
 static int	setup_window(t_mlx *fdf)
 {
@@ -27,6 +28,12 @@ static int	setup_window(t_mlx *fdf)
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	draw_hud_static_text(fdf);
 	return (0);
+}
+
+static void	destroy(t_mlx *fdf)
+{
+	delete_mlx(fdf);
+	exit(0);
 }
 
 int	main(int argc, char **argv)
@@ -45,6 +52,7 @@ int	main(int argc, char **argv)
 	if (setup_window(fdf) != 0)
 		return (raise_errors(fdf, ERR_MALLOC));
 	mlx_hook(fdf->wnd, 2, 1L << 0, &key_handler, fdf);
+	mlx_hook(fdf->wnd, 17, 1L << 0, (int (*)()) destroy, fdf);
 	mlx_loop(fdf->inst);
 	delete_mlx(fdf);
 	return (0);
