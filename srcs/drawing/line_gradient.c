@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 15:36:22 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/24 15:39:08 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 14:36:36 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,66 +14,62 @@
 #include <stdlib.h>
 
 static void	draw_line_low_g(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
-																uint32_t *color)
+		uint32_t *gradient)
 {
 	t_vec2d		delta;
-	int			d;
-	int			sign;
-	int			i;
+	t_bresenham	info;
 
 	delta.x = p2.x - p1.x;
 	delta.y = p2.y - p1.y;
-	sign = 1;
-	i = 0;
+	info.sign = 1;
+	info.i = 0;
 	if (delta.y < 0)
 	{
-		sign = -1;
+		info.sign = -1;
 		delta.y = -delta.y;
 	}
-	d = 2 * delta.y - delta.x;
+	info.d = 2 * delta.y - delta.x;
 	while (p1.x < p2.x)
 	{
-		put_pixel(mlx, p1.x++, p1.y, color[i]);
-		if (d < 0)
-			d = d + 2 * delta.y;
+		put_pixel(mlx, p1.x++, p1.y, gradient[info.i]);
+		if (info.d < 0)
+			info.d = info.d + 2 * delta.y;
 		else
 		{
-			p1.y += sign;
-			d = d + 2 * (delta.y - delta.x);
+			p1.y += info.sign;
+			info.d = info.d + 2 * (delta.y - delta.x);
 		}
-		i++;
+		info.i++;
 	}
 }
 
 static void	draw_line_high_g(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
-																uint32_t *color)
+		uint32_t *gradient)
 {
-	t_vec2d	delta;
-	int		d;
-	int		sign;
-	int		i;
+	t_vec2d		delta;
+	t_bresenham	info;
 
 	delta.x = p2.x - p1.x;
 	delta.y = p2.y - p1.y;
-	sign = 1;
-	i = 0;
+	info.sign = 1;
+	info.i = 0;
 	if (delta.x < 0)
 	{
-		sign = -1;
+		info.sign = -1;
 		delta.x = -delta.x;
 	}
-	d = 2 * delta.x - delta.y;
+	info.d = 2 * delta.x - delta.y;
 	while (p1.y < p2.y)
 	{
-		put_pixel(mlx, p1.x, p1.y++, color[i]);
-		if (d < 0)
-			d = d + 2 * delta.x;
+		put_pixel(mlx, p1.x, p1.y++, gradient[info.i]);
+		if (info.d < 0)
+			info.d = info.d + 2 * delta.x;
 		else
 		{
-			p1.x += sign;
-			d = d + (2 * (delta.x - delta.y));
+			p1.x += info.sign;
+			info.d = info.d + (2 * (delta.x - delta.y));
 		}
-		i++;
+		info.i++;
 	}
 }
 
@@ -84,10 +80,7 @@ static inline void	gen_gradient_n_draw_low(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 
 	gradient = get_color_gradient(p1.color, p2.color, len);
 	if (!gradient)
-	{
-		exit(ERR_MALLOC);
-		delete_mlx(mlx);
-	}
+		exit(raise_errors(mlx, ERR_MALLOC));
 	draw_line_low_g(mlx, p1, p2, gradient);
 	free(gradient);
 }
@@ -99,10 +92,7 @@ static inline void	gen_gradient_n_draw_high(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 
 	gradient = get_color_gradient(p1.color, p2.color, len);
 	if (!gradient)
-	{
-		exit(ERR_MALLOC);
-		delete_mlx(mlx);
-	}
+		exit(raise_errors(mlx, ERR_MALLOC));
 	draw_line_high_g(mlx, p1, p2, gradient);
 	free(gradient);
 }

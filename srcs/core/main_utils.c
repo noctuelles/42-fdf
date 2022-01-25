@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/24 15:29:52 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 14:37:18 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,36 @@
 #include "mlx.h"
 #include <stdlib.h>
 
+static void	key_handler_change_proj(int keycode, t_mlx *fdf)
+{
+	if (keycode == K_P && fdf->data.projection_type == PROJ_ISO)
+	{
+		fdf->data.saved_gamma = fdf->data.gamma;
+		fdf->data.org.x -= 300;
+		fdf->data.projection_type = PROJ_ORTHO;
+	}
+	else if (keycode == K_P && fdf->data.projection_type == PROJ_ORTHO)
+	{
+		fdf->data.gamma = fdf->data.saved_gamma;
+		fdf->data.org.x += 300;
+		fdf->data.projection_type = PROJ_ISO;
+	}
+}
+
 static void	key_handler_do_rotation(int keycode, t_mlx *fdf)
 {
-	if (keycode == K_RIGHT)
-		fdf->data.alpha += 0.05;
-	else if (keycode == K_LEFT)
-		fdf->data.alpha -= 0.05;
-	else if (keycode == K_UP)
-		fdf->data.beta += 0.05;
-	else if (keycode == K_DOWN)
-		fdf->data.beta -= 0.05;
-	else if (keycode == K_ALTGR)
+	if (fdf->data.projection_type == PROJ_ISO)
+	{
+		if (keycode == K_RIGHT)
+			fdf->data.alpha += 0.05;
+		else if (keycode == K_LEFT)
+			fdf->data.alpha -= 0.05;
+		else if (keycode == K_UP)
+			fdf->data.beta += 0.05;
+		else if (keycode == K_DOWN)
+			fdf->data.beta -= 0.05;
+	}
+	if (keycode == K_ALTGR)
 		fdf->data.gamma += 0.05;
 	else if (keycode == K_CRTL)
 		fdf->data.gamma -= 0.05;
@@ -45,11 +64,9 @@ static void	key_handler_do(int keycode, t_mlx *fdf)
 		fdf->data.org.x -= 8;
 	else if (keycode == K_D)
 		fdf->data.org.x += 8;
-	else if (keycode == K_PGUP)
-	{
+	else if (keycode == K_PGUP && fdf->data.projection_type == PROJ_ISO)
 		fdf->data.z_scaling -= 0.5;
-	}
-	else if (keycode == K_PGDW)
+	else if (keycode == K_PGDW && fdf->data.projection_type == PROJ_ISO)
 		fdf->data.z_scaling += 0.5;
 	else if (keycode == K_ESC)
 	{
@@ -57,6 +74,7 @@ static void	key_handler_do(int keycode, t_mlx *fdf)
 		exit(0);
 	}
 	key_handler_do_rotation(keycode, fdf);
+	key_handler_change_proj(keycode, fdf);
 }
 
 int	key_handler(int keycode, t_mlx *fdf)
@@ -70,7 +88,10 @@ int	key_handler(int keycode, t_mlx *fdf)
 	if (fdf->data.z_scaling < 1)
 		fdf->data.z_scaling = 1;
 	wipe_render_scene(fdf);
-	apply_isometric(fdf);
+	if (fdf->data.projection_type == PROJ_ISO)
+		apply_isometric(fdf);
+	else
+		apply_ortho(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	draw_hud_static_text(fdf);
 	return (keycode);

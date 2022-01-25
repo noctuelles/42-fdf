@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/24 14:11:53 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 14:34:17 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,6 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 	mlx->data.z_scaling = 7;
 	setup_angle(&mlx->data);
 	return (mlx);
-}
-
-uint32_t	get_trgb(uint8_t t, uint8_t r, uint8_t g, uint8_t b)
-{
-	return (t << 24 | r << 16 | g << 8 | b);
 }
 
 void	wipe_render_scene(t_mlx *fdf)

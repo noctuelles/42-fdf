@@ -6,76 +6,97 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/24 16:37:19 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 14:34:18 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
+/* Headers */
+
 # include "libft.h"
 # include <stdint.h>
-/* toto */
+
+/* Program constant */
+
 # define START_COLOR 0xff053c44
 # define END_COLOR 0xff00ff00
 
 # define WIDTH 1700
 # define HEIGHT 1000
 
+/* Isometric angle in radian */
+
 # define ANGLE_ISO 0.463646716
 
-# define HUD_TXT "Wifreframe viewer"
-# define TRANSLATION_TXT "Translate map"
-# define MAP_ZOOM "Zoom (+ / -)"
-# define Z_FACTOR "Z Factor (+ / -)"
-# define ROTATE_MAP "Rotate map (X, Y)"
-# define OTHERS "Rotate map (Z)"
-# define MAP_INFO "Map informations"
-# define VERTICES  "Vertices  :" 
-# define FILE_NAME "File name :"
-# define TILE_SIZE "Tile size :"
-# define ORG_X     "Org. (x)  :"
-# define ORG_Y     "Org. (y)  :"
-# define Z_OFFSET  "Z offset  :"
-# define GRADIENT  "Gradient  :"
-# define TO        "to"
-# define ABOUT "42 FdF project"
-# define ABOUT_2 "plouvel (plouvel@student.42.fr)"
+/* Window strings */
 
-# define CLR_WHITE 0xffffffff
-# define CLR_YELLOW 0xffffff00
-# define CLR_DARK_GREY 0xff303030
+# define HUD_TXT         "Wifreframe viewer"
+# define TRANSLATION_TXT "Translate map"
+# define MAP_ZOOM        "Zoom (+ / -)"
+# define Z_FACTOR        "Z Factor (+ / -)"
+# define ROTATE_MAP      "Rotate map (X, Y)"
+# define OTHERS          "Rotate map (Z)"
+# define MAP_INFO        "Map informations"
+# define VERTICES        "Vertices  :" 
+# define FILE_NAME       "File name :"
+# define TILE_SIZE       "Tile size :"
+# define ORG_X           "Org. (x)  :"
+# define ORG_Y           "Org. (y)  :"
+# define Z_OFFSET        "Z offset  :"
+# define GRADIENT        "Gradient  :"
+# define TO              "to"
+# define ABOUT           "42 FdF V1.0"
+# define ABOUT_2         "plouvel (plouvel@student.42.fr)"
+
+/* Basic color */
+
+# define CLR_WHITE      0xffffffff
+# define CLR_YELLOW     0xffffff00
+# define CLR_DARK_GREY  0xff303030
 # define CLR_LIGHT_GREY 0xffc0c0c0
 
-# define K_ESC 0xff1b
+/* Keybindings */
 
-# define K_PLUS 0x3d
+# define K_ESC   0xff1b
+
+# define K_PLUS  0x3d
 # define K_MINUS 0x2d
 
-# define K_W 0x77
-# define K_A 0x61
-# define K_S 0x73
-# define K_D 0x64
+# define K_P     0x70
 
-# define K_UP 0xff52
-# define K_DOWN 0xff54
-# define K_LEFT 0xff51
+# define K_W     0x77
+# define K_A     0x61
+# define K_S     0x73
+# define K_D     0x64
+
+# define K_UP    0xff52
+# define K_DOWN  0xff54
+# define K_LEFT  0xff51
 # define K_RIGHT 0xff53
 
-# define K_PGUP 0xff55
-# define K_PGDW 0xff56
+# define K_PGUP  0xff55
+# define K_PGDW  0xff56
 
 # define K_ALTGR 0xfe03
-# define K_CRTL 0xffe4
+# define K_CRTL  0xffe4
+
+/* Misc */
 
 # define FATAL "{1;31}[FATAL]{0} : "
 # define WARNING "{1;93}[WARNING]{0} : "
 # define ERR_MALLOC 1
-# define STR_ERR_MALLOC "Cannot allocate memory."
 # define ERR_ARGC 2
-# define STR_ERR_ARGC "Invalid numbers of argument.\nUsage : ./fdf <map_path>\n"
 # define ERR_MAP 3
+# define STR_ERR_MALLOC "Cannot allocate memory."
+# define STR_ERR_ARGC "Invalid numbers of argument.\nUsage : ./fdf <map_path>\n"
 # define STR_ERR_MAP "Error occur parsing your map. Maybe check file path ?\n"
+
+/* Projection macro */
+
+# define PROJ_ISO 0
+# define PROJ_ORTHO 1
 
 typedef struct s_vec3d
 {
@@ -84,39 +105,25 @@ typedef struct s_vec3d
 	int	z;
 }				t_vec3d;
 
-typedef struct s_color_f
-{
-	float	red;
-	float	green;
-	float	blue;
-}				t_color_f;
-
-typedef struct s_color
-{
-	int	red;
-	int	green;
-	int	blue;
-}				t_color;
-
 typedef struct s_vec2d
 {
 	int			x;
 	int			y;
-	int			z;
 	uint32_t	color;
 }				t_vec2d;
-
-typedef struct s_org_data
-{
-	t_vec2d	org;
-	size_t	tile_width;
-}				t_org_data;
 
 typedef struct s_key
 {
 	int		x;
 	int		y;
 }				t_key;
+
+typedef struct s_bresenham
+{
+	int	d;
+	int	sign;
+	int	i;
+}				t_bresenham;
 
 typedef struct s_mlx_data
 {
@@ -144,8 +151,10 @@ typedef struct s_mlx_data
 	double		cos_gamma;
 	double		cos_theta;
 	double		sin_theta;
+	double		saved_gamma;
 	int			min_z;
 	int			max_z;
+	int			projection_type;
 }				t_mlx_data;
 
 typedef struct s_mlx
@@ -168,7 +177,6 @@ int						**parse_map(char *path, t_mlx_data *data);
 
 t_mlx					*new_mlx(uint16_t width, uint16_t height,
 							const char *title);
-uint32_t				get_trgb(uint8_t t, uint8_t r, uint8_t g, uint8_t b);
 void					wipe_render_scene(t_mlx *fdf);
 void					delete_mlx(t_mlx *mlx);
 
@@ -176,24 +184,36 @@ void					delete_mlx(t_mlx *mlx);
 
 void					draw_line(t_mlx *mlx, t_vec2d p1, t_vec2d p2,
 							uint32_t color);
+
+/* line_gradient.c */
+
 void					draw_line_gradient(t_mlx *mlx, t_vec2d p1, t_vec2d p2);
 
 /* vertices.c */
 
 int						**alloc_vertices(size_t nbr_lines);
 void					free_vertices(int **vertices);
-int						**fill_vertices(int fd, t_mlx_data *data);
+int						fill_vertices(int fd, t_mlx_data *data);
 
 /* file_utils.c */
 
 char					*read_line(int fd, char **line);
 size_t					get_file_nbr_lines(const char *path);
 
+/* gradient.c */
+
+uint32_t				*get_color_gradient(uint32_t start_color,
+							uint32_t end_color, size_t size);
+
 /* render.c */
 
 t_vec2d					transform_isometric(size_t tile_width, t_vec2d org,
 							t_vec3d vec3d, t_mlx_data *data);
 void					apply_isometric(t_mlx *fdf);
+
+/* render_ortho.c */
+
+void					apply_ortho(t_mlx *fdf);
 
 /* render_utils.c */
 
@@ -263,26 +283,4 @@ static inline int	ft_abs(int i)
 		return (-i);
 }
 
-static inline uint32_t R(uint32_t x)
-{
-	return ((x >> 16) & 0xff);
-}
-
-static inline uint32_t G(uint32_t x)
-{
-	return ((x >> 8) & 0xff);
-}
-
-static inline uint32_t B(uint32_t x)
-{
-	return (x & 0xff);
-}
-
-static inline uint32_t	NEW_COLOR(uint32_t r, uint32_t g, uint32_t b)
-{
-	return (0xff << 24 | r << 16 | g << 8 | b);
-}
-
-uint32_t	*get_color_gradient(uint32_t start_color, uint32_t end_color, size_t size);
-void	draw_line_gradient(t_mlx *mlx, t_vec2d p1, t_vec2d p2);
 #endif

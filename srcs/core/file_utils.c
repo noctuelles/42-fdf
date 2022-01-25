@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 17:17:09 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/21 15:26:52 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 14:17:18 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ static ssize_t	read_fd(int fd, char *buffer, ssize_t *rdead, size_t index)
 {
 	if (index == 0)
 		*rdead = read(fd, buffer, 4096);
-	if (*rdead < 0)
-		return (0);
 	return (*rdead);
 }
 
@@ -30,7 +28,8 @@ char	*read_line(int fd, char **line)
 	return (*line);
 }
 
-/* Instead of using get_next_line to count line, i use a dedicated fonction */
+/* Instead of using get_next_line to count line, i use a dedicated fonction,
+ * Which is more efficient (no malloc..).*/
 
 size_t	get_file_nbr_lines(const char *path)
 {
@@ -55,6 +54,8 @@ size_t	get_file_nbr_lines(const char *path)
 		else
 			i = 0;
 	}
+	if (rdead == -1)
+		return (0);
 	close(fd);
 	return (nbr_lines);
 }

@@ -6,13 +6,11 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:14:14 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/18 15:23:08 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 14:19:40 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include "get_next_line.h"
-#include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -33,8 +31,7 @@ int	**parse_map(char *path, t_mlx_data *data)
 	data->vertices = alloc_vertices(data->nbr_lines);
 	if (!data->vertices)
 		return (NULL);
-	data->vertices = fill_vertices(fd, data);
-	if (!data->vertices)
+	if (fill_vertices(fd, data) == -1)
 	{
 		free_vertices(data->vertices);
 		return (NULL);

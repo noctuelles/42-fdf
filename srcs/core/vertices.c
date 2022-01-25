@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 14:49:33 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/24 15:53:32 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 14:54:46 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static void	free_values(char **values)
+static int	free_values(char **values)
 {
 	size_t	i;
 
@@ -22,6 +22,7 @@ static void	free_values(char **values)
 	while (values[i] != NULL)
 		free(values[i++]);
 	free(values);
+	return (-1);
 }
 
 static size_t	get_elems_per_line(char **values)
@@ -34,27 +35,29 @@ static size_t	get_elems_per_line(char **values)
 	return (i);
 }
 
-static int	**fill_vertices_from_values(t_mlx_data *data, char **values, int y)
+static int	fill_vertices_from_values(t_mlx_data *data, char **values, int y)
 {
 	int	x;
 
 	x = 0;
 	data->vertices[y] = (int *) malloc(data->elems_line * sizeof(int));
 	if (!data->vertices[y])
-	{
-		free_values(values);
-		return (NULL);
-	}
+		return (free_values(values));
 	while (values[x] != NULL)
 	{
-		data->vertices[y][x] = ft_atoi(values[x]);
-		if(data->vertices[y][x] > data->max_z)
-			data->max_z = data->vertices[y][x];
-		else if(data->vertices[y][x] < data->min_z)
-			data->min_z = data->vertices[y][x];
+		if (values[x][0] != ' ' && values[x][0] != '\n')
+		{
+			if (!ft_isdigit(values[x][0]) && values[x][0] != '-')
+				return (free_values(values));
+			data->vertices[y][x] = ft_atoi(values[x]);
+			if (data->vertices[y][x] > data->max_z)
+				data->max_z = data->vertices[y][x];
+			else if (data->vertices[y][x] < data->min_z)
+				data->min_z = data->vertices[y][x];
+		}
 		x++;
 	}
-	return (data->vertices);
+	return (0);
 }
 
 static void	set_edges(t_mlx_data *data)
@@ -70,7 +73,7 @@ static void	set_edges(t_mlx_data *data)
 	data->edges[2].z = data->vertices[0][data->edges[2].x];
 }
 
-int	**fill_vertices(int fd, t_mlx_data *data)
+int	fill_vertices(int fd, t_mlx_data *data)
 {
 	char	*line;
 	char	**values;
@@ -80,17 +83,16 @@ int	**fill_vertices(int fd, t_mlx_data *data)
 	while (read_line(fd, &line))
 	{
 		values = ft_split(line, ' ');
+		free(line);
 		if (!values)
-			return (NULL);
+			return (-1);
 		if (data->elems_line == 0)
 			data->elems_line = get_elems_per_line(values);
-		data->vertices = fill_vertices_from_values(data, values, y);
-		if (!data->vertices)
-			return (NULL);
+		if (fill_vertices_from_values(data, values, y) == -1)
+			return (-1);
 		free_values(values);
-		free(line);
 		y++;
 	}
 	set_edges(data);
-	return (data->vertices);
+	return (0);
 }

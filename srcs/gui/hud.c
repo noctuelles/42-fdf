@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 18:50:11 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/24 15:53:02 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 13:21:02 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ static void	draw_key_static_text(t_mlx *mlx)
 	mlx_string_put(mlx->inst, mlx->wnd, 144, 524, CLR_WHITE, "->");
 	mlx_string_put(mlx->inst, mlx->wnd, 42, 634, CLR_WHITE, "ALT");
 	mlx_string_put(mlx->inst, mlx->wnd, 139, 634, CLR_WHITE, "CRTL");
-	mlx_string_put(mlx->inst, mlx->wnd, 41, 914, CLR_WHITE, "ESC");
-	mlx_string_put(mlx->inst, mlx->wnd, 86, 914, CLR_WHITE, "Quit");
+	mlx_string_put(mlx->inst, mlx->wnd, 41, 924, CLR_WHITE, "ESC");
+	mlx_string_put(mlx->inst, mlx->wnd, 148, 924, CLR_WHITE, "P");
+	mlx_string_put(mlx->inst, mlx->wnd, 40, 893, CLR_WHITE, "Quit");
+	mlx_string_put(mlx->inst, mlx->wnd, 123, 893, CLR_WHITE, "Iso/Ortho");
 }
 
 static void	draw_hud_integer(t_mlx *fdf, int x, int y, int i)

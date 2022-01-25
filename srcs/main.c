@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/24 15:29:54 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 14:34:52 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int argc, char **argv)
 	fdf->data.vertices = parse_map(argv[1], &fdf->data);
 	if (!fdf->data.vertices)
 		return (raise_errors(fdf, ERR_MAP));
-	if(setup_window(fdf) != 0)
+	if (setup_window(fdf) != 0)
 		return (raise_errors(fdf, ERR_MALLOC));
 	mlx_hook(fdf->wnd, 2, 1L << 0, &key_handler, fdf);
 	mlx_loop(fdf->inst);
