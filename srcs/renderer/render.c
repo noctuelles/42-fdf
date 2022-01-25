@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:05:35 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/25 13:30:55 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/25 17:30:48 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static void	rotate(t_vec3d *vec, t_mlx_data *data)
 	vec->x = old.x * data->cos_beta + vec->z * data->sin_beta;
 	vec->z = -old.x * data->sin_beta + vec->z * data->cos_beta;
 	old = *vec;
-	vec->x = vec->x * data->cos_gamma - vec->y * data->sin_gamma;
-	vec->y = vec->x * data->sin_gamma + vec->y * data->cos_gamma;
+	vec->x = old.x * data->cos_gamma - old.y * data->sin_gamma;
+	vec->y = old.x * data->sin_gamma + old.y * data->cos_gamma;
 }
 
 t_vec2d	transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d,
