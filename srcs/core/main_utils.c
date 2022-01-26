@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 17:11:02 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:37:15 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,18 @@ static void	key_handler_do_rotation(int keycode, t_mlx *fdf)
 {
 	if (fdf->data.projection_type == PROJ_ISO)
 	{
-		if (keycode == K_RIGHT)
+		if (keycode == K_UP)
 			fdf->data.alpha += 0.05;
-		else if (keycode == K_LEFT)
-			fdf->data.alpha -= 0.05;
-		else if (keycode == K_UP)
-			fdf->data.beta += 0.05;
 		else if (keycode == K_DOWN)
+			fdf->data.alpha -= 0.05;
+		else if (keycode == K_RIGHT)
+			fdf->data.beta += 0.05;
+		else if (keycode == K_LEFT)
 			fdf->data.beta -= 0.05;
 	}
-	if (keycode == K_ALTGR)
+	if (keycode == K_E)
 		fdf->data.gamma += 0.05;
-	else if (keycode == K_CRTL)
+	else if (keycode == K_R)
 		fdf->data.gamma -= 0.05;
 }
 

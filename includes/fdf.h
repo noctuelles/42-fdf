@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 17:13:25 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:33:39 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@
 # define K_PGUP  0xff55
 # define K_PGDW  0xff56
 
-# define K_ALTGR 0xfe03
-# define K_CRTL  0xffe4
+# define K_R     0x72
+# define K_E     0x65
 
 /* Misc */
 
