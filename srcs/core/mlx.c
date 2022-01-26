@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/25 14:34:17 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 23:44:15 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 #include <math.h>
 #include <stdlib.h>
 
-static void	setup_angle(t_mlx_data *data)
+static int	setup_data(t_mlx_data *data)
 {
+	if (!add_projection(data, ISO, &transform_isometric))
+		return (-1);
+	if (!add_projection(data, ORTHO, &transform_ortho))
+		return (-1);
+	data->z_scaling = 7;
 	data->cos_theta = cos(ANGLE_ISO);
 	data->sin_theta = sin(ANGLE_ISO);
-	data->sin_alpha = sin(data->alpha);
-	data->cos_alpha = cos(data->alpha);
-	data->sin_beta = sin(data->beta);
-	data->cos_beta = cos(data->beta);
-	data->sin_gamma = sin(data->gamma);
-	data->cos_gamma = cos(data->gamma);
+	return (0);
 }
 
 t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
@@ -48,8 +48,8 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 			&mlx->line_len, &mlx->endian);
 	if (!mlx->addr)
 		return (NULL);
-	mlx->data.z_scaling = 7;
-	setup_angle(&mlx->data);
+	if (setup_data(&mlx->data) == -1)
+		return (NULL);
 	return (mlx);
 }
 
@@ -87,6 +87,7 @@ void	delete_mlx(t_mlx *mlx)
 	}
 	if (mlx->data.vertices)
 		free_vertices(mlx->data.vertices);
+	ft_lstclear(&mlx->data.proj, free);
 	free(mlx->data.gradient);
 	free(mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 23:01:03 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 23:58:25 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@
 
 /* Projection macro */
 
-# define PROJ_ISO 0
-# define PROJ_ORTHO 1
+# define ISO   0
+# define ORTHO 1
 
 typedef struct s_vec3d
 {
@@ -128,22 +128,8 @@ typedef struct s_bresenham
 typedef struct s_projection
 {
 	t_vec2d		(*transform)();
-
-}				t_projection;
-
-typedef struct s_mlx_data
-{
-	char		*file_name;
-	int			**vertices;
-	uint32_t	*gradient;
-	t_vec2d		(*transform)();
-	size_t		nbr_vertices;
-	size_t		elems_line;
-	size_t		nbr_lines;
-	int			tile_width;
-	float		z_scaling;
-	t_vec2d		org;
-	t_vec3d		edges[3];
+	int			id;
+	/* Angles for rotation */
 	double		last_alpha;
 	double		alpha;
 	double		sin_alpha;
@@ -156,16 +142,34 @@ typedef struct s_mlx_data
 	double		gamma;
 	double		sin_gamma;
 	double		cos_gamma;
-	double		cos_theta;
-	double		sin_theta;
-	double		saved_gamma;
-	int			min_z;
-	int			max_z;
-	int			projection_type;
+}				t_projection;
+
+typedef struct s_mlx_data
+{
+	/* General data info.*/
+	char			*file_name;
+	int				**vertices;
+	uint32_t		*gradient;
+	t_projection	*curr_proj;
+	t_list			*proj;
+	/* Map related info. */
+	size_t			nbr_vertices;
+	size_t			elems_line;
+	size_t			nbr_lines;
+	int				tile_width;
+	float			z_scaling;
+	t_vec2d			org;
+	t_vec3d			edges[3];
+	int				min_z;
+	int				max_z;
+	/* Isometric angles cosinus and sinus. */
+	double			cos_theta;
+	double			sin_theta;
 }				t_mlx_data;
 
 typedef struct s_mlx
 {
+	t_mlx_data	data;
 	void		*inst;
 	void		*wnd;
 	void		*img;
@@ -173,7 +177,6 @@ typedef struct s_mlx
 	int			bpp;
 	int			line_len;
 	int			endian;
-	t_mlx_data	data;
 }				t_mlx;
 
 /* parsing.c */
@@ -225,15 +228,16 @@ t_vec2d					transform_isometric(size_t tile_width, t_vec2d org,
 t_vec2d					transform_ortho(size_t tile_width, t_vec2d org,
 							t_vec3d vec3d, t_mlx_data *data);
 
-/* render_ortho.c */
-
-void					apply_ortho(t_mlx *fdf);
-
 /* render_utils.c */
-t_vec2d					get_center_iso(t_mlx_data *data, size_t tile_width,
-							t_vec2d org_hud);
-size_t					setup_map(t_mlx_data *data, t_vec3d medges[4],
-							t_vec2d org_hud);
+
+t_vec2d					get_center(t_mlx_data *data, size_t tile_width);
+size_t					setup_map(t_mlx_data *data, t_vec3d medges[4]);
+
+/* projection.c */
+
+t_list					*add_projection(t_mlx_data *data, int id,
+							t_vec2d (*transform)());
+void					set_projection(t_mlx_data *data, int id);
 
 /* primitives.c */
 

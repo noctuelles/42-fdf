@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 22:54:37 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 23:57:49 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,36 +18,32 @@
 
 static void	key_handler_change_proj(int keycode, t_mlx *fdf)
 {
-	if (keycode == K_P && fdf->data.projection_type == PROJ_ISO)
+	if (keycode == K_P && fdf->data.curr_proj->id == ISO)
 	{
-		fdf->data.saved_gamma = fdf->data.gamma;
 		fdf->data.org.x -= 300;
-		fdf->data.projection_type = PROJ_ORTHO;
-		fdf->data.transform = &transform_ortho;
+		set_projection(&fdf->data, ORTHO);
 	}
-	else if (keycode == K_P && fdf->data.projection_type == PROJ_ORTHO)
+	else if (keycode == K_P && fdf->data.curr_proj->id == ORTHO)
 	{
-		fdf->data.gamma = fdf->data.saved_gamma;
 		fdf->data.org.x += 300;
-		fdf->data.projection_type = PROJ_ISO;
-		fdf->data.transform = &transform_isometric;
+		set_projection(&fdf->data, ISO);
 	}
 }
 
 static void	key_handler_do_rotation(int keycode, t_mlx *fdf)
 {
 	if (keycode == K_UP)
-		fdf->data.alpha += 0.05;
+		fdf->data.curr_proj->alpha += 0.05;
 	else if (keycode == K_DOWN)
-		fdf->data.alpha -= 0.05;
+		fdf->data.curr_proj->alpha -= 0.05;
 	else if (keycode == K_RIGHT)
-		fdf->data.beta += 0.05;
+		fdf->data.curr_proj->beta += 0.05;
 	else if (keycode == K_LEFT)
-		fdf->data.beta -= 0.05;
+		fdf->data.curr_proj->beta -= 0.05;
 	if (keycode == K_E)
-		fdf->data.gamma += 0.05;
+		fdf->data.curr_proj->gamma += 0.05;
 	else if (keycode == K_R)
-		fdf->data.gamma -= 0.05;
+		fdf->data.curr_proj->gamma -= 0.05;
 }
 
 static void	key_handler_do(int keycode, t_mlx *fdf)
@@ -64,9 +60,9 @@ static void	key_handler_do(int keycode, t_mlx *fdf)
 		fdf->data.org.x -= 8;
 	else if (keycode == K_D)
 		fdf->data.org.x += 8;
-	else if (keycode == K_PGUP && fdf->data.projection_type == PROJ_ISO)
+	else if (keycode == K_PGUP && fdf->data.curr_proj->id == ISO)
 		fdf->data.z_scaling -= 0.5;
-	else if (keycode == K_PGDW && fdf->data.projection_type == PROJ_ISO)
+	else if (keycode == K_PGDW && fdf->data.curr_proj->id == ISO)
 		fdf->data.z_scaling += 0.5;
 	else if (keycode == K_ESC)
 	{
@@ -81,20 +77,18 @@ int	key_handler(int keycode, t_mlx *fdf)
 {
 	t_vec2d	curr_center;
 	t_vec2d	future_center;
-	t_vec2d	org_hud;
 
-	set_vec2d(&org_hud, 200, 0);
-	curr_center = get_center_iso(&fdf->data, fdf->data.tile_width, org_hud);
-	fdf->data.last_alpha = fdf->data.alpha;
-	fdf->data.last_beta = fdf->data.beta;
-	fdf->data.last_gamma = fdf->data.gamma;
+	curr_center = get_center(&fdf->data, fdf->data.tile_width);
+	fdf->data.curr_proj->last_alpha = fdf->data.curr_proj->alpha;
+	fdf->data.curr_proj->last_beta = fdf->data.curr_proj->beta;
+	fdf->data.curr_proj->last_gamma = fdf->data.curr_proj->gamma;
 	key_handler_do(keycode, fdf);
 	if (fdf->data.tile_width < 1)
 		fdf->data.tile_width = 1;
 	if (fdf->data.z_scaling < 1)
 		fdf->data.z_scaling = 1;
 	wipe_render_scene(fdf);
-	future_center = get_center_iso(&fdf->data, fdf->data.tile_width, org_hud);
+	future_center = get_center(&fdf->data, fdf->data.tile_width);
 	fdf->data.org.x -= future_center.x - curr_center.x;
 	fdf->data.org.y -= future_center.y - curr_center.y;
 	render(fdf);

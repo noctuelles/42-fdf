@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:10:25 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 22:47:30 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 23:56:26 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,21 @@ static int	is_edges_outside(t_vec2d edges[3])
 		return (0);
 }
 
-t_vec2d	get_center_iso(t_mlx_data *data, size_t tile_width,
-																t_vec2d org_hud)
+t_vec2d	get_center(t_mlx_data *data, size_t tile_width)
 {
 	t_vec2d	center;
+	t_vec2d	org_hud;
 	t_vec3d	vec;
 
 	vec.x = data->elems_line / 2;
 	vec.y = data->nbr_lines / 2;
 	vec.z = 0;
-	center = data->transform(tile_width, org_hud, vec, data);
+	set_vec2d(&org_hud, 200, 0);
+	center = data->curr_proj->transform(tile_width, org_hud, vec, data);
 	return (center);
 }
 
-size_t	setup_map(t_mlx_data *data, t_vec3d medges[4], t_vec2d org_hud)
+size_t	setup_map(t_mlx_data *data, t_vec3d medges[4])
 {
 	t_vec2d	edges[3];
 	t_vec2d	old_org;
@@ -48,11 +49,11 @@ size_t	setup_map(t_mlx_data *data, t_vec3d medges[4], t_vec2d org_hud)
 	set_vec2d(&old_org, 0, 0);
 	while (tile_width < 2000)
 	{
-		iso_center = get_center_iso(data, tile_width, org_hud);
+		iso_center = get_center(data, tile_width);
 		set_vec2d(&data->org, 200 + (950 - iso_center.x), 500 - iso_center.y);
-		edges[0] = data->transform(tile_width, data->org, medges[0], data);
-		edges[1] = data->transform(tile_width, data->org, medges[1], data);
-		edges[2] = data->transform(tile_width, data->org, medges[2], data);
+		edges[0] = data->curr_proj->transform(tile_width, data->org, medges[0], data);
+		edges[1] = data->curr_proj->transform(tile_width, data->org, medges[1], data);
+		edges[2] = data->curr_proj->transform(tile_width, data->org, medges[2], data);
 		if (is_edges_outside(edges))
 		{
 			if (old_org.x != 0 && old_org.y != 0)

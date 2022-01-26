@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:05:35 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 22:51:29 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 23:45:10 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,23 @@
 
 void	compute_angle(t_mlx_data *data)
 {
-	if (data->last_alpha != data->alpha)
+	if (data->curr_proj->last_alpha != data->curr_proj->alpha)
 	{
-		data->sin_alpha = sin(data->alpha);
-		data->cos_alpha = cos(data->alpha);
-		data->last_alpha = data->alpha;
+		data->curr_proj->sin_alpha = sin(data->curr_proj->alpha);
+		data->curr_proj->cos_alpha = cos(data->curr_proj->alpha);
+		data->curr_proj->last_alpha = data->curr_proj->alpha;
 	}
-	else if (data->last_beta != data->beta)
+	else if (data->curr_proj->last_beta != data->curr_proj->beta)
 	{
-		data->sin_beta = sin(data->beta);
-		data->cos_beta = cos(data->beta);
-		data->last_alpha = data->beta;
+		data->curr_proj->sin_beta = sin(data->curr_proj->beta);
+		data->curr_proj->cos_beta = cos(data->curr_proj->beta);
+		data->curr_proj->last_alpha = data->curr_proj->beta;
 	}
-	else if (data->last_gamma != data->gamma)
+	else if (data->curr_proj->last_gamma != data->curr_proj->gamma)
 	{
-		data->sin_gamma = sin(data->gamma);
-		data->cos_gamma = cos(data->gamma);
-		data->last_gamma = data->gamma;
+		data->curr_proj->sin_gamma = sin(data->curr_proj->gamma);
+		data->curr_proj->cos_gamma = cos(data->curr_proj->gamma);
+		data->curr_proj->last_gamma = data->curr_proj->gamma;
 	}
 }
 
@@ -40,13 +40,19 @@ void	rotate(t_vec3d *vec, t_mlx_data *data)
 	t_vec3d	old;
 
 	old = *vec;
-	vec->y = old.y * data->cos_alpha + old.z * data->sin_alpha;
-	vec->z = -old.y * data->sin_alpha + old.z * data->cos_alpha;
-	vec->x = old.x * data->cos_beta + vec->z * data->sin_beta;
-	vec->z = -old.x * data->sin_beta + vec->z * data->cos_beta;
+	vec->y = old.y * data->curr_proj->cos_alpha
+		+ old.z * data->curr_proj->sin_alpha;
+	vec->z = -old.y * data->curr_proj->sin_alpha
+		+ old.z * data->curr_proj->cos_alpha;
+	vec->x = old.x * data->curr_proj->cos_beta
+		+ vec->z * data->curr_proj->sin_beta;
+	vec->z = -old.x * data->curr_proj->sin_beta
+		+ vec->z * data->curr_proj->cos_beta;
 	old = *vec;
-	vec->x = old.x * data->cos_gamma - old.y * data->sin_gamma;
-	vec->y = old.x * data->sin_gamma + old.y * data->cos_gamma;
+	vec->x = old.x * data->curr_proj->cos_gamma
+		- old.y * data->curr_proj->sin_gamma;
+	vec->y = old.x * data->curr_proj->sin_gamma
+		+ old.y * data->curr_proj->cos_gamma;
 }
 
 static inline void	compute_n_draw(t_mlx *fdf, t_vec2d p1, int x, int y)
@@ -55,8 +61,8 @@ static inline void	compute_n_draw(t_mlx *fdf, t_vec2d p1, int x, int y)
 	t_vec2d	p2;
 
 	set_vec3d(&vec3d, x, y, fdf->data.vertices[y][x]);
-	p2 = fdf->data.transform(fdf->data.tile_width, fdf->data.org, vec3d,
-			&fdf->data);
+	p2 = fdf->data.curr_proj->transform(fdf->data.tile_width, fdf->data.org,
+			vec3d, &fdf->data);
 	if ((p2.x > 200 && p2.x <= WIDTH) && (p2.y >= 0 && p2.y <= HEIGHT))
 	{
 		if (p2.color == p1.color)
@@ -80,7 +86,7 @@ void	render(t_mlx *fdf)
 		while (x < fdf->data.elems_line)
 		{
 			set_vec3d(&vec3d, x, y, fdf->data.vertices[y][x]);
-			p1 = fdf->data.transform(fdf->data.tile_width,
+			p1 = fdf->data.curr_proj->transform(fdf->data.tile_width,
 					fdf->data.org, vec3d, &fdf->data);
 			if ((p1.x > 200 && p1.x <= WIDTH) && (p1.y >= 0 && p1.y <= HEIGHT))
 			{

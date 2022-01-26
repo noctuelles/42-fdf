@@ -6,7 +6,7 @@
 #    By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/25 19:17:39 by plouvel           #+#    #+#              #
-#    Updated: 2022/01/26 22:53:08 by plouvel          ###   ########.fr        #
+#    Updated: 2022/01/26 23:45:41 by plouvel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ SRCS		=	core/file_utils.c		\
 				renderer/gradient.c		\
 				renderer/render.c		\
 				renderer/transform.c	\
+				renderer/projection.c	\
 				renderer/render_utils.c	\
 				main.c
 
