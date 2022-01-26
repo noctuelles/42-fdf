@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 17:17:09 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/25 14:17:18 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 15:09:37 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ size_t	get_file_nbr_lines(const char *path)
 	i = 0;
 	nbr_lines = 0;
 	ft_memset(&buffer, 0, 4096);
-	while (read_fd(fd, buffer, &rdead, i))
+	while (read_fd(fd, buffer, &rdead, i) > 0)
 	{
 		while (i < (size_t)(rdead - 1) && buffer[i] != '\n')
 			i++;
