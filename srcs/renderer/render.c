@@ -6,14 +6,14 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:05:35 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/25 17:30:48 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 22:51:29 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <math.h>
 
-static inline void	compute_angle(t_mlx_data *data)
+void	compute_angle(t_mlx_data *data)
 {
 	if (data->last_alpha != data->alpha)
 	{
@@ -35,7 +35,7 @@ static inline void	compute_angle(t_mlx_data *data)
 	}
 }
 
-static void	rotate(t_vec3d *vec, t_mlx_data *data)
+void	rotate(t_vec3d *vec, t_mlx_data *data)
 {
 	t_vec3d	old;
 
@@ -49,36 +49,13 @@ static void	rotate(t_vec3d *vec, t_mlx_data *data)
 	vec->y = old.x * data->sin_gamma + old.y * data->cos_gamma;
 }
 
-t_vec2d	transform_isometric(size_t tile_width, t_vec2d org, t_vec3d vec3d,
-															t_mlx_data *data)
-{
-	t_vec2d	proj;
-
-	vec3d.x *= tile_width;
-	vec3d.y *= tile_width;
-	if (vec3d.z < 0)
-		proj.color = data->gradient[ft_abs(data->min_z) - ft_abs(vec3d.z)];
-	else if (vec3d.z == 0)
-		proj.color = data->gradient[ft_abs(data->min_z)];
-	else
-		proj.color = data->gradient[ft_abs(data->min_z) + (vec3d.z - 1)];
-	vec3d.z *= tile_width / data->z_scaling;
-	compute_angle(data);
-	rotate(&vec3d, data);
-	proj.x = (vec3d.x - vec3d.y) * data->cos_theta;
-	proj.y = -vec3d.z + (vec3d.x + vec3d.y) * data->sin_theta;
-	proj.x += org.x;
-	proj.y += org.y;
-	return (proj);
-}
-
 static inline void	compute_n_draw(t_mlx *fdf, t_vec2d p1, int x, int y)
 {
 	t_vec3d	vec3d;
 	t_vec2d	p2;
 
 	set_vec3d(&vec3d, x, y, fdf->data.vertices[y][x]);
-	p2 = transform_isometric(fdf->data.tile_width, fdf->data.org, vec3d,
+	p2 = fdf->data.transform(fdf->data.tile_width, fdf->data.org, vec3d,
 			&fdf->data);
 	if ((p2.x > 200 && p2.x <= WIDTH) && (p2.y >= 0 && p2.y <= HEIGHT))
 	{
@@ -89,7 +66,7 @@ static inline void	compute_n_draw(t_mlx *fdf, t_vec2d p1, int x, int y)
 	}
 }
 
-void	apply_isometric(t_mlx *fdf)
+void	render(t_mlx *fdf)
 {
 	t_vec3d			vec3d;
 	t_vec2d			p1;
@@ -103,7 +80,7 @@ void	apply_isometric(t_mlx *fdf)
 		while (x < fdf->data.elems_line)
 		{
 			set_vec3d(&vec3d, x, y, fdf->data.vertices[y][x]);
-			p1 = transform_isometric(fdf->data.tile_width,
+			p1 = fdf->data.transform(fdf->data.tile_width,
 					fdf->data.org, vec3d, &fdf->data);
 			if ((p1.x > 200 && p1.x <= WIDTH) && (p1.y >= 0 && p1.y <= HEIGHT))
 			{

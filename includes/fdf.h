@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 17:33:39 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 23:01:03 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,11 +125,18 @@ typedef struct s_bresenham
 	int	i;
 }				t_bresenham;
 
+typedef struct s_projection
+{
+	t_vec2d		(*transform)();
+
+}				t_projection;
+
 typedef struct s_mlx_data
 {
 	char		*file_name;
 	int			**vertices;
 	uint32_t	*gradient;
+	t_vec2d		(*transform)();
 	size_t		nbr_vertices;
 	size_t		elems_line;
 	size_t		nbr_lines;
@@ -207,9 +214,16 @@ uint32_t				*get_color_gradient(uint32_t start_color,
 
 /* render.c */
 
+void					render(t_mlx *fdf);
+void					compute_angle(t_mlx_data *data);
+void					rotate(t_vec3d *vec, t_mlx_data *data);
+
+/* transformation.c */
+
 t_vec2d					transform_isometric(size_t tile_width, t_vec2d org,
 							t_vec3d vec3d, t_mlx_data *data);
-void					apply_isometric(t_mlx *fdf);
+t_vec2d					transform_ortho(size_t tile_width, t_vec2d org,
+							t_vec3d vec3d, t_mlx_data *data);
 
 /* render_ortho.c */
 

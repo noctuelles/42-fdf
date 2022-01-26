@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 17:37:15 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 22:54:37 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,27 @@ static void	key_handler_change_proj(int keycode, t_mlx *fdf)
 		fdf->data.saved_gamma = fdf->data.gamma;
 		fdf->data.org.x -= 300;
 		fdf->data.projection_type = PROJ_ORTHO;
+		fdf->data.transform = &transform_ortho;
 	}
 	else if (keycode == K_P && fdf->data.projection_type == PROJ_ORTHO)
 	{
 		fdf->data.gamma = fdf->data.saved_gamma;
 		fdf->data.org.x += 300;
 		fdf->data.projection_type = PROJ_ISO;
+		fdf->data.transform = &transform_isometric;
 	}
 }
 
 static void	key_handler_do_rotation(int keycode, t_mlx *fdf)
 {
-	if (fdf->data.projection_type == PROJ_ISO)
-	{
-		if (keycode == K_UP)
-			fdf->data.alpha += 0.05;
-		else if (keycode == K_DOWN)
-			fdf->data.alpha -= 0.05;
-		else if (keycode == K_RIGHT)
-			fdf->data.beta += 0.05;
-		else if (keycode == K_LEFT)
-			fdf->data.beta -= 0.05;
-	}
+	if (keycode == K_UP)
+		fdf->data.alpha += 0.05;
+	else if (keycode == K_DOWN)
+		fdf->data.alpha -= 0.05;
+	else if (keycode == K_RIGHT)
+		fdf->data.beta += 0.05;
+	else if (keycode == K_LEFT)
+		fdf->data.beta -= 0.05;
 	if (keycode == K_E)
 		fdf->data.gamma += 0.05;
 	else if (keycode == K_R)
@@ -98,10 +97,7 @@ int	key_handler(int keycode, t_mlx *fdf)
 	future_center = get_center_iso(&fdf->data, fdf->data.tile_width, org_hud);
 	fdf->data.org.x -= future_center.x - curr_center.x;
 	fdf->data.org.y -= future_center.y - curr_center.y;
-	if (fdf->data.projection_type == PROJ_ISO)
-		apply_isometric(fdf);
-	else
-		apply_ortho(fdf);
+	render(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	draw_hud_static_text(fdf);
 	return (keycode);

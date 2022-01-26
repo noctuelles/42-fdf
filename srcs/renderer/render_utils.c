@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:10:25 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 17:11:02 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 22:47:30 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_vec2d	get_center_iso(t_mlx_data *data, size_t tile_width,
 	vec.x = data->elems_line / 2;
 	vec.y = data->nbr_lines / 2;
 	vec.z = 0;
-	center = transform_isometric(tile_width, org_hud, vec, data);
+	center = data->transform(tile_width, org_hud, vec, data);
 	return (center);
 }
 
@@ -50,9 +50,9 @@ size_t	setup_map(t_mlx_data *data, t_vec3d medges[4], t_vec2d org_hud)
 	{
 		iso_center = get_center_iso(data, tile_width, org_hud);
 		set_vec2d(&data->org, 200 + (950 - iso_center.x), 500 - iso_center.y);
-		edges[0] = transform_isometric(tile_width, data->org, medges[0], data);
-		edges[1] = transform_isometric(tile_width, data->org, medges[1], data);
-		edges[2] = transform_isometric(tile_width, data->org, medges[2], data);
+		edges[0] = data->transform(tile_width, data->org, medges[0], data);
+		edges[1] = data->transform(tile_width, data->org, medges[1], data);
+		edges[2] = data->transform(tile_width, data->org, medges[2], data);
 		if (is_edges_outside(edges))
 		{
 			if (old_org.x != 0 && old_org.y != 0)
