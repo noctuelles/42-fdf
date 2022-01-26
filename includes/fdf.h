@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/25 14:34:18 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:13:25 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 # define Z_OFFSET        "Z offset  :"
 # define GRADIENT        "Gradient  :"
 # define TO              "to"
-# define ABOUT           "42 FdF V1.0"
+# define ABOUT           "42 FdF V1.2"
 # define ABOUT_2         "plouvel (plouvel@student.42.fr)"
 
 /* Basic color */
@@ -216,7 +216,8 @@ void					apply_isometric(t_mlx *fdf);
 void					apply_ortho(t_mlx *fdf);
 
 /* render_utils.c */
-
+t_vec2d					get_center_iso(t_mlx_data *data, size_t tile_width,
+							t_vec2d org_hud);
 size_t					setup_map(t_mlx_data *data, t_vec3d medges[4],
 							t_vec2d org_hud);
 

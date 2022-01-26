@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/25 15:44:14 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:11:02 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "ft_printf.h"
 #include "mlx.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 static void	key_handler_change_proj(int keycode, t_mlx *fdf)
 {
@@ -79,6 +80,12 @@ static void	key_handler_do(int keycode, t_mlx *fdf)
 
 int	key_handler(int keycode, t_mlx *fdf)
 {
+	t_vec2d	curr_center;
+	t_vec2d	future_center;
+	t_vec2d	org_hud;
+
+	set_vec2d(&org_hud, 200, 0);
+	curr_center = get_center_iso(&fdf->data, fdf->data.tile_width, org_hud);
 	fdf->data.last_alpha = fdf->data.alpha;
 	fdf->data.last_beta = fdf->data.beta;
 	fdf->data.last_gamma = fdf->data.gamma;
@@ -88,6 +95,9 @@ int	key_handler(int keycode, t_mlx *fdf)
 	if (fdf->data.z_scaling < 1)
 		fdf->data.z_scaling = 1;
 	wipe_render_scene(fdf);
+	future_center = get_center_iso(&fdf->data, fdf->data.tile_width, org_hud);
+	fdf->data.org.x -= future_center.x - curr_center.x;
+	fdf->data.org.y -= future_center.y - curr_center.y;
 	if (fdf->data.projection_type == PROJ_ISO)
 		apply_isometric(fdf);
 	else

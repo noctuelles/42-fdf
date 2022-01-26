@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:10:25 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/25 13:47:15 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/26 17:11:02 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	is_edges_outside(t_vec2d edges[3])
 		return (0);
 }
 
-static t_vec2d	get_center_iso(t_mlx_data *data, size_t tile_width,
+t_vec2d	get_center_iso(t_mlx_data *data, size_t tile_width,
 																t_vec2d org_hud)
 {
 	t_vec2d	center;
