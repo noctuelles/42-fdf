@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 23:57:49 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/27 00:08:11 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 static void	key_handler_change_proj(int keycode, t_mlx *fdf)
 {
 	if (keycode == K_P && fdf->data.curr_proj->id == ISO)
-	{
-		fdf->data.org.x -= 300;
 		set_projection(&fdf->data, ORTHO);
-	}
 	else if (keycode == K_P && fdf->data.curr_proj->id == ORTHO)
-	{
-		fdf->data.org.x += 300;
 		set_projection(&fdf->data, ISO);
+	else if (keycode == 0x6d)
+	{
+		fdf->data.curr_proj->alpha = 0;
+		fdf->data.curr_proj->beta = 0;
+		fdf->data.curr_proj->gamma = 0;
 	}
 }
 
