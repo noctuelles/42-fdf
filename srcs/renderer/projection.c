@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 23:05:49 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 23:48:57 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/27 00:29:17 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_list	*add_projection(t_mlx_data *data, int id, t_vec2d (*transform)())
 	if (!new)
 		return (NULL);
 	ft_lstadd_back(&data->proj, new);
-	ft_printf("New projection (ID %d) added ! Transform fonction at %p.\n",
+	ft_printf(INFO "New projection (ID %d) added ! Transform fonction at %p.\n",
 					id, transform);
 	return (data->proj);
 }

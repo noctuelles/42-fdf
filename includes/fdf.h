@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 23:58:25 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/27 00:29:37 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 # define Z_OFFSET        "Z offset  :"
 # define GRADIENT        "Gradient  :"
 # define TO              "to"
-# define ABOUT           "42 FdF V1.2"
+# define ABOUT           "42 FdF V1.4"
 # define ABOUT_2         "plouvel (plouvel@student.42.fr)"
 
 /* Basic color */
@@ -85,6 +85,7 @@
 /* Misc */
 
 # define FATAL "{1;31}[FATAL]{0} : "
+# define INFO "{1;96}[INFO]{0} : "
 # define WARNING "{1;93}[WARNING]{0} : "
 # define ERR_MALLOC 1
 # define ERR_ARGC 2
