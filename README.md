@@ -57,7 +57,7 @@ Re-make the executable from scratch.
 - [x] Z Scaling of the map.
 - [x] Rotation on all axis.
 - [x] Reducing lag and redundant calculations.
-- [ ] Better MiniLibX handling.
-- [ ] Better rotation and zoom : zooming in the middle of the rendering scene.
+- [x] Better rotation and zoom : zooming in the middle of the rendering scene.
 instead of the origin. The same applies for the rotation.
+- [ ] Better MiniLibX handling.
 - [ ] Hiding H.U.D.
