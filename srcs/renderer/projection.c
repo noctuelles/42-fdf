@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 23:05:49 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/27 00:29:17 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/27 13:08:09 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static t_projection	*new_projection(int id, t_vec2d (*transform)())
 	return (proj);
 }
 
-t_list	*add_projection(t_mlx_data *data, int id, t_vec2d (*transform)())
+t_list	*add_projection(t_mlx_data *data, int id, const char *name,
+														t_vec2d (*transform)())
 {
 	t_projection	*proj;
 	t_list			*new;
@@ -47,8 +48,7 @@ t_list	*add_projection(t_mlx_data *data, int id, t_vec2d (*transform)())
 	if (!new)
 		return (NULL);
 	ft_lstadd_back(&data->proj, new);
-	ft_printf(INFO "New projection (ID %d) added ! Transform fonction at %p.\n",
-					id, transform);
+	ft_printf(INFO NEW_PROJ, id, name, transform);
 	return (data->proj);
 }
 
@@ -62,7 +62,10 @@ void	set_projection(t_mlx_data *data, int id)
 	{
 		proj = (t_projection *) lst->content;
 		if (proj->id == id)
+		{
+			ft_printf(INFO SET_PROJ, id);
 			data->curr_proj = proj;
+		}
 		lst = lst->next;
 	}
 }

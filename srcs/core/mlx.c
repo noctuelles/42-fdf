@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 23:44:15 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/27 13:07:35 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,24 @@
 #include <math.h>
 #include <stdlib.h>
 
+/* Set up the projection. You can add a projection if you like.
+ * The cosinus and sinus of the Isometric is calculated here for the rest of the
+ * execution time of the program. */
+
 static int	setup_data(t_mlx_data *data)
 {
-	if (!add_projection(data, ISO, &transform_isometric))
+	if (!add_projection(data, ISO, ISO_STR, &transform_iso))
 		return (-1);
-	if (!add_projection(data, ORTHO, &transform_ortho))
+	if (!add_projection(data, ORTHO, ORTHO_STR, &transform_ortho))
 		return (-1);
 	data->z_scaling = 7;
 	data->cos_theta = cos(ANGLE_ISO);
 	data->sin_theta = sin(ANGLE_ISO);
 	return (0);
 }
+
+/* Create a new instance of the program by init. the MiniLibX lib, and other
+ * functionnal part of the program. */
 
 t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 {
@@ -53,6 +60,10 @@ t_mlx	*new_mlx(uint16_t width, uint16_t height, const char *title)
 	return (mlx);
 }
 
+/* wipe_render_scene() set all pixel to black in the current image.
+ * That might not be the most efficient way to do it, in fact it is probably
+ * a very bad way and could be way better. */
+
 void	wipe_render_scene(t_mlx *fdf)
 {
 	int		x;
@@ -72,6 +83,8 @@ void	wipe_render_scene(t_mlx *fdf)
 		y++;
 	}
 }
+
+/* Free all the ressource used by the program. */
 
 void	delete_mlx(t_mlx *mlx)
 {

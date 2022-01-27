@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 23:56:49 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/27 12:18:24 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	setup_window(t_mlx *fdf)
 		return (ERR_MALLOC);
 	draw_hud_bg(fdf);
 	draw_keys(fdf);
-	set_projection(&fdf->data, ISO);
+	set_projection(&fdf->data, START_PROJ);
 	fdf->data.tile_width = setup_map(&fdf->data, fdf->data.edges);
 	render(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
@@ -44,7 +44,7 @@ int	main(int argc, char **argv)
 	fdf = NULL;
 	if (argc != 2)
 		return (raise_errors(fdf, ERR_ARGC));
-	fdf = new_mlx(WIDTH, HEIGHT, "Wireframe (FdF) viewer");
+	fdf = new_mlx(WIDTH, HEIGHT, TITLE);
 	if (!fdf)
 		return (raise_errors(fdf, ERR_MALLOC));
 	fdf->data.vertices = parse_map(argv[1], &fdf->data);

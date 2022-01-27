@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 14:49:33 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/25 14:59:08 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/27 12:50:02 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,17 @@ static int	free_values(char **values)
 static size_t	get_elems_per_line(char **values)
 {
 	size_t	i;
+	size_t	elems;
 
 	i = 0;
+	elems = 0;
 	while (values[i])
+	{
+		if (values[i][0] != ' ' && values[i][0] != '\n')
+			elems++;
 		i++;
-	return (i);
+	}
+	return (elems);
 }
 
 static int	fill_vertices_from_values(t_mlx_data *data, char **values, int y)

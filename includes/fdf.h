@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/27 00:29:37 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/27 13:12:33 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@
 /* Program constant */
 
 # define START_COLOR 0xff053c44
-# define END_COLOR 0xff00ff00
+# define END_COLOR   0xff00ff00
 
-# define WIDTH 1700
+# define WIDTH  1700
 # define HEIGHT 1000
 
 /* Isometric angle in radian */
@@ -32,6 +32,7 @@
 
 /* Window strings */
 
+# define TITLE           "Wireframe (FdF) viewer"
 # define HUD_TXT         "Wifreframe viewer"
 # define TRANSLATION_TXT "Translate map"
 # define MAP_ZOOM        "Zoom (+ / -)"
@@ -84,20 +85,29 @@
 
 /* Misc */
 
-# define FATAL "{1;31}[FATAL]{0} : "
-# define INFO "{1;96}[INFO]{0} : "
-# define WARNING "{1;93}[WARNING]{0} : "
-# define ERR_MALLOC 1
-# define ERR_ARGC 2
-# define ERR_MAP 3
-# define STR_ERR_MALLOC "Cannot allocate memory."
-# define STR_ERR_ARGC "Invalid numbers of argument.\nUsage : ./fdf <map_path>\n"
-# define STR_ERR_MAP "Error occur parsing your map. Maybe check file path ?\n"
+# define FATAL      "{1;31}[FATAL]{0} : "
+# define INFO       "{1;96}[INFO]{0} : "
+# define WARNING    "{1;93}[WARNING]{0} : "
+# define NEW_PROJ   "New projection (ID {31}%d{0} \"{32}%s{0}\") added !\
+ Transform fonction at {93}%p{0}.\n" 
+# define SET_PROJ   "Setting current projection to projection ID {32}%d{0}\n"
+# define ERR_MALLOC      1
+# define ERR_ARGC        2
+# define ERR_MAP         3  
+# define STR_ERR_MALLOC "Cannot allocate memory.\n"
+# define STR_ERR_ARGC   "Invalid numbers of argument.\n\
+ Usage : ./fdf <map_path>\n"
+# define STR_ERR_MAP    "Error occur parsing your map.\
+ Maybe check file path ?\n"
 
 /* Projection macro */
 
-# define ISO   0
-# define ORTHO 1
+# define ISO       0
+# define ISO_STR   "Isometric (1/2 ratio)"
+# define ORTHO     1
+# define ORTHO_STR "Top orthogonal"
+
+# define START_PROJ ISO
 
 typedef struct s_vec3d
 {
@@ -130,7 +140,7 @@ typedef struct s_projection
 {
 	t_vec2d		(*transform)();
 	int			id;
-	/* Angles for rotation */
+	t_vec2d		start_org;
 	double		last_alpha;
 	double		alpha;
 	double		sin_alpha;
@@ -147,13 +157,11 @@ typedef struct s_projection
 
 typedef struct s_mlx_data
 {
-	/* General data info.*/
 	char			*file_name;
 	int				**vertices;
 	uint32_t		*gradient;
 	t_projection	*curr_proj;
 	t_list			*proj;
-	/* Map related info. */
 	size_t			nbr_vertices;
 	size_t			elems_line;
 	size_t			nbr_lines;
@@ -163,7 +171,6 @@ typedef struct s_mlx_data
 	t_vec3d			edges[3];
 	int				min_z;
 	int				max_z;
-	/* Isometric angles cosinus and sinus. */
 	double			cos_theta;
 	double			sin_theta;
 }				t_mlx_data;
@@ -224,7 +231,7 @@ void					rotate(t_vec3d *vec, t_mlx_data *data);
 
 /* transformation.c */
 
-t_vec2d					transform_isometric(size_t tile_width, t_vec2d org,
+t_vec2d					transform_iso(size_t tile_width, t_vec2d org,
 							t_vec3d vec3d, t_mlx_data *data);
 t_vec2d					transform_ortho(size_t tile_width, t_vec2d org,
 							t_vec3d vec3d, t_mlx_data *data);
@@ -237,7 +244,7 @@ size_t					setup_map(t_mlx_data *data, t_vec3d medges[4]);
 /* projection.c */
 
 t_list					*add_projection(t_mlx_data *data, int id,
-							t_vec2d (*transform)());
+							const char *name, t_vec2d (*transform)());
 void					set_projection(t_mlx_data *data, int id);
 
 /* primitives.c */

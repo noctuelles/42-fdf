@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 16:49:19 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/27 00:08:11 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/27 12:25:04 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 #include "mlx.h"
 #include <stdlib.h>
 #include <stdio.h>
+
+/* key_handler_change_proj() is about the keys that change the current proj-
+ * -jection. */
 
 static void	key_handler_change_proj(int keycode, t_mlx *fdf)
 {
@@ -29,6 +32,8 @@ static void	key_handler_change_proj(int keycode, t_mlx *fdf)
 		fdf->data.curr_proj->gamma = 0;
 	}
 }
+
+/* Explicit function name. */
 
 static void	key_handler_do_rotation(int keycode, t_mlx *fdf)
 {
@@ -45,6 +50,8 @@ static void	key_handler_do_rotation(int keycode, t_mlx *fdf)
 	else if (keycode == K_R)
 		fdf->data.curr_proj->gamma -= 0.05;
 }
+
+/* Explicit function name. */
 
 static void	key_handler_do(int keycode, t_mlx *fdf)
 {
@@ -73,6 +80,12 @@ static void	key_handler_do(int keycode, t_mlx *fdf)
 	key_handler_change_proj(keycode, fdf);
 }
 
+/* Every time a key is pressed, key_handler() is called.
+ * It re-adjust the origin position to get the map centered by computing the
+ * center BEFORE any key is pressed, and the center AFTER any key is pressed.
+ * By doing so, we can adjust the origin position to match the difference of the
+ * two center.*/
+
 int	key_handler(int keycode, t_mlx *fdf)
 {
 	t_vec2d	curr_center;
@@ -96,6 +109,9 @@ int	key_handler(int keycode, t_mlx *fdf)
 	draw_hud_static_text(fdf);
 	return (keycode);
 }
+
+/* This function is called during the loading phase, it returns a message and
+ * free the program memory before exiting via the main() function. */
 
 int	raise_errors(t_mlx *fdf, int errcode)
 {
