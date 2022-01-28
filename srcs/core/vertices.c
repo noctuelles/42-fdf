@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/06 14:49:33 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/27 12:50:02 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 12:04:06 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,6 @@ static int	fill_vertices_from_values(t_mlx_data *data, char **values, int y)
 	return (0);
 }
 
-static void	set_edges(t_mlx_data *data)
-{
-	data->edges[0].x = 0;
-	data->edges[0].y = data->nbr_lines - 1;
-	data->edges[0].z = data->vertices[data->edges[0].y][0];
-	data->edges[1].x = data->elems_line - 1;
-	data->edges[1].y = data->nbr_lines - 1;
-	data->edges[1].z = data->vertices[data->edges[1].y][data->edges[1].x];
-	data->edges[2].x = data->elems_line - 1;
-	data->edges[2].y = 0;
-	data->edges[2].z = data->vertices[0][data->edges[2].x];
-}
-
 int	fill_vertices(int fd, t_mlx_data *data)
 {
 	char	*line;
@@ -99,6 +86,5 @@ int	fill_vertices(int fd, t_mlx_data *data)
 		free_values(values);
 		y++;
 	}
-	set_edges(data);
 	return (0);
 }

@@ -6,22 +6,43 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:10:25 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/27 13:15:04 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 12:07:31 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <stdio.h>
 
-static int	is_edges_outside(t_vec2d edges[3])
+static inline int	is_outside(t_vec2d vec2d)
 {
-	if (edges[0].x <= 200)
+	if (vec2d.x <= 200 || vec2d.x >= WIDTH || vec2d.y <= 0 || vec2d.y >= HEIGHT)
 		return (1);
-	else if (edges[1].y > HEIGHT)
-		return (1);
-	else if (edges[2].x > WIDTH)
-		return (1);
-	else
-		return (0);
+	return (0);
+}
+
+static int	check_map(t_mlx_data *data, size_t tile_width)
+{
+	t_vec3d	vec3d;
+	t_vec2d	vec2d;
+	size_t		x;
+	size_t		y;
+
+	y = 0;
+	while (y < data->nbr_lines)
+	{
+		x = 0;
+		while (x < data->elems_line)
+		{
+			set_vec3d(&vec3d, x, y, data->vertices[y][x]);
+			vec2d = data->curr_proj->transform(tile_width, data->org, vec3d,
+					data);
+			if (is_outside(vec2d))
+				return (1);
+			x++;
+		}
+		y++;
+	}
+	return (0);
 }
 
 t_vec2d	get_center(t_mlx_data *data, size_t tile_width)
@@ -46,9 +67,8 @@ static inline void	set_map_center(t_mlx_data *data, size_t tile_width)
 	set_vec2d(&data->org, 200 + (950 - iso_center.x), 500 - iso_center.y);
 }
 
-size_t	setup_map(t_mlx_data *data, t_vec3d medges[4])
+size_t	setup_map(t_mlx_data *data)
 {
-	t_vec2d	edges[3];
 	t_vec2d	old_org;
 	size_t	tile_width;
 
@@ -57,13 +77,7 @@ size_t	setup_map(t_mlx_data *data, t_vec3d medges[4])
 	while (tile_width < 2000)
 	{
 		set_map_center(data, tile_width);
-		edges[0] = data->curr_proj->transform(tile_width, data->org,
-				medges[0], data);
-		edges[1] = data->curr_proj->transform(tile_width, data->org, medges[1],
-				data);
-		edges[2] = data->curr_proj->transform(tile_width, data->org, medges[2],
-				data);
-		if (is_edges_outside(edges))
+		if (check_map(data, tile_width))
 		{
 			if (old_org.x != 0 && old_org.y != 0)
 				set_vec2d(&data->org, old_org.x, old_org.y);

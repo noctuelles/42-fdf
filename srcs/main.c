@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/27 12:18:24 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 12:10:34 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	setup_window(t_mlx *fdf)
 	draw_hud_bg(fdf);
 	draw_keys(fdf);
 	set_projection(&fdf->data, START_PROJ);
-	fdf->data.tile_width = setup_map(&fdf->data, fdf->data.edges);
+	fdf->data.tile_width = setup_map(&fdf->data);
 	render(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
 	draw_hud_static_text(fdf);

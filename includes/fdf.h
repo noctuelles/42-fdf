@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/27 13:12:33 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 12:04:02 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 /* Program constant */
 
-# define START_COLOR 0xff053c44
+# define START_COLOR 0xffc3c3c3
 # define END_COLOR   0xff00ff00
 
 # define WIDTH  1700
@@ -168,7 +168,6 @@ typedef struct s_mlx_data
 	int				tile_width;
 	float			z_scaling;
 	t_vec2d			org;
-	t_vec3d			edges[3];
 	int				min_z;
 	int				max_z;
 	double			cos_theta;
@@ -239,7 +238,7 @@ t_vec2d					transform_ortho(size_t tile_width, t_vec2d org,
 /* render_utils.c */
 
 t_vec2d					get_center(t_mlx_data *data, size_t tile_width);
-size_t					setup_map(t_mlx_data *data, t_vec3d medges[4]);
+size_t					setup_map(t_mlx_data *data);
 
 /* projection.c */
 

@@ -6,7 +6,7 @@
 #    By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/25 19:17:39 by plouvel           #+#    #+#              #
-#    Updated: 2022/01/27 12:40:59 by plouvel          ###   ########.fr        #
+#    Updated: 2022/01/28 12:07:16 by plouvel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ DEPS		=	$(addprefix $(OBJS_DIR)/, $(SRCS:.c=.d))
 
 CFLAGS		=	-MMD -MP \
 				-Wall -Werror -Wextra \
-				-g3 \
+				-g3 -fsanitize=address \
 				-I includes -I $(LIBFT_DIR)/$(INC_DIR) -I $(MLIBX_DIR) \
 				-O3
 
