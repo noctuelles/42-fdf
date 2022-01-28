@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 12:10:35 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 13:04:51 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,10 @@ void	wipe_render_scene(t_mlx *fdf)
 
 void	delete_mlx(t_mlx *mlx)
 {
-	mlx_loop_end(mlx);
-	if (mlx->wnd)
-		mlx_destroy_window(mlx->inst, mlx->wnd);
 	if (mlx->img)
 		mlx_destroy_image(mlx->inst, mlx->img);
+	if (mlx->wnd)
+		mlx_destroy_window(mlx->inst, mlx->wnd);
 	if (mlx->inst)
 	{
 		mlx_destroy_display(mlx->inst);
@@ -100,6 +99,7 @@ void	delete_mlx(t_mlx *mlx)
 	}
 	if (mlx->data.vertices)
 		free_vertices(mlx->data.vertices);
+	mlx_loop_end(mlx);
 	ft_lstclear(&mlx->data.proj, free);
 	free(mlx->data.gradient);
 	free(mlx);

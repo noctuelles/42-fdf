@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 12:04:02 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 14:35:47 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 /* Program constant */
 
-# define START_COLOR 0xffc3c3c3
+# define START_COLOR 0xff053c44
 # define END_COLOR   0xff00ff00
 
 # define WIDTH  1700
@@ -140,7 +140,6 @@ typedef struct s_projection
 {
 	t_vec2d		(*transform)();
 	int			id;
-	t_vec2d		start_org;
 	double		last_alpha;
 	double		alpha;
 	double		sin_alpha;
@@ -168,6 +167,7 @@ typedef struct s_mlx_data
 	int				tile_width;
 	float			z_scaling;
 	t_vec2d			org;
+	t_vec2d			first_org;
 	int				min_z;
 	int				max_z;
 	double			cos_theta;

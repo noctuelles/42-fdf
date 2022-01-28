@@ -6,7 +6,7 @@
 #    By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/25 19:17:39 by plouvel           #+#    #+#              #
-#    Updated: 2022/01/28 12:07:16 by plouvel          ###   ########.fr        #
+#    Updated: 2022/01/28 14:34:08 by plouvel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,11 @@ SRCS_DIR	=	srcs
 INC_DIR		=	includes
 
 SRCS		=	core/file_utils.c		\
-				core/main_utils.c		\
 				core/mlx.c				\
 				core/parsing.c			\
 				core/vertices.c			\
 				core/vertices_utils.c	\
+				core/key_handler.c		\
 				drawing/line.c			\
 				drawing/line_gradient.c	\
 				drawing/primitives.c	\
@@ -34,7 +34,8 @@ SRCS		=	core/file_utils.c		\
 				renderer/transform.c	\
 				renderer/projection.c	\
 				renderer/render_utils.c	\
-				main.c
+				main.c					\
+				main_utils.c
 
 OBJS		=	$(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 
@@ -42,7 +43,6 @@ DEPS		=	$(addprefix $(OBJS_DIR)/, $(SRCS:.c=.d))
 
 CFLAGS		=	-MMD -MP \
 				-Wall -Werror -Wextra \
-				-g3 -fsanitize=address \
 				-I includes -I $(LIBFT_DIR)/$(INC_DIR) -I $(MLIBX_DIR) \
 				-O3
 

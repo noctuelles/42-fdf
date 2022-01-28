@@ -6,12 +6,11 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:10:25 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 12:07:31 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 13:32:22 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdio.h>
 
 static inline int	is_outside(t_vec2d vec2d)
 {
@@ -81,7 +80,10 @@ size_t	setup_map(t_mlx_data *data)
 		{
 			if (old_org.x != 0 && old_org.y != 0)
 				set_vec2d(&data->org, old_org.x, old_org.y);
-			return (tile_width - 1);
+			if (tile_width != 1)
+				return (tile_width - 1);
+			else
+				return (tile_width);
 		}
 		set_vec2d(&old_org, data->org.x, data->org.y);
 		tile_width++;

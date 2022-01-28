@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:05:35 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 11:54:21 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 14:10:47 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	compute_angle(t_mlx_data *data)
 		data->curr_proj->cos_alpha = cos(data->curr_proj->alpha);
 		data->curr_proj->last_alpha = data->curr_proj->alpha;
 	}
-	else if (data->curr_proj->last_beta != data->curr_proj->beta)
+	if (data->curr_proj->last_beta != data->curr_proj->beta)
 	{
 		data->curr_proj->sin_beta = sin(data->curr_proj->beta);
 		data->curr_proj->cos_beta = cos(data->curr_proj->beta);
 		data->curr_proj->last_alpha = data->curr_proj->beta;
 	}
-	else if (data->curr_proj->last_gamma != data->curr_proj->gamma)
+	if (data->curr_proj->last_gamma != data->curr_proj->gamma)
 	{
 		data->curr_proj->sin_gamma = sin(data->curr_proj->gamma);
 		data->curr_proj->cos_gamma = cos(data->curr_proj->gamma);
