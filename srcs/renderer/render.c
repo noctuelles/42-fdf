@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 18:05:35 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 14:10:47 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 19:02:22 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ static inline void	compute_n_draw(t_mlx *fdf, t_vec2d p1, int x, int y)
 	t_vec2d	p2;
 
 	set_vec3d(&vec3d, x, y, fdf->data.vertices[y][x]);
-	p2 = fdf->data.curr_proj->transform(fdf->data.tile_width, fdf->data.org,
-			vec3d, &fdf->data);
+	p2 = fdf->data.curr_proj->transform(fdf->data.curr_proj->tile_width,
+			fdf->data.curr_proj->org, vec3d, &fdf->data);
 	if ((p2.x > 200 && p2.x <= WIDTH) && (p2.y >= 0 && p2.y <= HEIGHT))
 	{
 		if (p2.color == p1.color)
@@ -86,8 +86,8 @@ void	render(t_mlx *fdf)
 		while (x < fdf->data.elems_line)
 		{
 			set_vec3d(&vec3d, x, y, fdf->data.vertices[y][x]);
-			p1 = fdf->data.curr_proj->transform(fdf->data.tile_width,
-					fdf->data.org, vec3d, &fdf->data);
+			p1 = fdf->data.curr_proj->transform(fdf->data.curr_proj->tile_width,
+					fdf->data.curr_proj->org, vec3d, &fdf->data);
 			if ((p1.x > 200 && p1.x <= WIDTH) && (p1.y >= 0 && p1.y <= HEIGHT))
 			{
 				if (x < fdf->data.elems_line - 1)

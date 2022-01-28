@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/31 17:07:30 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 13:04:51 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 17:26:35 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,6 @@
 
 static int	setup_data(t_mlx_data *data)
 {
-	if (!add_projection(data, ISO, ISO_STR, &transform_iso))
-		return (-1);
-	if (!add_projection(data, ORTHO, ORTHO_STR, &transform_ortho))
-		return (-1);
 	data->z_scaling = 7;
 	data->cos_theta = cos(ANGLE_ISO);
 	data->sin_theta = sin(ANGLE_ISO);

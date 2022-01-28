@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/13 18:50:11 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/26 17:36:05 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 19:02:57 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ static void	draw_key_static_text(t_mlx *mlx)
 	mlx_string_put(mlx->inst, mlx->wnd, 148, 924, CLR_WHITE, "P");
 	mlx_string_put(mlx->inst, mlx->wnd, 40, 893, CLR_WHITE, "Quit");
 	mlx_string_put(mlx->inst, mlx->wnd, 123, 893, CLR_WHITE, "Iso/Ortho");
+	draw_hud_title(mlx, 50, CLR_YELLOW, (char *) mlx->data.curr_proj->name);
+	draw_compass(mlx);
 }
 
 static void	draw_hud_integer(t_mlx *fdf, int x, int y, int i)
@@ -105,11 +107,11 @@ void	draw_hud_static_text(t_mlx *mlx)
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 770, CLR_WHITE, VERTICES);
 	draw_hud_integer(mlx, 80, 770, mlx->data.nbr_vertices);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 790, CLR_WHITE, TILE_SIZE);
-	draw_hud_integer(mlx, 80, 790, mlx->data.tile_width);
+	draw_hud_integer(mlx, 80, 790, mlx->data.curr_proj->tile_width);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 810, CLR_WHITE, ORG_X);
-	draw_hud_integer(mlx, 80, 810, mlx->data.org.x);
+	draw_hud_integer(mlx, 80, 810, mlx->data.curr_proj->org.x);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 830, CLR_WHITE, ORG_Y);
-	draw_hud_integer(mlx, 80, 830, mlx->data.org.y);
+	draw_hud_integer(mlx, 80, 830, mlx->data.curr_proj->org.y);
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 850, CLR_WHITE, Z_OFFSET);
 	draw_hud_integer(mlx, 80, 850, -(mlx->data.z_scaling - 7));
 	mlx_string_put(mlx->inst, mlx->wnd, 5, 870, CLR_WHITE, GRADIENT);

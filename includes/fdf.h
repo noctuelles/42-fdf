@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 14:35:47 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 19:04:11 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@
 
 # define CLR_WHITE      0xffffffff
 # define CLR_YELLOW     0xffffff00
+# define CLR_RED        0xffff0000
+# define CLR_GREEN      0xff00ff00
+# define CLR_BLUE       0xff0000ff
 # define CLR_DARK_GREY  0xff303030
 # define CLR_LIGHT_GREY 0xffc0c0c0
 
@@ -140,6 +143,11 @@ typedef struct s_projection
 {
 	t_vec2d		(*transform)();
 	int			id;
+	const char	*name;
+	t_vec2d		init_org;
+	t_vec2d		org;
+	size_t		init_tile_width;
+	size_t		tile_width;
 	double		last_alpha;
 	double		alpha;
 	double		sin_alpha;
@@ -164,10 +172,7 @@ typedef struct s_mlx_data
 	size_t			nbr_vertices;
 	size_t			elems_line;
 	size_t			nbr_lines;
-	int				tile_width;
 	float			z_scaling;
-	t_vec2d			org;
-	t_vec2d			first_org;
 	int				min_z;
 	int				max_z;
 	double			cos_theta;
@@ -260,6 +265,7 @@ void					draw_hud_static_text(t_mlx *mlx);
 
 /* hud2.c */
 
+void					draw_compass(t_mlx *mlx);
 void					draw_gradient(t_mlx *mlx);
 
 /* keys.c */

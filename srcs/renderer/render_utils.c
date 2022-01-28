@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:10:25 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 17:11:34 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 19:04:29 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static int	check_map(t_mlx_data *data, size_t tile_width)
 		while (x < data->elems_line)
 		{
 			set_vec3d(&vec3d, x, y, data->vertices[y][x]);
-			vec2d = data->curr_proj->transform(tile_width, data->org, vec3d,
-					data);
+			vec2d = data->curr_proj->transform(tile_width, data->curr_proj->org,
+					vec3d, data);
 			if (is_outside(vec2d))
 				return (1);
 			x++;
@@ -63,7 +63,8 @@ static inline void	set_map_center(t_mlx_data *data, size_t tile_width)
 	t_vec2d	iso_center;
 
 	iso_center = get_center(data, tile_width);
-	set_vec2d(&data->org, 200 + (950 - iso_center.x), 500 - iso_center.y);
+	set_vec2d(&data->curr_proj->org, 200 + (950 - iso_center.x),
+		500 - iso_center.y);
 }
 
 size_t	setup_map(t_mlx_data *data)
@@ -79,13 +80,13 @@ size_t	setup_map(t_mlx_data *data)
 		if (check_map(data, tile_width))
 		{
 			if (old_org.x != 0 && old_org.y != 0)
-				set_vec2d(&data->org, old_org.x, old_org.y);
+				set_vec2d(&data->curr_proj->org, old_org.x, old_org.y);
 			if (tile_width != 1)
 				return (tile_width - 1);
 			else
 				return (tile_width);
 		}
-		set_vec2d(&old_org, data->org.x, data->org.y);
+		set_vec2d(&old_org, data->curr_proj->org.x, data->curr_proj->org.y);
 		tile_width++;
 	}
 	return (tile_width);

@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 23:05:49 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 14:21:51 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 18:02:43 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ t_list	*add_projection(t_mlx_data *data, int id, const char *name,
 	new = ft_lstnew((void *) proj);
 	if (!new)
 		return (NULL);
+	data->curr_proj = proj;
+	proj->tile_width = setup_map(data);
+	proj->init_org = proj->org;
+	proj->init_tile_width = proj->tile_width;
+	proj->name = name;
 	ft_lstadd_back(&data->proj, new);
 	ft_printf(INFO NEW_PROJ, id, name, transform);
 	return (data->proj);
