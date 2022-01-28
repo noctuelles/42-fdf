@@ -66,5 +66,6 @@ existing projection.
 - [x] Modular code : you can add more projection on the go, by just adding
 a transformation fonction. I'm using linked list and function pointer to make
 this possible.
+- [x] Added a compass in the bottom-left of the screen.
 - [ ] Better MiniLibX handling.
 - [ ] Hiding H.U.D.
