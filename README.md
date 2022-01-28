@@ -3,6 +3,7 @@ Discovering the wonderful world of computer graphics rendering a wireframe map.
 
 ![Wireframe0](/assets/images/window0.png)
 ![Wireframe1](/assets/images/window1.png)
+![Wireframe2](/assets/images/window2.png)
 
 ## Subject
 You can find the subject [here](https://cdn.intra.42.fr/pdf/pdf/38057/en.subject.pdf).
