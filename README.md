@@ -60,5 +60,11 @@ Re-make the executable from scratch.
 - [x] Reducing lag and redundant calculations.
 - [x] Better rotation and zoom : zooming in the middle of the rendering scene.
 instead of the origin. The same applies for the rotation.
+- [x] Each projection is fully isolated from the others.
+The rotation angles, tile width, of each projection will not intefere with the
+existing projection.
+- [x] Modular code : you can add more projection on the go, by just adding
+a transformation fonction. I'm using linked list and function pointer to make
+this possible.
 - [ ] Better MiniLibX handling.
 - [ ] Hiding H.U.D.
