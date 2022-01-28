@@ -25,7 +25,7 @@ download their [book](https://archive.org/details/OperaMagistris) for free (5,83
 
 Good luck !
 ## Compiling & running
-	git clone https://github.com/noctuelles/42-fdf fdf
+	git clone --recurse-submodules https://github.com/noctuelles/42-fdf fdf
 	cd fdf && make fdf && ./fdf assets/maps/france.fdf
 It will compile my [libft](https://github.com/noctuelles/42-libft) and the [MiniLibX](https://github.com/42Paris/minilibx-linux).
 
