@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:10:25 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 13:32:22 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/28 17:11:34 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static int	check_map(t_mlx_data *data, size_t tile_width)
 {
 	t_vec3d	vec3d;
 	t_vec2d	vec2d;
-	size_t		x;
-	size_t		y;
+	size_t	x;
+	size_t	y;
 
 	y = 0;
 	while (y < data->nbr_lines)
