@@ -25,7 +25,8 @@ download their [book](https://archive.org/details/OperaMagistris) for free (5,83
 
 Good luck !
 ## Compiling & running
-	make fdf && ./fdf <your_maps>
+	git clone https://github.com/noctuelles/42-fdf fdf
+	cd fdf && make fdf && ./fdf assets/maps/france.fdf
 It will compile my [libft](https://github.com/noctuelles/42-libft) and the [MiniLibX](https://github.com/42Paris/minilibx-linux).
 
 The project is ***only*** compiling on Linux for now. I've not tested on MacOS
