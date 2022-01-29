@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 23:05:49 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 18:02:43 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/29 16:02:36 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ static t_projection	*new_projection(int id, t_vec2d (*transform)())
 	ft_memset(proj, 0, sizeof(t_projection));
 	proj->transform = transform;
 	proj->id = id;
-	proj->sin_alpha = sin(proj->alpha);
-	proj->cos_alpha = cos(proj->alpha);
-	proj->sin_beta = sin(proj->beta);
-	proj->cos_beta = cos(proj->beta);
-	proj->sin_gamma = sin(proj->gamma);
-	proj->cos_gamma = cos(proj->gamma);
+	proj->sin_alpha = 0;
+	proj->cos_alpha = 1;
+	proj->sin_beta = 0;
+	proj->cos_beta = 1;
+	proj->sin_gamma = 0;
+	proj->cos_gamma = 1;
 	return (proj);
 }
 
@@ -67,10 +67,7 @@ void	set_projection(t_mlx_data *data, int id)
 	{
 		proj = (t_projection *) lst->content;
 		if (proj->id == id)
-		{
-			ft_printf(INFO SET_PROJ, id);
 			data->curr_proj = proj;
-		}
 		lst = lst->next;
 	}
 }

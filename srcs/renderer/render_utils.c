@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:10:25 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 19:04:29 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/29 16:00:27 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,21 @@ static int	check_map(t_mlx_data *data, size_t tile_width)
 {
 	t_vec3d	vec3d;
 	t_vec2d	vec2d;
-	size_t	x;
-	size_t	y;
 
-	y = 0;
-	while (y < data->nbr_lines)
+	vec3d.y = 0;
+	while (vec3d.y < data->nbr_lines)
 	{
-		x = 0;
-		while (x < data->elems_line)
+		vec3d.x = 0;
+		while (vec3d.x < data->elems_line)
 		{
-			set_vec3d(&vec3d, x, y, data->vertices[y][x]);
+			vec3d.z = data->vertices[vec3d.y][vec3d.x];
 			vec2d = data->curr_proj->transform(tile_width, data->curr_proj->org,
 					vec3d, data);
 			if (is_outside(vec2d))
 				return (1);
-			x++;
+			vec3d.x++;
 		}
-		y++;
+		vec3d.y++;
 	}
 	return (0);
 }
@@ -63,8 +61,7 @@ static inline void	set_map_center(t_mlx_data *data, size_t tile_width)
 	t_vec2d	iso_center;
 
 	iso_center = get_center(data, tile_width);
-	set_vec2d(&data->curr_proj->org, 200 + (950 - iso_center.x),
-		500 - iso_center.y);
+	set_vec2d(&data->curr_proj->org, 1150 - iso_center.x, 500 - iso_center.y);
 }
 
 size_t	setup_map(t_mlx_data *data)
