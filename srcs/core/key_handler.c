@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 14:28:59 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 19:04:10 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/29 14:37:52 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static inline void	key_handler_change_proj(int keycode, t_mlx *fdf)
 		set_projection(&fdf->data, ISO);
 }
 
-static inline void	key_handler_reset(int keycode, t_mlx *fdf)
+static inline int	key_handler_reset(int keycode, t_mlx *fdf)
 {
 	if (keycode == 0x6f)
 	{
@@ -34,13 +34,18 @@ static inline void	key_handler_reset(int keycode, t_mlx *fdf)
 		fdf->data.curr_proj->gamma = 0;
 		fdf->data.curr_proj->org = fdf->data.curr_proj->init_org;
 		fdf->data.curr_proj->tile_width = fdf->data.curr_proj->init_tile_width;
+		return (1);
 	}
+	return (0);
 }
 
 /* Explicit function name. */
 
 static void	key_handler_do_rotation(int keycode, t_mlx *fdf)
 {
+	fdf->data.curr_proj->last_alpha = fdf->data.curr_proj->alpha;
+	fdf->data.curr_proj->last_beta = fdf->data.curr_proj->beta;
+	fdf->data.curr_proj->last_gamma = fdf->data.curr_proj->gamma;
 	if (keycode == K_UP)
 		fdf->data.curr_proj->alpha += 0.05;
 	else if (keycode == K_DOWN)
@@ -49,7 +54,7 @@ static void	key_handler_do_rotation(int keycode, t_mlx *fdf)
 		fdf->data.curr_proj->beta += 0.05;
 	else if (keycode == K_LEFT)
 		fdf->data.curr_proj->beta -= 0.05;
-	if (keycode == K_E)
+	else if (keycode == K_E)
 		fdf->data.curr_proj->gamma += 0.05;
 	else if (keycode == K_R)
 		fdf->data.curr_proj->gamma -= 0.05;
@@ -96,18 +101,20 @@ int	key_handler(int keycode, t_mlx *fdf)
 {
 	t_vec2d	curr_center;
 	t_vec2d	future_center;
+	int		reset;
 
 	key_handler_change_proj(keycode, fdf);
 	curr_center = get_center(&fdf->data, fdf->data.curr_proj->tile_width);
-	fdf->data.curr_proj->last_alpha = fdf->data.curr_proj->alpha;
-	fdf->data.curr_proj->last_beta = fdf->data.curr_proj->beta;
-	fdf->data.curr_proj->last_gamma = fdf->data.curr_proj->gamma;
 	key_handler_do(keycode, fdf);
 	key_handler_do_rotation(keycode, fdf);
-	future_center = get_center(&fdf->data, fdf->data.curr_proj->tile_width);
-	fdf->data.curr_proj->org.x -= future_center.x - curr_center.x;
-	fdf->data.curr_proj->org.y -= future_center.y - curr_center.y;
-	key_handler_reset(keycode, fdf);
+	reset = key_handler_reset(keycode, fdf);
+	compute_angle(&fdf->data);
+	if (!reset)
+	{
+		future_center = get_center(&fdf->data, fdf->data.curr_proj->tile_width);
+		fdf->data.curr_proj->org.x -= future_center.x - curr_center.x;
+		fdf->data.curr_proj->org.y -= future_center.y - curr_center.y;
+	}
 	wipe_render_scene(fdf);
 	render(fdf);
 	mlx_put_image_to_window(fdf->inst, fdf->wnd, fdf->img, 0, 0);
