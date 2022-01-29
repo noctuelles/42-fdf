@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/28 14:28:59 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/29 14:37:52 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/29 16:16:04 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static inline void	key_handler_change_proj(int keycode, t_mlx *fdf)
 
 static inline int	key_handler_reset(int keycode, t_mlx *fdf)
 {
-	if (keycode == 0x6f)
+	if (keycode == K_O)
 	{
 		fdf->data.curr_proj->alpha = 0;
 		fdf->data.curr_proj->beta = 0;

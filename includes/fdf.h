@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 19:12:37 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/29 16:17:40 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 
 /* Basic color */
 
+# define CLR_BLACK      0xff000000
 # define CLR_WHITE      0xffffffff
 # define CLR_YELLOW     0xffffff00
 # define CLR_RED        0xffff0000
@@ -85,6 +86,8 @@
 
 # define K_R     0x72
 # define K_E     0x65
+
+# define K_O     0x6f
 
 /* Misc */
 
