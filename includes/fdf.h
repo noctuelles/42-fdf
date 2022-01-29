@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 22:12:47 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/29 16:17:40 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/29 16:19:14 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,7 +269,6 @@ void					draw_hud_static_text(t_mlx *mlx);
 /* hud2.c */
 
 void					draw_compass(t_mlx *mlx);
-void					draw_gradient(t_mlx *mlx);
 
 /* keys.c */
 
