@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 00:06:36 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/28 17:55:17 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/29 15:08:56 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 static int	setup_window(t_mlx *fdf)
 {
+	if (fdf->data.min_z == fdf->data.max_z)
+		fdf->data.max_z++;
 	fdf->data.gradient = get_color_gradient(START_COLOR, END_COLOR,
 			ft_abs(fdf->data.min_z) + ft_abs(fdf->data.max_z));
 	if (!fdf->data.gradient)

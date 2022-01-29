@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 22:42:43 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/29 14:34:29 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/29 15:16:01 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,15 @@ t_vec2d	transform_iso(size_t tile_width, t_vec2d org, t_vec3d vec3d,
 
 	vec3d.x *= tile_width;
 	vec3d.y *= tile_width;
-	if (vec3d.z < 0)
-		proj.color = data->gradient[ft_abs(data->min_z) - ft_abs(vec3d.z)];
-	else if (vec3d.z == 0)
-		proj.color = data->gradient[ft_abs(data->min_z)];
-	else
-		proj.color = data->gradient[ft_abs(data->min_z) + (vec3d.z - 1)];
+	if (vec3d.z >= data->min_z && vec3d.z <= data->max_z)
+	{
+		if (vec3d.z < 0)
+			proj.color = data->gradient[ft_abs(data->min_z) - ft_abs(vec3d.z)];
+		else if (vec3d.z == 0)
+			proj.color = data->gradient[ft_abs(data->min_z)];
+		else
+			proj.color = data->gradient[ft_abs(data->min_z) + (vec3d.z - 1)];
+	}
 	vec3d.z *= tile_width / data->z_scaling;
 	rotate(&vec3d, data);
 	proj.x = (vec3d.x - vec3d.y) * data->cos_theta + org.x;
@@ -39,12 +42,15 @@ t_vec2d	transform_ortho(size_t tile_width, t_vec2d org, t_vec3d vec3d,
 
 	vec3d.x *= tile_width;
 	vec3d.y *= tile_width;
-	if (vec3d.z < 0)
-		proj.color = data->gradient[ft_abs(data->min_z) - ft_abs(vec3d.z)];
-	else if (vec3d.z == 0)
-		proj.color = data->gradient[ft_abs(data->min_z)];
-	else
-		proj.color = data->gradient[ft_abs(data->min_z) + (vec3d.z - 1)];
+	if (vec3d.z >= data->min_z && vec3d.z <= data->max_z)
+	{
+		if (vec3d.z < 0)
+			proj.color = data->gradient[ft_abs(data->min_z) - ft_abs(vec3d.z)];
+		else if (vec3d.z == 0)
+			proj.color = data->gradient[ft_abs(data->min_z)];
+		else
+			proj.color = data->gradient[ft_abs(data->min_z) + (vec3d.z - 1)];
+	}
 	vec3d.z = 0;
 	rotate(&vec3d, data);
 	proj.x = vec3d.x + org.x;
