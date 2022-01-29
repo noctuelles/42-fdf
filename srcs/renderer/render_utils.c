@@ -6,7 +6,7 @@
 /*   By: plouvel <plouvel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 15:10:25 by plouvel           #+#    #+#             */
-/*   Updated: 2022/01/29 16:00:27 by plouvel          ###   ########.fr       */
+/*   Updated: 2022/01/29 16:04:55 by plouvel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ static int	check_map(t_mlx_data *data, size_t tile_width)
 	t_vec2d	vec2d;
 
 	vec3d.y = 0;
-	while (vec3d.y < data->nbr_lines)
+	while ((size_t) vec3d.y < data->nbr_lines)
 	{
 		vec3d.x = 0;
-		while (vec3d.x < data->elems_line)
+		while ((size_t) vec3d.x < data->elems_line)
 		{
 			vec3d.z = data->vertices[vec3d.y][vec3d.x];
 			vec2d = data->curr_proj->transform(tile_width, data->curr_proj->org,
