@@ -32,8 +32,8 @@ It will compile my [libft](https://github.com/noctuelles/42-libft) and the [Mini
 The project is ***only*** compiling on Linux for now. I've not tested on MacOS
 nor making a suitable Makefile.
 
-This project is compiled with the **-Ofast** flag to improve math speed. In this
-regard, all optimisation provided by the **-O3** flag is enable.
+This project is compiled with the **-O3** flag to improve speed. In this
+regard, all optimisation provided by the **-O2** flag is enable.
 
 Learn more about optimisation [here](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html).
 
@@ -68,5 +68,6 @@ existing projection.
 a transformation fonction. I'm using linked list and function pointer to make
 this possible.
 - [x] Added a compass in the bottom-left of the screen.
+- [ ] Make auto zoom and center work with extremely large map.
 - [ ] Better MiniLibX handling.
 - [ ] Hiding H.U.D.
